@@ -1,0 +1,54 @@
+image: node:16
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  script:
+    - npm ci
+  cache:
+    paths:
+      - node_modules/
+  artifacts:
+    expire_in: 1 days
+    when: on_success
+    paths:
+      - node_modules/
+
+test:
+  stage: test
+  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+  dependencies:
+    - build
+  script:
+    - npm run test:ci
+  cache:
+    paths:
+      - coverage/
+  artifacts:
+    paths:
+      - coverage/
+    when: always
+    reports:
+      junit:
+        - junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage/cobertura-coverage.xml
+
+pages:
+  stage: deploy
+  dependencies:
+    - test
+  script:
+    - mkdir public-tmp
+    - cp -r coverage/* public-tmp
+    - mv public-tmp public
+  artifacts:
+    paths:
+      - public
+  only:
+    - master
