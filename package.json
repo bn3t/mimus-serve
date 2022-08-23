@@ -15,7 +15,7 @@
     "preversion": "npm run build && npm run test:ci",
     "start": "node build/main.js",
     "test:ci": "jest --coverage",
-    "test": "jest --watchAll",
+    "test": "jest --watch",
     "type-check:watch": "npm run type-check -- --watch",
     "type-check": "tsc --noEmit",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
@@ -31,6 +31,7 @@
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^28.1.6",
+    "@types/node": "^18.7.8",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "conventional-changelog-cli": "^2.2.2",
@@ -56,5 +57,6 @@
       "text-summary",
       "cobertura"
     ]
-  }
+  },
+  "dependencies": {}
 }
