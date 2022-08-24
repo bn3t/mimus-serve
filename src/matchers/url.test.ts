@@ -80,6 +80,7 @@ describe("Url Matching", () => {
       httpUrl: "/example-url/to-match?param=value",
       expectedResult: MatchResult.NoMatch,
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ])(`should $name`, ({ name, urlType, url, httpUrl, expectedResult }) => {
     const matcher = new UrlMatcher();
 

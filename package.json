@@ -14,8 +14,11 @@
     "ncu": "ncu -u",
     "preversion": "npm run build && npm run test:ci",
     "start": "node build/main.js",
-    "test:ci": "jest --coverage",
-    "test": "jest --watch",
+    "test:ci": "jest --coverage  --testPathPattern=src",
+    "test": "jest --watch --testPathPattern=src",
+    "test:integration": "jest --watch --testPathPattern=test-integration",
+    "test:integration:nowatch": "jest --testPathPattern=test-integration",
+    "test:integration:ci": "start-server-and-test start http://localhost:4000 test:integration:nowatch",
     "type-check:watch": "npm run type-check -- --watch",
     "type-check": "tsc --noEmit",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
@@ -31,9 +34,12 @@
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-typescript": "^7.18.6",
     "@types/jest": "^28.1.6",
+    "@types/jsonfile": "^6.1.0",
     "@types/node": "^18.7.8",
+    "@types/recursive-readdir": "^2.2.1",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
+    "axios": "^0.27.2",
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^8.21.0",
     "eslint-config-prettier": "^8.5.0",
@@ -43,6 +49,7 @@
     "npm-check-updates": "^16.0.5",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
+    "start-server-and-test": "^1.14.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
   },
@@ -58,5 +65,8 @@
       "cobertura"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "jsonfile": "^6.1.0",
+    "recursive-readdir": "^2.2.2"
+  }
 }

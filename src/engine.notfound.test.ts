@@ -8,13 +8,11 @@ import { findMapping } from "./mapping";
 const MOCK_MAPPINGS: Mapping[] = [
   {
     priority: 0,
-    requestMatches: [
-      {
-        urlType: UrlMatchType.Path,
-        url: "/url-to-match-method-02",
-        method: "GET",
-      },
-    ],
+    requestMatch: {
+      urlType: UrlMatchType.Path,
+      url: "/url-to-match-method-02",
+      method: "GET",
+    },
     responseDefinition: {
       status: 200,
       statusMessage: "All is ok",
@@ -24,13 +22,11 @@ const MOCK_MAPPINGS: Mapping[] = [
   },
   {
     priority: 0,
-    requestMatches: [
-      {
-        urlType: UrlMatchType.Path,
-        url: "/url-to-match-method-02",
-        method: "GET",
-      },
-    ],
+    requestMatch: {
+      urlType: UrlMatchType.Path,
+      url: "/url-to-match-method-02",
+      method: "GET",
+    },
     responseDefinition: {
       status: 200,
       statusMessage: "All is ok",

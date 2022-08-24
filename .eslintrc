@@ -23,5 +23,7 @@
     "prettier.config.js",
     "babel.config.js"
   ],
-  "rules": {}
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off"
+  }
 }

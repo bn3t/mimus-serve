@@ -33,7 +33,7 @@ export interface ResponseDefinition {
 
 export interface Mapping {
   priority: number;
-  requestMatches: RequestMatch[];
+  requestMatch: RequestMatch;
   responseDefinition: ResponseDefinition;
 }
 
