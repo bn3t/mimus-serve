@@ -9,6 +9,7 @@ build:
   stage: build
   script:
     - npm ci
+    - npm run build
   cache:
     paths:
       - node_modules/
@@ -17,6 +18,7 @@ build:
     when: on_success
     paths:
       - node_modules/
+      - build/
 
 test:
   stage: test
@@ -38,6 +40,13 @@ test:
       coverage_report:
         coverage_format: cobertura
         path: coverage/cobertura-coverage.xml
+
+integration-test:
+  stage: test
+  dependencies:
+    - build
+  script:
+    - npm run test:integration:ci
 
 pages:
   stage: deploy

@@ -1,0 +1,74 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "urlPath": "/",
+        "method": "HEAD"
+      },
+      "response": {
+        "status": 200,
+        "statusMessage": "Server ready for testing"
+      }
+    },
+    {
+      "request": {
+        "urlPath": "/read-a-file",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "test-data/files/response.json"
+      }
+    },
+    {
+      "request": {
+        "urlPath": "/get-body",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Text content in a body"
+      }
+    },
+    {
+      "request": {
+        "url": "/get-from-url?param=value",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Get from url"
+      }
+    },
+    {
+      "request": {
+        "urlPattern": "/get-from-url-patt.*",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Get from url pattern"
+      }
+    },
+    {
+      "request": {
+        "urlPathPattern": "/get-from-url-path-patt.*",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Get from url path pattern"
+      }
+    },
+    {
+      "request": {
+        "url": "/get-body",
+        "method": "PUT"
+      },
+      "response": {
+        "status": 200,
+        "body": "Should not be triggered by a get"
+      }
+    }
+  ]
+}

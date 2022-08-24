@@ -1,0 +1,12 @@
+{
+  "request": {
+    "priority": 1000,
+    "urlPathPattern": "/.*",
+    "method": "ANY"
+  },
+  "response": {
+    "status": 404,
+    "statusMessage": "Handled but not found",
+    "body": "Not Found"
+  }
+}

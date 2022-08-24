@@ -1,11 +1,12 @@
 {
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "test-integration/**/*.ts"
   ],
   "compilerOptions": {
     "target": "es6", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
     "module": "commonjs", /* Specify what module code is generated. */
-    "rootDir": "./src", /* Specify the root folder within your source files. */
+    "rootDir": "./", /* Specify the root folder within your source files. */
     "declaration": true, /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
     "emitDeclarationOnly": true, /* Only output d.ts files and not JavaScript files. */
     "outDir": "./build", /* Specify an output folder for all emitted files. */

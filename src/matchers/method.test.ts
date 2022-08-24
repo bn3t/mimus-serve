@@ -33,6 +33,7 @@ describe("Method", () => {
       httpMethod: "GET",
       expectedResult: MatchResult.Discard,
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ])("should $name", ({ name, method, httpMethod, expectedResult }) => {
     const matcher = new MethodMatcher();
 

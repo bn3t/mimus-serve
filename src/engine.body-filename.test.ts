@@ -4,18 +4,15 @@ import { processRequest } from "./engine";
 import { Mapping, UrlMatchType } from "./types";
 
 import { findMapping } from "./mapping";
-import { readFile } from "./utils/files";
 
 const MOCK_MAPPINGS: Mapping[] = [
   {
     priority: 0,
-    requestMatches: [
-      {
-        urlType: UrlMatchType.Path,
-        url: "/url-to-match-method-02",
-        method: "GET",
-      },
-    ],
+    requestMatch: {
+      urlType: UrlMatchType.Path,
+      url: "/url-to-match-method-02",
+      method: "GET",
+    },
     responseDefinition: {
       status: 200,
       statusMessage: "All is ok",
@@ -25,13 +22,11 @@ const MOCK_MAPPINGS: Mapping[] = [
   },
   {
     priority: 0,
-    requestMatches: [
-      {
-        urlType: UrlMatchType.Path,
-        url: "/url-to-match-method-02",
-        method: "GET",
-      },
-    ],
+    requestMatch: {
+      urlType: UrlMatchType.Path,
+      url: "/url-to-match-method-02",
+      method: "GET",
+    },
     responseDefinition: {
       status: 200,
       statusMessage: "All is ok",
