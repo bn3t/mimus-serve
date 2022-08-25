@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from "node:http";
 import { promisify } from "util";
 import { findMapping } from "./mapping";
 import { MethodMatcher } from "./matchers/method";
+import { QueryParametersMatcher } from "./matchers/query-params";
 import { UrlMatcher } from "./matchers/url";
 import { HttpRequest, Mapping, Method, RequestMatcher } from "./types";
 import { readFile } from "./utils/files";
@@ -9,6 +10,7 @@ import { readFile } from "./utils/files";
 const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new UrlMatcher(),
   new MethodMatcher(),
+  new QueryParametersMatcher(),
 ];
 
 export const processRequest = async (

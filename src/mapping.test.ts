@@ -15,6 +15,7 @@ const TEST_MAPPINGS: Mapping[] = [
       urlType: UrlMatchType.Path,
       url: "/discard",
       method: "GET",
+      queryParameters: [],
     },
     responseDefinition: {
       status: 200,
@@ -28,6 +29,7 @@ const TEST_MAPPINGS: Mapping[] = [
       urlType: UrlMatchType.Path,
       url: "/url-to-match-method-02",
       method: "GET",
+      queryParameters: [],
     },
     responseDefinition: {
       status: 200,
@@ -41,6 +43,7 @@ const TEST_MAPPINGS: Mapping[] = [
       urlType: UrlMatchType.Path,
       url: "/url-to-match-method-01",
       method: "GET",
+      queryParameters: [],
     },
     responseDefinition: {
       status: 200,
@@ -154,6 +157,16 @@ describe("Parse mapping", () => {
     expect(actual.requestMatch.method).toBe("ANY");
     expect(actual.requestMatch.url).toBe("/everything");
     expect(actual.requestMatch.urlType).toBe(UrlMatchType.Path);
+
+    expect(actual.requestMatch.queryParameters).toBeDefined();
+    expect(actual.requestMatch.queryParameters.length).toBe(1);
+    expect(actual.requestMatch.queryParameters[0]).toStrictEqual({
+      caseInsensitive: false,
+      name: "search_term",
+      operator: "equalTo",
+      value: "WireMock",
+    });
+
     expect(actual.responseDefinition).toBeDefined();
     expect(actual.responseDefinition.status).toBe(200);
     expect(actual.responseDefinition.body).toBe("Text body");
@@ -168,7 +181,7 @@ describe("Parse mapping", () => {
 
   test.each([
     {
-      name: "Parse Url",
+      testname: "Parse Url",
       request: {
         url: "/everything",
       },
@@ -178,7 +191,7 @@ describe("Parse mapping", () => {
       },
     },
     {
-      name: "Parse UrlPattern",
+      testname: "Parse UrlPattern",
       request: {
         urlPattern: "/everything",
       },
@@ -188,7 +201,7 @@ describe("Parse mapping", () => {
       },
     },
     {
-      name: "Parse Path",
+      testname: "Parse Path",
       request: {
         urlPath: "/everything",
       },
@@ -198,7 +211,7 @@ describe("Parse mapping", () => {
       },
     },
     {
-      name: "Parse PathPattern",
+      testname: "Parse PathPattern",
       request: {
         urlPathPattern: "/everything",
       },
@@ -207,8 +220,7 @@ describe("Parse mapping", () => {
         urlType: UrlMatchType.PathPattern,
       },
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ])("should parse url $name", ({ name, request, expected }) => {
+  ])("should parse url $testname", ({ request, expected }) => {
     const actual = parseUrl(request);
     expect(actual).toBeDefined();
     expect(actual?.url).toBe(expected.url);

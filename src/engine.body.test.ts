@@ -12,6 +12,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       urlType: UrlMatchType.Path,
       url: "/url-to-match-method-02",
       method: "GET",
+      queryParameters: [],
     },
 
     responseDefinition: {
@@ -27,6 +28,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       urlType: UrlMatchType.Path,
       url: "/url-to-match-method-02",
       method: "GET",
+      queryParameters: [],
     },
 
     responseDefinition: {
