@@ -2,6 +2,7 @@ import url from "url";
 
 import { HttpRequest, MatchResult, RequestMatch, UrlMatchType } from "../types";
 import { RequestMatcher } from "../types";
+import { matchRegexp } from "../utils/strings";
 
 export class UrlMatcher implements RequestMatcher {
   match(requestMatch: RequestMatch, httpRequest: HttpRequest): MatchResult {
@@ -15,7 +16,7 @@ export class UrlMatcher implements RequestMatcher {
           : MatchResult.NoMatch;
 
       case UrlMatchType.UrlPattern:
-        return (httpRequest.url?.match(requestMatch.url)?.length ?? -1) > 0
+        return matchRegexp(requestMatch.url, httpRequest.url)
           ? MatchResult.Match
           : MatchResult.NoMatch;
 
@@ -33,8 +34,10 @@ export class UrlMatcher implements RequestMatcher {
         {
           const parsedUrl = url.parse(httpRequest.url);
           if (parsedUrl !== null) {
-            return (parsedUrl.pathname?.match(requestMatch.url)?.length ?? -1) >
-              0
+            if (parsedUrl.pathname === null) {
+              return MatchResult.NoMatch;
+            }
+            return matchRegexp(requestMatch.url, parsedUrl.pathname)
               ? MatchResult.Match
               : MatchResult.NoMatch;
           }

@@ -18,11 +18,27 @@ export interface RequestMatcher {
   match(requestMatch: RequestMatch, request: HttpRequest): MatchResult;
 }
 
+export type OperatorType =
+  | "equalTo"
+  | "matches"
+  | "contains"
+  | "doesNotMatch"
+  | "absent";
+
+export interface QueryParameterSpec {
+  operator: OperatorType;
+  caseInsensitive: boolean;
+  name: string;
+  value: string;
+}
+
 export interface RequestMatch {
   urlType: UrlMatchType;
   url?: string;
   method: Method | "ANY";
+  queryParameters: QueryParameterSpec[];
 }
+
 export interface ResponseDefinition {
   status: number;
   statusMessage?: string;

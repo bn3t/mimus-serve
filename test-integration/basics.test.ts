@@ -1,14 +1,18 @@
 import axios from "axios";
+import { makeFullUrl } from "./test-utils";
 
-const BASE_URL = "http://localhost:4000";
-
-const makeFullUrl = (url: string) => `${BASE_URL}${url}`;
-
-describe("Integration Test", () => {
+describe("Basic Get Tests", () => {
   test("should return 404 on not existing url", () => {
     expect(axios.get(makeFullUrl("/not-exist"))).rejects.toThrow(
       "Request failed with status code 404",
     );
+  });
+
+  test("should return 200 on / head", async () => {
+    const response = await axios.head(makeFullUrl("/"));
+
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
   });
 
   test.each([
@@ -37,9 +41,9 @@ describe("Integration Test", () => {
       url: "/get-from-url-path-pattern?param=value",
       expected: "Get from url path pattern",
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ])("should $name", async ({ name, url, expected }) => {
+  ])("should $name", async ({ url, expected }) => {
     const response = await axios.get(makeFullUrl(url));
+
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
     expect(response.data).toBe(expected);

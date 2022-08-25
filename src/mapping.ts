@@ -1,3 +1,4 @@
+import { intersection, head } from "ramda";
 import {
   Configuration,
   HttpRequest,
@@ -19,7 +20,9 @@ export const findMapping = (
         mapping.requestMatch,
         mappedRequest,
       );
-      return matchResult === MatchResult.Match;
+      return (
+        matchResult === MatchResult.Match || matchResult === MatchResult.Discard
+      );
     }),
   );
   matchedMappings.sort((a, b) => b.priority - a.priority);
@@ -43,12 +46,42 @@ export const parseUrl = (jsonRequest: any) => {
   }
 };
 
+const mapOperator = (spec: Record<string, any>) => {
+  const operator = head(
+    intersection(Object.keys(spec), [
+      "equalTo",
+      "matches",
+      "contains",
+      "doesNotMatch",
+      "absent",
+    ]),
+  );
+  if (operator === undefined) {
+    return { operator: "##invalid", value: "##invalid" };
+  }
+  const value = spec[operator] as string;
+  return {
+    operator,
+    value,
+  };
+};
+
 export const parseOne = (json: any): Mapping =>
   ({
     priority: json.priority ?? 0,
     requestMatch: {
       ...parseUrl(json.request),
       method: json.request.method,
+      queryParameters:
+        json.request.queryParameters !== undefined
+          ? Object.entries(
+              json.request.queryParameters as Record<string, any>,
+            ).map(([name, spec]: [string, Record<string, any>]) => ({
+              name,
+              caseInsensitive: spec.caseInsensitive ?? false,
+              ...mapOperator(spec),
+            }))
+          : [],
     },
     responseDefinition: {
       status: json.response.status,

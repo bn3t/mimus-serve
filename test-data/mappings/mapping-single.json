@@ -1,6 +1,6 @@
 {
+  "priority": 1000,
   "request": {
-    "priority": 1000,
     "urlPathPattern": "/.*",
     "method": "ANY"
   },
