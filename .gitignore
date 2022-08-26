@@ -3,3 +3,4 @@ build/
 coverage/
 junit.xml
 .vscode/
+.env
