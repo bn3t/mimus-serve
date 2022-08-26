@@ -1,3 +1,8 @@
-const BASE_URL = "http://localhost:4000";
+import axios from "axios";
 
-export const makeFullUrl = (url: string) => `${BASE_URL}${url}`;
+const BASE_URL = "http://localhost:4000/";
+
+export const myaxios = axios.create({
+  baseURL: BASE_URL,
+  validateStatus: () => true,
+});

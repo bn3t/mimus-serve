@@ -66,22 +66,28 @@ const mapOperator = (spec: Record<string, any>) => {
   };
 };
 
+const parseAttributeSpecs = (
+  specs: Record<string, any> | undefined,
+  lowerCaseName = false,
+) =>
+  specs !== undefined
+    ? Object.entries(specs as Record<string, any>).map(
+        ([name, spec]: [string, Record<string, any>]) => ({
+          name: lowerCaseName ? name.toLowerCase() : name,
+          caseInsensitive: spec.caseInsensitive ?? false,
+          ...mapOperator(spec),
+        }),
+      )
+    : [];
+
 export const parseOne = (json: any): Mapping =>
   ({
     priority: json.priority ?? 0,
     requestMatch: {
       ...parseUrl(json.request),
       method: json.request.method,
-      queryParameters:
-        json.request.queryParameters !== undefined
-          ? Object.entries(
-              json.request.queryParameters as Record<string, any>,
-            ).map(([name, spec]: [string, Record<string, any>]) => ({
-              name,
-              caseInsensitive: spec.caseInsensitive ?? false,
-              ...mapOperator(spec),
-            }))
-          : [],
+      queryParameters: parseAttributeSpecs(json.request.queryParameters),
+      headers: parseAttributeSpecs(json.request.headers, true),
     },
     responseDefinition: {
       status: json.response.status,

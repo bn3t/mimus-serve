@@ -1,5 +1,4 @@
-import axios from "axios";
-import { makeFullUrl } from "./test-utils";
+import { myaxios } from "./test-utils";
 
 describe("Query Params Test", () => {
   test.each([
@@ -21,7 +20,7 @@ describe("Query Params Test", () => {
     {
       testname: "get with query param matches case insensitive",
       url: "/query-params?search_term=anotherMock",
-      expected: "matches case insensitiveworks",
+      expected: "matches case insensitive works",
     },
     {
       testname: "get with query param contains",
@@ -49,15 +48,9 @@ describe("Query Params Test", () => {
       expected: "Not Found",
     },
   ])("should $testname", async ({ url, expected }) => {
-    if (expected !== "Not Found") {
-      const response = await axios.get(makeFullUrl(url));
-      expect(response).toBeDefined();
-      expect(response.status).toBe(200);
-      expect(response.data).toBe(expected);
-    } else {
-      expect(axios.get(makeFullUrl(url))).rejects.toThrow(
-        "Request failed with status code 404",
-      );
-    }
+    const response = await myaxios.get(url);
+    expect(response).toBeDefined();
+    expect(response.status).toBe(expected !== "Not Found" ? 200 : 404);
+    expect(response.data).toBe(expected);
   });
 });

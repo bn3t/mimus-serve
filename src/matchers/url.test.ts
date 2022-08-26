@@ -89,6 +89,7 @@ describe("Url Matching", () => {
         url,
         method: "ANY",
         queryParameters: [],
+        headers: [],
       },
       {
         url: httpUrl,

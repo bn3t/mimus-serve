@@ -16,6 +16,7 @@ const TEST_MAPPINGS: Mapping[] = [
       url: "/discard",
       method: "GET",
       queryParameters: [],
+      headers: [],
     },
     responseDefinition: {
       status: 200,
@@ -30,6 +31,7 @@ const TEST_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-02",
       method: "GET",
       queryParameters: [],
+      headers: [],
     },
     responseDefinition: {
       status: 200,
@@ -44,6 +46,7 @@ const TEST_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-01",
       method: "GET",
       queryParameters: [],
+      headers: [],
     },
     responseDefinition: {
       status: 200,
@@ -165,6 +168,14 @@ describe("Parse mapping", () => {
       name: "search_term",
       operator: "equalTo",
       value: "WireMock",
+    });
+    expect(actual.requestMatch.headers).toBeDefined();
+    expect(actual.requestMatch.headers.length).toBe(1);
+    expect(actual.requestMatch.headers[0]).toStrictEqual({
+      caseInsensitive: false,
+      name: "accept",
+      operator: "contains",
+      value: "xml",
     });
 
     expect(actual.responseDefinition).toBeDefined();

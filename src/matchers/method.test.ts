@@ -42,6 +42,7 @@ describe("Method", () => {
           urlType: UrlMatchType.Url,
           method: method as Method,
           queryParameters: [],
+          headers: [],
         },
         {
           method: httpMethod as Method,
