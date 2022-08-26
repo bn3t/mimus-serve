@@ -11,12 +11,12 @@ const start = async () => {
     } catch (error) {
       console.error("Error while processing request", error);
     }
-    res.end();
   });
   server.on("clientError", (err, socket) => {
     socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
   });
   server.listen(4000);
+  console.log("Server running at http://localhost:4000/");
 };
 
 start().catch(console.error);

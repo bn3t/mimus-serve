@@ -20,6 +20,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       statusMessage: "All is ok",
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 02",
+      fixedDelayMilliseconds: 0,
     },
   },
   {
@@ -36,6 +37,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       statusMessage: "All is ok",
       headers: [{ name: "Content-Type", value: "application/json" }],
       bodyFileName: "match 02",
+      fixedDelayMilliseconds: 0,
     },
   },
 ];
@@ -56,6 +58,7 @@ describe("Engine - case find mapping undefined", () => {
           cb(null),
         ),
       setHeader: jest.fn(),
+      end: jest.fn(),
     };
     // const serverResponse = jest.mock(ServerResponse);
     await processRequest(

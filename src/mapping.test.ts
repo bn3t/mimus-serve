@@ -22,6 +22,7 @@ const TEST_MAPPINGS: Mapping[] = [
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 01",
+      fixedDelayMilliseconds: 0,
     },
   },
   {
@@ -37,6 +38,7 @@ const TEST_MAPPINGS: Mapping[] = [
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 02",
+      fixedDelayMilliseconds: 0,
     },
   },
   {
@@ -52,6 +54,7 @@ const TEST_MAPPINGS: Mapping[] = [
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 01",
+      fixedDelayMilliseconds: 0,
     },
   },
 ];
@@ -70,12 +73,11 @@ describe("Find Mapping", () => {
 
   test.each([
     {
-      name: "find get mapping",
+      testname: "find get mapping",
       url: "/url-to-match-method-02",
       expectedBody: "match 02",
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ])(`should $name`, ({ name, url, expectedBody }) => {
+  ])(`should $testname`, ({ url, expectedBody }) => {
     const request: HttpRequest = {
       method: "GET",
       url,
@@ -147,6 +149,7 @@ const TEST_JSON_MAPPING_PARSE_ONE = {
       "Cache-Control": "no-cache",
     },
     body: "Text body",
+    fixedDelayMilliseconds: 123,
   },
 };
 
@@ -188,6 +191,7 @@ describe("Parse mapping", () => {
       { name: "Content-Type", value: "text/plain" },
       { name: "Cache-Control", value: "no-cache" },
     ]);
+    expect(actual.responseDefinition.fixedDelayMilliseconds).toBe(123);
   });
 
   test.each([
