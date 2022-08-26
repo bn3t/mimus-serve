@@ -100,6 +100,7 @@ export const parseOne = (json: any): Mapping =>
             value,
           }))
         : [],
+      fixedDelayMilliseconds: json.response.fixedDelayMilliseconds ?? 0,
     },
   } as Mapping);
 

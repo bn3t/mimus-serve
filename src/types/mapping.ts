@@ -46,6 +46,7 @@ export interface ResponseDefinition {
   headers: NameValuePair[];
   body?: string;
   bodyFileName?: string;
+  fixedDelayMilliseconds: number;
 }
 
 export interface Mapping {

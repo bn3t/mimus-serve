@@ -40,26 +40,38 @@ export const processRequest = async (
     mappedRequest,
   );
   if (mapping !== undefined) {
-    const responseDefinition = mapping.responseDefinition;
-    if (responseDefinition.status !== undefined) {
-      serverResponse.statusCode = responseDefinition.status;
-    }
+    const sendResponse = async () => {
+      const responseDefinition = mapping.responseDefinition;
+      if (responseDefinition.status !== undefined) {
+        serverResponse.statusCode = responseDefinition.status;
+      }
 
-    if (responseDefinition.statusMessage !== undefined) {
-      serverResponse.statusMessage = responseDefinition.statusMessage;
-    }
+      if (responseDefinition.statusMessage !== undefined) {
+        serverResponse.statusMessage = responseDefinition.statusMessage;
+      }
 
-    responseDefinition.headers.forEach((h) =>
-      serverResponse.setHeader(h.name, h.value ?? ""),
-    );
+      responseDefinition.headers.forEach((h) =>
+        serverResponse.setHeader(h.name, h.value ?? ""),
+      );
 
-    if (responseDefinition.body !== undefined) {
-      await writeResponse(mapping.responseDefinition.body);
-    } else if (responseDefinition.bodyFileName !== undefined) {
-      await writeResponse(await readFile(responseDefinition.bodyFileName));
+      if (responseDefinition.body !== undefined) {
+        await writeResponse(mapping.responseDefinition.body);
+      } else if (responseDefinition.bodyFileName !== undefined) {
+        await writeResponse(await readFile(responseDefinition.bodyFileName));
+      }
+      serverResponse.end();
+    };
+    if (mapping.responseDefinition.fixedDelayMilliseconds > 0) {
+      setTimeout(
+        sendResponse,
+        mapping.responseDefinition.fixedDelayMilliseconds,
+      );
+    } else {
+      sendResponse();
     }
   } else {
     serverResponse.statusCode = 500;
     await writeResponse("No mapping found for this request");
+    serverResponse.end();
   }
 };
