@@ -2,55 +2,55 @@
   "mappings": [
     {
       "request": {
-        "urlPath": "/query-params",
+        "urlPath": "/headers",
         "method": "GET",
-        "queryParameters": {
-          "search_term": {
+        "headers": {
+          "X-myheader": {
             "equalTo": "WireMock"
           }
         }
       },
       "response": {
         "status": 200,
-        "body": "equalTo works"
+        "body": "headers equalTo works"
       }
     },
     {
       "request": {
-        "urlPath": "/query-params",
+        "urlPath": "/headers",
         "method": "GET",
-        "queryParameters": {
-          "search_term": {
+        "headers": {
+          "X-myheader": {
             "matches": "^Dream.*"
           }
         }
       },
       "response": {
         "status": 200,
-        "body": "matches works"
+        "body": "headers matches works"
       }
     },
     {
       "request": {
-        "urlPath": "/query-params-for-does-not-match",
+        "urlPath": "/headers-for-does-not-match",
         "method": "GET",
-        "queryParameters": {
-          "search_term": {
+        "headers": {
+          "X-myheader": {
             "doesNotMatch": "^everything.*"
           }
         }
       },
       "response": {
         "status": 200,
-        "body": "Does not match works"
+        "body": "headers does not match works"
       }
     },
     {
       "request": {
-        "urlPath": "/query-params",
+        "urlPath": "/headers",
         "method": "GET",
-        "queryParameters": {
-          "search_term": {
+        "headers": {
+          "X-myheader": {
             "matches": "^Another.*",
             "caseInsensitive": true
           }
@@ -58,37 +58,37 @@
       },
       "response": {
         "status": 200,
-        "body": "matches case insensitive works"
+        "body": "headers matches case insensitive works"
       }
     },
     {
       "request": {
-        "urlPath": "/query-params",
+        "urlPath": "/headers",
         "method": "GET",
-        "queryParameters": {
-          "search_term": {
+        "headers": {
+          "X-myheader": {
             "contains": "word"
           }
         }
       },
       "response": {
         "status": 200,
-        "body": "contains works"
+        "body": "headers contains works"
       }
     },
     {
       "request": {
-        "urlPath": "/query-params-for-absent",
+        "urlPath": "/headers-for-absent",
         "method": "GET",
-        "queryParameters": {
-          "search_term": {
+        "headers": {
+          "X-myheader": {
             "absent": true
           }
         }
       },
       "response": {
         "status": 200,
-        "body": "absent works"
+        "body": "headers absent works"
       }
     }
   ]

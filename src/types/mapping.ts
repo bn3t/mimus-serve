@@ -25,7 +25,7 @@ export type OperatorType =
   | "doesNotMatch"
   | "absent";
 
-export interface QueryParameterSpec {
+export interface MatchAttributeSpec {
   operator: OperatorType;
   caseInsensitive: boolean;
   name: string;
@@ -36,7 +36,8 @@ export interface RequestMatch {
   urlType: UrlMatchType;
   url?: string;
   method: Method | "ANY";
-  queryParameters: QueryParameterSpec[];
+  queryParameters: MatchAttributeSpec[];
+  headers: MatchAttributeSpec[];
 }
 
 export interface ResponseDefinition {

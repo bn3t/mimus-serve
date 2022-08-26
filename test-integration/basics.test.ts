@@ -1,16 +1,15 @@
-import axios from "axios";
-import { makeFullUrl } from "./test-utils";
+import { myaxios } from "./test-utils";
 
 describe("Basic Get Tests", () => {
-  test("should return 404 on not existing url", () => {
-    expect(axios.get(makeFullUrl("/not-exist"))).rejects.toThrow(
-      "Request failed with status code 404",
-    );
+  test("should return 404 on not existing url", async () => {
+    const response = await myaxios.get("/ot-exist");
+    expect(response).toBeDefined();
+    expect(response.status).toBe(404);
+    expect(response.statusText).toBe("Handled but not found");
   });
 
   test("should return 200 on / head", async () => {
-    const response = await axios.head(makeFullUrl("/"));
-
+    const response = await myaxios.head("/");
     expect(response).toBeDefined();
     expect(response.status).toBe(200);
   });
@@ -42,7 +41,7 @@ describe("Basic Get Tests", () => {
       expected: "Get from url path pattern",
     },
   ])("should $name", async ({ url, expected }) => {
-    const response = await axios.get(makeFullUrl(url));
+    const response = await myaxios.get(url);
 
     expect(response).toBeDefined();
     expect(response.status).toBe(200);

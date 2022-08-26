@@ -13,6 +13,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-02",
       method: "GET",
       queryParameters: [],
+      headers: [],
     },
 
     responseDefinition: {
@@ -29,6 +30,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-02",
       method: "GET",
       queryParameters: [],
+      headers: [],
     },
 
     responseDefinition: {

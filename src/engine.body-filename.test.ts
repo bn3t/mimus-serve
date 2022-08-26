@@ -13,6 +13,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-02",
       method: "GET",
       queryParameters: [],
+      headers: [],
     },
     responseDefinition: {
       status: 200,
@@ -28,6 +29,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-02",
       method: "GET",
       queryParameters: [],
+      headers: [],
     },
     responseDefinition: {
       status: 200,

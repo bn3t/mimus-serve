@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { promisify } from "util";
 import { findMapping } from "./mapping";
+import { HeadersMatcher } from "./matchers/headers";
 import { MethodMatcher } from "./matchers/method";
 import { QueryParametersMatcher } from "./matchers/query-params";
 import { UrlMatcher } from "./matchers/url";
@@ -11,6 +12,7 @@ const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new UrlMatcher(),
   new MethodMatcher(),
   new QueryParametersMatcher(),
+  new HeadersMatcher(),
 ];
 
 export const processRequest = async (
