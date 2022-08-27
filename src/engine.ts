@@ -1,6 +1,7 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 import { promisify } from "util";
 import { findMapping } from "./mapping";
+import { BodyPatternsMatcher } from "./matchers/body-patterns";
 import { HeadersMatcher } from "./matchers/headers";
 import { MethodMatcher } from "./matchers/method";
 import { QueryParametersMatcher } from "./matchers/query-params";
@@ -13,12 +14,14 @@ const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new MethodMatcher(),
   new QueryParametersMatcher(),
   new HeadersMatcher(),
+  new BodyPatternsMatcher(),
 ];
 
 export const processRequest = async (
   mappings: Mapping[],
   incomingMessage: IncomingMessage,
   serverResponse: ServerResponse,
+  body: any,
 ) => {
   const writeResponse = promisify<unknown, void>(
     serverResponse.write.bind(serverResponse),
@@ -33,6 +36,7 @@ export const processRequest = async (
     method: incomingMessage.method as Method,
     url: incomingMessage.url ?? "",
     headers,
+    body: body,
   };
   const mapping = findMapping(
     DEFAULT_REQUEST_MATCHERS,

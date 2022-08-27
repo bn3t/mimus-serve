@@ -1,5 +1,5 @@
 import { MatchAttributeSpec, MatchResult } from "../types";
-import { matchRegexp } from "../utils/strings";
+import { matchJson, matchRegexp } from "../utils/strings";
 
 const verifyAttributeSpec = (
   matchAttributeSpec: MatchAttributeSpec,
@@ -27,6 +27,8 @@ const verifyAttributeSpec = (
       return searchParamValue.includes(queryParameterValue);
     case "absent":
       return false;
+    case "equalToJson":
+      return matchJson(queryParameterValue, searchParamValue);
     default:
       throw new Error("Unsupported operator " + matchAttributeSpec.operator);
   }

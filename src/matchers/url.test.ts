@@ -90,11 +90,13 @@ describe("Url Matching", () => {
         method: "ANY",
         queryParameters: [],
         headers: [],
+        bodyPatterns: [],
       },
       {
         url: httpUrl,
         method: "GET",
         headers: [],
+        body: "",
       },
     );
     expect(actual).toBe(expectedResult);

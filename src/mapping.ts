@@ -69,14 +69,18 @@ const mapOperator = (spec: Record<string, any>) => {
 const parseAttributeSpecs = (
   specs: Record<string, any> | undefined,
   lowerCaseName = false,
+  forceName: string | undefined = undefined,
 ) =>
   specs !== undefined
     ? Object.entries(specs as Record<string, any>).map(
-        ([name, spec]: [string, Record<string, any>]) => ({
-          name: lowerCaseName ? name.toLowerCase() : name,
-          caseInsensitive: spec.caseInsensitive ?? false,
-          ...mapOperator(spec),
-        }),
+        ([name, spec]: [string, Record<string, any>]) => {
+          const usedName = forceName !== undefined ? forceName : name;
+          return {
+            name: lowerCaseName ? usedName.toLowerCase() : usedName,
+            caseInsensitive: spec.caseInsensitive ?? false,
+            ...mapOperator(spec),
+          };
+        },
       )
     : [];
 
@@ -88,6 +92,11 @@ export const parseOne = (json: any): Mapping =>
       method: json.request.method,
       queryParameters: parseAttributeSpecs(json.request.queryParameters),
       headers: parseAttributeSpecs(json.request.headers, true),
+      bodyPatterns: parseAttributeSpecs(
+        json.request.bodyPatterns,
+        false,
+        "body",
+      ),
     },
     responseDefinition: {
       status: json.response.status,

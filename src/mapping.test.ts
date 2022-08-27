@@ -17,6 +17,7 @@ const TEST_MAPPINGS: Mapping[] = [
       method: "GET",
       queryParameters: [],
       headers: [],
+      bodyPatterns: [],
     },
     responseDefinition: {
       status: 200,
@@ -33,6 +34,7 @@ const TEST_MAPPINGS: Mapping[] = [
       method: "GET",
       queryParameters: [],
       headers: [],
+      bodyPatterns: [],
     },
     responseDefinition: {
       status: 200,
@@ -49,6 +51,7 @@ const TEST_MAPPINGS: Mapping[] = [
       method: "GET",
       queryParameters: [],
       headers: [],
+      bodyPatterns: [],
     },
     responseDefinition: {
       status: 200,
@@ -82,6 +85,7 @@ describe("Find Mapping", () => {
       method: "GET",
       url,
       headers: [],
+      body: "",
     };
     const actual = findMapping([new TestMatcher()], TEST_MAPPINGS, request);
 

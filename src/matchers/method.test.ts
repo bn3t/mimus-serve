@@ -43,11 +43,13 @@ describe("Method", () => {
           method: method as Method,
           queryParameters: [],
           headers: [],
+          bodyPatterns: [],
         },
         {
           method: httpMethod as Method,
           url: "",
           headers: [],
+          body: "",
         },
       ),
     ).toBe(expectedResult);

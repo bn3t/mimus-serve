@@ -25,6 +25,15 @@
   },
   "author": "You",
   "license": "MIT",
+  "dependencies": {
+    "command-line-args": "^5.2.1",
+    "command-line-usage": "^6.1.3",
+    "dotenv": "^16.0.1",
+    "fastify": "^4.5.3",
+    "jsonfile": "^6.1.0",
+    "ramda": "^0.28.0",
+    "recursive-readdir": "^2.2.2"
+  },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.18.10",
@@ -68,14 +77,5 @@
       "text-summary",
       "cobertura"
     ]
-  },
-  "dependencies": {
-    "command-line-args": "^5.2.1",
-    "command-line-usage": "^6.1.3",
-    "dotenv": "^16.0.1",
-    "fastify": "^4.5.3",
-    "jsonfile": "^6.1.0",
-    "ramda": "^0.28.0",
-    "recursive-readdir": "^2.2.2"
   }
 }

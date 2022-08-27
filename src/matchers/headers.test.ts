@@ -24,6 +24,7 @@ describe("Headers Matcher", () => {
         urlType: UrlMatchType.Path,
         queryParameters: [],
         headers,
+        bodyPatterns: [],
       },
       {
         url: "https://example.org/?a=b&c=d",
@@ -34,6 +35,7 @@ describe("Headers Matcher", () => {
             value: "testvalue",
           },
         ],
+        body: "",
       },
     );
     expect(matchAttributeSpecs).toHaveBeenCalledTimes(1);

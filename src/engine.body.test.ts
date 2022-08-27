@@ -14,6 +14,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       method: "GET",
       queryParameters: [],
       headers: [],
+      bodyPatterns: [],
     },
 
     responseDefinition: {
@@ -32,6 +33,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       method: "GET",
       queryParameters: [],
       headers: [],
+      bodyPatterns: [],
     },
 
     responseDefinition: {
@@ -68,6 +70,7 @@ describe("Engine - case find mapping body", () => {
       //@ts-ignore
       { url: "blah", headers: [] },
       serverResponse,
+      "",
     );
     expect(findMapping).toHaveBeenCalledTimes(1);
   });
