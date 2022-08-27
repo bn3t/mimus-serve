@@ -160,6 +160,24 @@ describe("Match Attribute Specs", () => {
       value: "",
       expected: MatchResult.NoMatch,
     },
+    {
+      testname: "match equal to json",
+      actualParams: [["body", '{"a":1}']] as [string, string][],
+      operator: "equalToJson" as OperatorType,
+      caseInsensitive: false,
+      name: "body",
+      value: '{"a":   1}',
+      expected: MatchResult.Match,
+    },
+    {
+      testname: "not match equal to json",
+      actualParams: [["body", '{"a":1}']] as [string, string][],
+      operator: "equalToJson" as OperatorType,
+      caseInsensitive: false,
+      name: "body",
+      value: '{"a":2}',
+      expected: MatchResult.NoMatch,
+    },
   ])(
     "should $testname",
     ({ operator, caseInsensitive, name, value, expected, actualParams }) => {

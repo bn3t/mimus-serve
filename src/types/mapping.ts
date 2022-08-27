@@ -23,7 +23,8 @@ export type OperatorType =
   | "matches"
   | "contains"
   | "doesNotMatch"
-  | "absent";
+  | "absent"
+  | "equalToJson";
 
 export interface MatchAttributeSpec {
   operator: OperatorType;
@@ -38,6 +39,7 @@ export interface RequestMatch {
   method: Method | "ANY";
   queryParameters: MatchAttributeSpec[];
   headers: MatchAttributeSpec[];
+  bodyPatterns: MatchAttributeSpec[];
 }
 
 export interface ResponseDefinition {

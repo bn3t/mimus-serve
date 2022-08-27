@@ -1,17 +1,17 @@
 import { UrlMatchType, MatchAttributeSpec } from "../types";
-import { QueryParametersMatcher } from "./query-params";
 
 import { matchAttributeSpecs } from "./match-attribute";
+import { BodyPatternsMatcher } from "./body-patterns";
 
 jest.mock("./match-attribute");
 
-describe("Query Parameters", () => {
-  test("should $testname", () => {
-    const matcher = new QueryParametersMatcher();
+describe("Body Patterns", () => {
+  test("should match body patterns", () => {
+    const matcher = new BodyPatternsMatcher();
 
-    const queryParameters = [
+    const bodyPatterns = [
       {
-        name: "test",
+        name: "body",
         operator: "equalTo",
         value: "testvalue",
         caseInsensitive: false,
@@ -22,20 +22,20 @@ describe("Query Parameters", () => {
         method: "GET",
         url: "blah",
         urlType: UrlMatchType.Path,
-        queryParameters,
+        queryParameters: [],
         headers: [],
-        bodyPatterns: [],
+        bodyPatterns,
       },
       {
         url: "https://example.org/?a=b&c=d",
         method: "DELETE",
         headers: [],
-        body: "",
+        body: "testvalue",
       },
     );
     expect(matchAttributeSpecs).toHaveBeenCalledTimes(1);
     expect(matchAttributeSpecs).toHaveBeenCalledWith(
-      queryParameters,
+      bodyPatterns,
       expect.anything(),
     );
   });

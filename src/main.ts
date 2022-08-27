@@ -87,15 +87,34 @@ if (options === undefined || options["help"]) {
       fastify({
         logger,
       });
+    server.addContentTypeParser(
+      ["application/json", "application/x-www-form-urlencoded"],
+      { parseAs: "string" },
+      function (req, body, done) {
+        try {
+          done(null, body);
+        } catch (err) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          err.statusCode = 400;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          done(err, undefined);
+        }
+      },
+    );
     server.get("/__admin", async (request, reply) => {
-      // await processRequest(configuration.mappings, request, reply);
       reply.send("Admin routes");
     });
     server.all("/*", async (request, reply) => {
-      // await processRequest(configuration.mappings, request, reply);
-      // reply.send("All routes");
       reply.hijack();
-      await processRequest(configuration.mappings, request.raw, reply.raw);
+      console.log("BODY", request.body);
+      await processRequest(
+        configuration.mappings,
+        request.raw,
+        reply.raw,
+        request.body,
+      );
     });
     try {
       const host = options?.host !== undefined ? { host: options.host } : {};
