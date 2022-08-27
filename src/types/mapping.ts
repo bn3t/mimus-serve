@@ -24,7 +24,8 @@ export type OperatorType =
   | "contains"
   | "doesNotMatch"
   | "absent"
-  | "equalToJson";
+  | "equalToJson"
+  | "matchesJsonPath";
 
 export interface MatchAttributeSpec {
   operator: OperatorType;

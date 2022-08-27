@@ -178,6 +178,24 @@ describe("Match Attribute Specs", () => {
       value: '{"a":2}',
       expected: MatchResult.NoMatch,
     },
+    {
+      testname: "match json path",
+      actualParams: [["body", '{"a":1}']] as [string, string][],
+      operator: "matchesJsonPath" as OperatorType,
+      caseInsensitive: false,
+      name: "body",
+      value: "$.a",
+      expected: MatchResult.Match,
+    },
+    {
+      testname: "not match json path",
+      actualParams: [["body", '{"a":1}']] as [string, string][],
+      operator: "equalToJson" as OperatorType,
+      caseInsensitive: false,
+      name: "body",
+      value: "$.b",
+      expected: MatchResult.NoMatch,
+    },
   ])(
     "should $testname",
     ({ operator, caseInsensitive, name, value, expected, actualParams }) => {
