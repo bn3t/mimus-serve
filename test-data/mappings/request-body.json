@@ -29,6 +29,21 @@
         "status": 200,
         "body": "Request body patterns equalTo works test=value"
       }
+    },
+    {
+      "request": {
+        "urlPath": "/request-body",
+        "method": "POST",
+        "bodyPatterns": [
+          {
+            "equalToJson": "{\"a\":1}"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "body": "Request body patterns equalToJson works"
+      }
     }
   ]
 }

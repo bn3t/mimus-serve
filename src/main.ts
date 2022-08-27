@@ -108,7 +108,6 @@ if (options === undefined || options["help"]) {
     });
     server.all("/*", async (request, reply) => {
       reply.hijack();
-      console.log("BODY", request.body);
       await processRequest(
         configuration.mappings,
         request.raw,
