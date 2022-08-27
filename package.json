@@ -31,6 +31,7 @@
     "dotenv": "^16.0.1",
     "fastify": "^4.5.3",
     "jsonfile": "^6.1.0",
+    "jsonpath-plus": "^7.1.0",
     "ramda": "^0.28.0",
     "recursive-readdir": "^2.2.2"
   },

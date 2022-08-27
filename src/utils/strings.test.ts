@@ -1,4 +1,4 @@
-import { matchJson, matchRegexp } from "./strings";
+import { matchJson, matchJsonPath, matchRegexp } from "./strings";
 
 describe("Strings", () => {
   test.each([
@@ -22,5 +22,23 @@ describe("Strings", () => {
   test("should not match json if different", () => {
     const actual = matchJson('{"a":1}', '{"a":2}');
     expect(actual).toBe(false);
+  });
+
+  test.each([
+    {
+      testname: "match jsonpath",
+      value: '{"a":1}',
+      path: "$.a",
+      expected: true,
+    },
+    {
+      testname: "not match jsonpath",
+      value: '{"a":1}',
+      path: "$.b",
+      expected: false,
+    },
+  ])("should $testname", ({ value, path, expected }) => {
+    const actual = matchJsonPath(path, value);
+    expect(actual).toBe(expected);
   });
 });

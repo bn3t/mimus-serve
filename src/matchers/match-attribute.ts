@@ -1,5 +1,5 @@
 import { MatchAttributeSpec, MatchResult } from "../types";
-import { matchJson, matchRegexp } from "../utils/strings";
+import { matchJson, matchJsonPath, matchRegexp } from "../utils/strings";
 
 const verifyAttributeSpec = (
   matchAttributeSpec: MatchAttributeSpec,
@@ -11,24 +11,26 @@ const verifyAttributeSpec = (
   const queryParameterValue = matchAttributeSpec.caseInsensitive
     ? matchAttributeSpec.value.toLowerCase()
     : matchAttributeSpec.value;
-  let searchParamValue =
+  let actualParamValue =
     actualParams.get(matchAttributeSpec.name) ?? "####invalid";
-  searchParamValue = matchAttributeSpec.caseInsensitive
-    ? searchParamValue.toLowerCase()
-    : searchParamValue;
+  actualParamValue = matchAttributeSpec.caseInsensitive
+    ? actualParamValue.toLowerCase()
+    : actualParamValue;
   switch (matchAttributeSpec.operator) {
     case "equalTo":
-      return queryParameterValue === searchParamValue;
+      return queryParameterValue === actualParamValue;
     case "matches":
-      return matchRegexp(queryParameterValue, searchParamValue);
+      return matchRegexp(queryParameterValue, actualParamValue);
     case "doesNotMatch":
-      return !matchRegexp(queryParameterValue, searchParamValue);
+      return !matchRegexp(queryParameterValue, actualParamValue);
     case "contains":
-      return searchParamValue.includes(queryParameterValue);
+      return actualParamValue.includes(queryParameterValue);
     case "absent":
       return false;
     case "equalToJson":
-      return matchJson(queryParameterValue, searchParamValue);
+      return matchJson(queryParameterValue, actualParamValue);
+    case "matchesJsonPath":
+      return matchJsonPath(queryParameterValue, actualParamValue);
     default:
       throw new Error("Unsupported operator " + matchAttributeSpec.operator);
   }

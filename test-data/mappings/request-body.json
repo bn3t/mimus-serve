@@ -44,6 +44,21 @@
         "status": 200,
         "body": "Request body patterns equalToJson works"
       }
+    },
+    {
+      "request": {
+        "urlPath": "/request-body",
+        "method": "POST",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$.name"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "body": "Request body patterns match json path works"
+      }
     }
   ]
 }

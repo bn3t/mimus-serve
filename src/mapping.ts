@@ -55,6 +55,7 @@ const mapOperator = (spec: Record<string, any>) => {
       "doesNotMatch",
       "absent",
       "equalToJson",
+      "matchesJsonPath",
     ]),
   );
   if (operator === undefined) {
