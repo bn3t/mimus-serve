@@ -4,6 +4,7 @@ import { processRequest } from "./engine";
 import { Mapping, UrlMatchType } from "./types";
 
 import { findMapping } from "./mapping";
+import { buildRequestModel } from "./utils/request";
 
 const MOCK_MAPPINGS: Mapping[] = [
   {
@@ -23,6 +24,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 02",
       fixedDelayMilliseconds: 0,
+      transform: false,
     },
   },
   {
@@ -42,9 +44,14 @@ const MOCK_MAPPINGS: Mapping[] = [
       headers: [{ name: "Content-Type", value: "application/json" }],
       bodyFileName: "match 02",
       fixedDelayMilliseconds: 0,
+      transform: false,
     },
   },
 ];
+
+jest.mock("./utils/request", () => ({
+  buildRequestModel: jest.fn().mockImplementation(() => ({})),
+}));
 
 jest.mock("./mapping", () => ({
   findMapping: jest.fn().mockImplementation(() => MOCK_MAPPINGS[0]),
@@ -68,10 +75,12 @@ describe("Engine - case find mapping body", () => {
     await processRequest(
       MOCK_MAPPINGS,
       //@ts-ignore
-      { url: "blah", headers: [] },
+      { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
       serverResponse,
       "",
+      false,
     );
     expect(findMapping).toHaveBeenCalledTimes(1);
+    expect(buildRequestModel).toHaveBeenCalledTimes(1);
   });
 });

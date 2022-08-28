@@ -1,6 +1,8 @@
 import { IncomingMessage, ServerResponse } from "node:http";
+import { Context } from "node:vm";
+
 import { promisify } from "util";
-import { findMapping } from "./mapping";
+import { findMapping, transformResponseDefinition } from "./mapping";
 import { BodyPatternsMatcher } from "./matchers/body-patterns";
 import { HeadersMatcher } from "./matchers/headers";
 import { MethodMatcher } from "./matchers/method";
@@ -8,6 +10,7 @@ import { QueryParametersMatcher } from "./matchers/query-params";
 import { UrlMatcher } from "./matchers/url";
 import { HttpRequest, Mapping, Method, RequestMatcher } from "./types";
 import { readFile } from "./utils/files";
+import { buildRequestModel } from "./utils/request";
 
 const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new UrlMatcher(),
@@ -22,6 +25,7 @@ export const processRequest = async (
   incomingMessage: IncomingMessage,
   serverResponse: ServerResponse,
   body: any,
+  isHttps: boolean,
 ) => {
   const writeResponse = promisify<unknown, void>(
     serverResponse.write.bind(serverResponse),
@@ -38,14 +42,25 @@ export const processRequest = async (
     headers,
     body: body,
   };
+  const requestModel = buildRequestModel(
+    incomingMessage,
+    headers,
+    body,
+    isHttps,
+  );
   const mapping = findMapping(
     DEFAULT_REQUEST_MATCHERS,
     mappings,
     mappedRequest,
   );
   if (mapping !== undefined) {
+    const context: Context = {
+      request: requestModel,
+    };
+    const responseDefinition = mapping.responseDefinition.transform
+      ? transformResponseDefinition(mapping.responseDefinition, context)
+      : mapping.responseDefinition;
     const sendResponse = async () => {
-      const responseDefinition = mapping.responseDefinition;
       if (responseDefinition.status !== undefined) {
         serverResponse.statusCode = responseDefinition.status;
       }
@@ -59,17 +74,14 @@ export const processRequest = async (
       );
 
       if (responseDefinition.body !== undefined) {
-        await writeResponse(mapping.responseDefinition.body);
+        await writeResponse(responseDefinition.body);
       } else if (responseDefinition.bodyFileName !== undefined) {
         await writeResponse(await readFile(responseDefinition.bodyFileName));
       }
       serverResponse.end();
     };
-    if (mapping.responseDefinition.fixedDelayMilliseconds > 0) {
-      setTimeout(
-        sendResponse,
-        mapping.responseDefinition.fixedDelayMilliseconds,
-      );
+    if (responseDefinition.fixedDelayMilliseconds > 0) {
+      setTimeout(sendResponse, responseDefinition.fixedDelayMilliseconds);
     } else {
       sendResponse();
     }

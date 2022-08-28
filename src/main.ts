@@ -58,12 +58,12 @@ try {
   options = commandLineArgs(optionDefinitions) as Options;
 } catch (error) {
   // ignore
-  console.log("Unrecognised option");
+  console.error("Unrecognised option");
 }
 
 if (options === undefined || options["help"]) {
   const usage = commandLineUsage(optionUsage);
-  console.log(usage);
+  console.error(usage);
 } else {
   const logger =
     options?.logger !== undefined
@@ -107,12 +107,14 @@ if (options === undefined || options["help"]) {
       reply.send("Admin routes");
     });
     server.all("/*", async (request, reply) => {
+      const isHttps = server.initialConfig.https === true;
       reply.hijack();
       await processRequest(
         configuration.mappings,
         request.raw,
         reply.raw,
         request.body,
+        isHttps,
       );
     });
     try {
@@ -120,7 +122,8 @@ if (options === undefined || options["help"]) {
       await server
         .listen({ port: options?.port ?? 4000, ...host })
         .then(
-          (address) => !logger && console.log(`server listening on ${address}`),
+          (address) =>
+            !logger && console.info(`server listening on ${address}`),
         );
     } catch (err) {
       server.log.error(err);

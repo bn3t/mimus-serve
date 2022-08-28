@@ -59,6 +59,25 @@
         "status": 200,
         "body": "Request body patterns match json path works"
       }
+    },
+    {
+      "request": {
+        "urlPath": "/request-body/templated",
+        "method": "GET"
+      },
+      "response": {
+        "body": "transformed: {{request.pathSegments.[1]}}",
+        "transformers": ["response-template"]
+      }
+    },
+    {
+      "request": {
+        "urlPath": "/request-body/not-templated",
+        "method": "GET"
+      },
+      "response": {
+        "body": "{{request.path.[0]}}"
+      }
     }
   ]
 }

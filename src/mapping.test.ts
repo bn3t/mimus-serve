@@ -1,4 +1,10 @@
-import { findMapping, parseOne, parseUrl } from "./mapping";
+import {
+  findMapping,
+  loadMappings,
+  parseOne,
+  parseUrl,
+  transformResponseDefinition,
+} from "./mapping";
 import {
   Mapping,
   UrlMatchType,
@@ -7,6 +13,8 @@ import {
   HttpRequest,
   MatchResult,
 } from "./types";
+import { processTemplate } from "./utils/templating";
+import { listFilesInDir, readJsonFile } from "./utils/files";
 
 const TEST_MAPPINGS: Mapping[] = [
   {
@@ -24,6 +32,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 01",
       fixedDelayMilliseconds: 0,
+      transform: false,
     },
   },
   {
@@ -41,6 +50,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 02",
       fixedDelayMilliseconds: 0,
+      transform: false,
     },
   },
   {
@@ -58,6 +68,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [{ name: "Content-Type", value: "application/json" }],
       body: "match 01",
       fixedDelayMilliseconds: 0,
+      transform: false,
     },
   },
 ];
@@ -244,5 +255,101 @@ describe("Parse mapping", () => {
     expect(actual).toBeDefined();
     expect(actual?.url).toBe(expected.url);
     expect(actual?.urlType).toBe(expected.urlType);
+  });
+});
+
+jest.mock("./utils/templating", () => ({
+  processTemplate: jest
+    .fn()
+    .mockImplementation((template: string, _data: any) => {
+      return template === "{{template}}" ? "transformed" : template;
+    }),
+}));
+
+describe("Transform Response Definition", () => {
+  test("should transform a response definition by calling processTemplate", () => {
+    const responseDefinition = {
+      body: "{{template}}",
+      bodyFileName: "template.txt",
+      headers: [
+        { name: "Content-Type", value: "text/plain" },
+        {
+          name: "X-multiple-headers",
+          value: ["{{template}}", "not-a-template"],
+        },
+      ],
+      status: 200,
+      statusMessage: "Everything was just fine!",
+      fixedDelayMilliseconds: 123,
+      transform: false,
+    };
+    const data = { template: "transformed" };
+
+    const actual = transformResponseDefinition(responseDefinition, data);
+
+    expect(actual).toBeDefined();
+    expect(actual.body).toBe("transformed");
+    expect(actual.bodyFileName).toBe("template.txt");
+    expect(actual.headers).toStrictEqual([
+      { name: "Content-Type", value: "text/plain" },
+      {
+        name: "X-multiple-headers",
+        value: ["transformed", "not-a-template"],
+      },
+    ]);
+    expect(actual.status).toBe(200);
+    expect(actual.statusMessage).toBe("Everything was just fine!");
+    expect(processTemplate).toHaveBeenCalledTimes(6);
+  });
+});
+
+// mock listFilesInDir to return an empty array
+jest.mock("./utils/files", () => ({
+  listFilesInDir: jest.fn().mockImplementation((dir: string) => {
+    if (dir !== "a-dir") {
+      throw new Error("Unexpected dir: " + dir);
+    }
+    return ["a-file.json"];
+  }),
+  // mock readJsonFile to return a mock response definition
+  readJsonFile: jest.fn().mockImplementation((file: string) => {
+    if (file !== "a-file.json") {
+      throw new Error("Unexpected file");
+    }
+
+    return {
+      priority: 1000,
+      request: {
+        urlPathPattern: "/.*",
+        method: "ANY",
+      },
+      response: {
+        status: 404,
+        statusMessage: "Handled but not found",
+        body: "Not Found",
+      },
+    };
+  }) as any,
+}));
+
+describe("Load Mappings", () => {
+  test("should load mappings", async () => {
+    const actual = await loadMappings("a-dir");
+
+    expect(actual).toBeDefined();
+    expect(actual.length).toBe(1);
+    expect(actual[0].priority).toBe(1000);
+    expect(actual[0].requestMatch).toBeDefined();
+    expect(actual[0].requestMatch.url).toBe("/.*");
+    expect(actual[0].requestMatch.urlType).toBe(UrlMatchType.PathPattern);
+    expect(actual[0].requestMatch.method).toBe("ANY");
+    expect(actual[0].responseDefinition).toBeDefined();
+    expect(actual[0].responseDefinition.status).toBe(404);
+    expect(actual[0].responseDefinition.statusMessage).toBe(
+      "Handled but not found",
+    );
+    expect(actual[0].responseDefinition.body).toBe("Not Found");
+    expect(listFilesInDir).toHaveBeenCalledTimes(1);
+    expect(readJsonFile).toHaveBeenCalledTimes(1);
   });
 });

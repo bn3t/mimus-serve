@@ -12,4 +12,21 @@ describe("Response Definition specifics", () => {
       1,
     );
   });
+
+  test.each([
+    {
+      testname: "transform templated response definitions",
+      url: "/request-body/templated",
+      expected: "transformed: templated",
+    },
+    {
+      testname: "transform templated response definitions",
+      url: "/request-body/not-templated",
+      expected: "{{request.path.[0]}}",
+    },
+  ])("should $testname", async ({ url, expected }) => {
+    const actual = await myaxios.get(url);
+    expect(actual.status).toBe(200);
+    expect(actual.data).toBe(expected);
+  });
 });
