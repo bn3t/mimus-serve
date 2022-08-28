@@ -34,7 +34,8 @@
     "jsonfile": "^6.1.0",
     "jsonpath-plus": "^7.1.0",
     "ramda": "^0.28.0",
-    "recursive-readdir": "^2.2.2"
+    "recursive-readdir": "^2.2.2",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
@@ -44,6 +45,7 @@
     "@babel/plugin-transform-runtime": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
     "@babel/preset-typescript": "^7.18.6",
+    "@fastify/swagger": "^7.4.1",
     "@types/command-line-args": "^5.2.0",
     "@types/command-line-usage": "^5.0.2",
     "@types/jest": "^28.1.6",
@@ -51,6 +53,7 @@
     "@types/node": "^18.7.8",
     "@types/ramda": "^0.28.15",
     "@types/recursive-readdir": "^2.2.1",
+    "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "axios": "^0.27.2",

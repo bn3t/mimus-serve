@@ -12,6 +12,8 @@ export const readJsonFile = async (path: string) =>
   await jsonfile.readFile(path);
 
 export const listFilesInDir = async (directory: string, pattern: string[]) =>
-  recursive(directory, [
-    (file: string) => !pattern.includes(path.extname(file)),
-  ]);
+  (
+    await recursive(directory, [
+      (file: string) => !pattern.includes(path.extname(file)),
+    ])
+  ).sort();
