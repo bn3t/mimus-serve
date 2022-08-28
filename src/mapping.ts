@@ -1,13 +1,17 @@
+import { Context } from "node:vm";
 import { intersection, head } from "ramda";
 import {
   Configuration,
   HttpRequest,
   Mapping,
   MatchResult,
+  NameValuePair,
   RequestMatcher,
+  ResponseDefinition,
   UrlMatchType,
 } from "./types";
 import { listFilesInDir, readJsonFile } from "./utils/files";
+import { processTemplate } from "./utils/templating";
 
 export const findMapping = (
   requestMatchers: RequestMatcher[],
@@ -112,6 +116,7 @@ export const parseOne = (json: any): Mapping =>
           }))
         : [],
       fixedDelayMilliseconds: json.response.fixedDelayMilliseconds ?? 0,
+      transform: json.response.transformers !== undefined,
     },
   } as Mapping);
 
@@ -137,4 +142,39 @@ export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
 export const loadConfiguration = async (): Promise<Configuration> => {
   const mappings = await loadMappings("./test-data/mappings");
   return { mappings };
+};
+
+// process response definition heders through templating
+export const transformHeaders = (
+  headers: NameValuePair[],
+  context: Context,
+) => {
+  return headers
+    .map((header) => {
+      const { name, value } = header;
+      let newValue: string | string[] | undefined;
+
+      if (Array.isArray(value)) {
+        newValue = value.map((v) => processTemplate(v, context) as string);
+      } else {
+        newValue = processTemplate(value, context);
+      }
+
+      return { name, value: newValue };
+    })
+    .filter((header) => header.value !== undefined);
+};
+
+// trnasform a mapping repsonse definition with processTemplate
+export const transformResponseDefinition = (
+  responseDefinition: ResponseDefinition,
+  context: Context,
+): ResponseDefinition => {
+  return {
+    ...responseDefinition,
+    statusMessage: processTemplate(responseDefinition.statusMessage, context),
+    body: processTemplate(responseDefinition.body, context),
+    headers: transformHeaders(responseDefinition.headers, context),
+    bodyFileName: processTemplate(responseDefinition.bodyFileName, context),
+  };
 };

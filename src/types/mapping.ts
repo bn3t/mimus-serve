@@ -50,6 +50,7 @@ export interface ResponseDefinition {
   body?: string;
   bodyFileName?: string;
   fixedDelayMilliseconds: number;
+  transform: boolean;
 }
 
 export interface Mapping {
