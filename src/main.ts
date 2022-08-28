@@ -1,3 +1,4 @@
+import path from "path";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import "dotenv/config";
@@ -8,12 +9,15 @@ import { MockRoutes } from "./core/mock-routes";
 import { AdminRoutes } from "./admin/admin-routes";
 
 const environment = process.env.NODE_ENV ?? "production";
+const currentDirectory = process.cwd();
 
 type Options = {
   help?: boolean;
   port?: number;
   host?: string;
   logger?: string;
+  files: string;
+  mappings: string;
 };
 
 const optionDefinitions = [
@@ -41,6 +45,18 @@ const optionDefinitions = [
     description: "Specify the logger to use.",
     type: String,
   },
+  {
+    name: "files",
+    alias: "f",
+    description: "Specify the path where files are located (from bodyFileName)",
+    type: String,
+  },
+  {
+    name: "mappings",
+    alias: "m",
+    description: "Specify the path mappings are located",
+    type: String,
+  },
 ];
 
 const optionUsage = [
@@ -62,10 +78,13 @@ try {
   console.error("Unrecognised option");
 }
 
-if (options === undefined || options["help"]) {
-  const usage = commandLineUsage(optionUsage);
-  console.error(usage);
-} else {
+if (options !== undefined) {
+  options.files = path.resolve(path.normalize(currentDirectory), options.files);
+  options.mappings = path.resolve(
+    path.normalize(currentDirectory),
+    options.mappings,
+  );
+
   const logger =
     options?.logger !== undefined
       ? {
@@ -83,15 +102,21 @@ if (options === undefined || options["help"]) {
         }
       : false;
   const start = async () => {
+    if (options === undefined) {
+      throw new Error("options is undefined");
+    }
     const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
       fastify({
         logger,
       });
-    server.decorate("configuration", await loadConfiguration());
+    server.decorate(
+      "configuration",
+      await loadConfiguration(options.files, options.mappings),
+    );
     server.register(AdminRoutes, { prefix: "/__admin" });
     server.register(MockRoutes);
     try {
-      const host = options?.host !== undefined ? { host: options.host } : {};
+      const host = options.host !== undefined ? { host: options.host } : {};
       await server
         .listen({ port: options?.port ?? 4000, ...host })
         .then(
@@ -104,4 +129,7 @@ if (options === undefined || options["help"]) {
     }
   };
   start().catch(console.error);
+} else {
+  const usage = commandLineUsage(optionUsage);
+  console.error(usage);
 }

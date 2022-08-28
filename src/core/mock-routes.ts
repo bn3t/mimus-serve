@@ -32,7 +32,7 @@ export const MockRoutes = async (
     const isHttps = server.initialConfig.https === true;
     reply.hijack();
     await processRequest(
-      configuration.mappings,
+      configuration,
       request.raw,
       reply.raw,
       request.body,

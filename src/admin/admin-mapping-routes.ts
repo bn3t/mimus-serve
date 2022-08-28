@@ -11,7 +11,7 @@ interface GetMappingsQuery {
 const convertMapping = (mapping: Mapping): any => ({
   ...mapping,
   requestMatch: undefined,
-  requestBody: undefined,
+  respponseDefinition: undefined,
   request: mapping.requestMatch,
   response: mapping.responseDefinition,
 });

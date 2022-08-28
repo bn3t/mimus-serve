@@ -62,5 +62,6 @@ export interface Mapping {
 }
 
 export interface Configuration {
+  files: string;
   mappings: Mapping[];
 }
