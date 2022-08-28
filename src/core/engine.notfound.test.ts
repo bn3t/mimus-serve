@@ -73,7 +73,7 @@ describe("Engine - case find mapping undefined", () => {
     };
     // const serverResponse = jest.mock(ServerResponse);
     await processRequest(
-      MOCK_MAPPINGS,
+      { mappings: MOCK_MAPPINGS, files: "./files" },
       //@ts-ignore
       { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
       serverResponse,

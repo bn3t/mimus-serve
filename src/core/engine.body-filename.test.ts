@@ -60,7 +60,8 @@ jest.mock("../utils/files", () => ({
   readFile: jest
     .fn()
     .mockImplementation(
-      async (filename: string) => `read file content ${filename}`,
+      async (parentDir: string, filename: string) =>
+        `read file content ${filename}`,
     ),
 }));
 
@@ -80,7 +81,7 @@ describe("Engine - case find mapping body file name", () => {
     };
     // const serverResponse = jest.mock(ServerResponse);
     await processRequest(
-      MOCK_MAPPINGS,
+      { mappings: MOCK_MAPPINGS, files: "./files" },
       //@ts-ignore
       { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
       serverResponse,

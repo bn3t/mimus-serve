@@ -8,9 +8,9 @@ import { MethodMatcher } from "../matchers/method";
 import { QueryParametersMatcher } from "../matchers/query-params";
 import { UrlMatcher } from "../matchers/url";
 import {
+  Configuration,
   Context,
   HttpRequest,
-  Mapping,
   Method,
   RequestMatcher,
 } from "../types";
@@ -26,7 +26,7 @@ const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
 ];
 
 export const processRequest = async (
-  mappings: Mapping[],
+  configuration: Configuration,
   incomingMessage: IncomingMessage,
   serverResponse: ServerResponse,
   body: any,
@@ -55,7 +55,7 @@ export const processRequest = async (
   );
   const mapping = findMapping(
     DEFAULT_REQUEST_MATCHERS,
-    mappings,
+    configuration.mappings,
     mappedRequest,
   );
   if (mapping !== undefined) {
@@ -81,7 +81,9 @@ export const processRequest = async (
       if (responseDefinition.body !== undefined) {
         await writeResponse(responseDefinition.body);
       } else if (responseDefinition.bodyFileName !== undefined) {
-        await writeResponse(await readFile(responseDefinition.bodyFileName));
+        await writeResponse(
+          await readFile(configuration.files, responseDefinition.bodyFileName),
+        );
       }
       serverResponse.end();
     };

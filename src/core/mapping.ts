@@ -146,9 +146,12 @@ export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
   return mappings;
 };
 
-export const loadConfiguration = async (): Promise<Configuration> => {
-  const mappings = await loadMappings("./test-data/mappings");
-  return { mappings };
+export const loadConfiguration = async (
+  filesDir: string,
+  mappingsDir: string,
+): Promise<Configuration> => {
+  const mappings = await loadMappings(mappingsDir);
+  return { files: filesDir, mappings };
 };
 
 // process response definition heders through templating
