@@ -3,8 +3,9 @@ import commandLineUsage from "command-line-usage";
 import "dotenv/config";
 import { IncomingMessage, Server, ServerResponse } from "http";
 import { fastify, FastifyInstance } from "fastify";
-import { processRequest } from "./engine";
-import { loadConfiguration } from "./mapping";
+import { loadConfiguration } from "./core/mapping";
+import { MockRoutes } from "./core/mock-routes";
+import { AdminRoutes } from "./admin/admin-routes";
 
 const environment = process.env.NODE_ENV ?? "production";
 
@@ -82,41 +83,13 @@ if (options === undefined || options["help"]) {
         }
       : false;
   const start = async () => {
-    const configuration = await loadConfiguration();
     const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
       fastify({
         logger,
       });
-    server.addContentTypeParser(
-      ["application/json", "application/x-www-form-urlencoded"],
-      { parseAs: "string" },
-      function (req, body, done) {
-        try {
-          done(null, body);
-        } catch (err) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
-          err.statusCode = 400;
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
-          done(err, undefined);
-        }
-      },
-    );
-    server.get("/__admin", async (request, reply) => {
-      reply.send("Admin routes");
-    });
-    server.all("/*", async (request, reply) => {
-      const isHttps = server.initialConfig.https === true;
-      reply.hijack();
-      await processRequest(
-        configuration.mappings,
-        request.raw,
-        reply.raw,
-        request.body,
-        isHttps,
-      );
-    });
+    server.decorate("configuration", await loadConfiguration());
+    server.register(AdminRoutes, { prefix: "/__admin" });
+    server.register(MockRoutes);
     try {
       const host = options?.host !== undefined ? { host: options.host } : {};
       await server

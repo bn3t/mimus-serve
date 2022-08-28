@@ -2,10 +2,10 @@ import { Method, NameValuePair } from "./common";
 import { HttpRequest } from "./http";
 
 export enum UrlMatchType {
-  Url, // Equality on the url (full)
-  UrlPattern, // Regex on the url (full)
-  Path, // Equality on the path only
-  PathPattern, // Reqex on the path only
+  Url = "Url", // Equality on the url (full)
+  UrlPattern = "UrlPattern", // Regex on the url (full)
+  Path = "Path", // Equality on the path only
+  PathPattern = "PathPattern", // Reqex on the path only
 }
 
 export enum MatchResult {
@@ -54,6 +54,8 @@ export interface ResponseDefinition {
 }
 
 export interface Mapping {
+  id: string;
+  name?: string;
   priority: number;
   requestMatch: RequestMatch;
   responseDefinition: ResponseDefinition;

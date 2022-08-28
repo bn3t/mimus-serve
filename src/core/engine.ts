@@ -1,16 +1,21 @@
 import { IncomingMessage, ServerResponse } from "node:http";
-import { Context } from "node:vm";
 
 import { promisify } from "util";
 import { findMapping, transformResponseDefinition } from "./mapping";
-import { BodyPatternsMatcher } from "./matchers/body-patterns";
-import { HeadersMatcher } from "./matchers/headers";
-import { MethodMatcher } from "./matchers/method";
-import { QueryParametersMatcher } from "./matchers/query-params";
-import { UrlMatcher } from "./matchers/url";
-import { HttpRequest, Mapping, Method, RequestMatcher } from "./types";
-import { readFile } from "./utils/files";
-import { buildRequestModel } from "./utils/request";
+import { BodyPatternsMatcher } from "../matchers/body-patterns";
+import { HeadersMatcher } from "../matchers/headers";
+import { MethodMatcher } from "../matchers/method";
+import { QueryParametersMatcher } from "../matchers/query-params";
+import { UrlMatcher } from "../matchers/url";
+import {
+  Context,
+  HttpRequest,
+  Mapping,
+  Method,
+  RequestMatcher,
+} from "../types";
+import { readFile } from "../utils/files";
+import { buildRequestModel } from "../utils/request";
 
 const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new UrlMatcher(),

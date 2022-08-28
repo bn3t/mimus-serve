@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { ServerResponse } from "http";
 import { processRequest } from "./engine";
-import { Mapping, UrlMatchType } from "./types";
+import { Mapping, UrlMatchType } from "../types";
 
 import { findMapping } from "./mapping";
-import { buildRequestModel } from "./utils/request";
+import { buildRequestModel } from "../utils/request";
 
 const MOCK_MAPPINGS: Mapping[] = [
   {
+    id: "51111A10-9016-4426-93D8-9C7C5897707F",
     priority: 0,
     requestMatch: {
       urlType: UrlMatchType.Path,
@@ -27,6 +28,7 @@ const MOCK_MAPPINGS: Mapping[] = [
     },
   },
   {
+    id: "51111A10-9016-4426-93D8-9C7C5897707F",
     priority: 0,
     requestMatch: {
       urlType: UrlMatchType.Path,
@@ -47,14 +49,14 @@ const MOCK_MAPPINGS: Mapping[] = [
   },
 ];
 
-jest.mock("./utils/request", () => ({
+jest.mock("../utils/request", () => ({
   buildRequestModel: jest.fn().mockImplementation(() => ({})),
 }));
 
 jest.mock("./mapping", () => ({
   findMapping: jest.fn().mockImplementation(() => MOCK_MAPPINGS[1]),
 }));
-jest.mock("./utils/files", () => ({
+jest.mock("../utils/files", () => ({
   readFile: jest
     .fn()
     .mockImplementation(

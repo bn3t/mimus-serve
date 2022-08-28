@@ -1,4 +1,6 @@
 {
+  "id": "51111A10-9016-4426-93D8-9C7C5897707F",
+  "name": "Catch all undefined routes",
   "priority": 1000,
   "request": {
     "urlPathPattern": "/.*",

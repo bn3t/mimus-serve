@@ -1,0 +1,99 @@
+openapi: 3.0.0
+
+info:
+  title: Dream Mock Admin API
+  version: 0.0.1
+
+tags:
+  - name: Stub Mappings
+    description: Operations on stub mappings
+
+servers:
+  - url: /
+
+paths:
+  /__admin/mappings:
+    get:
+      summary: Get all stub mappings
+      tags:
+        - Stub Mappings
+      parameters:
+        - description: The maximum number of results to return
+          in: query
+          name: limit
+          required: false
+          example: 10
+          schema:
+            type: integer
+        - description: The start index of the results to return
+          in: query
+          name: offset
+          required: false
+          example: 0
+          schema:
+            type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: "schemas/stub-mappings.yaml"
+          description: All stub mappings
+    post:
+      summary: Create a new stub mapping
+      tags:
+        - Stub Mappings
+      requestBody:
+        $ref: "#/components/requestBodies/stubMapping"
+      responses:
+        "201":
+          $ref: "#/components/responses/stubMapping"
+    delete:
+      summary: Delete all stub mappings
+      tags:
+        - Stub Mappings
+      responses:
+        "200":
+          description: Successfully deleted
+
+  /__admin/mappings/{stubMappingId}:
+    parameters:
+      - description: The UUID of stub mapping
+        in: path
+        name: stubMappingId
+        required: true
+        example: 730d3e32-d098-4169-a20c-554c3bedce58
+        schema:
+          type: string
+    get:
+      summary: Get stub mapping by ID
+      tags:
+        - Stub Mappings
+      responses:
+        "404":
+          description: Stub mapping not found
+        "200":
+          $ref: "#/components/responses/stubMapping"
+
+components:
+  requestBodies:
+    requestPattern:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas/request-pattern.yaml"
+
+    stubMapping:
+      content:
+        application/json:
+          schema:
+            $ref: "schemas/stub-mapping.yaml"
+
+  responses:
+    stubMapping:
+      description: The stub mapping
+      content:
+        application/json:
+          schema:
+            $ref: "schemas/stub-mapping.yaml"

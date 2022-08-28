@@ -12,12 +12,14 @@ import {
   RequestMatch,
   HttpRequest,
   MatchResult,
-} from "./types";
-import { processTemplate } from "./utils/templating";
-import { listFilesInDir, readJsonFile } from "./utils/files";
+  Context,
+} from "../types";
+import { processTemplate } from "../utils/templating";
+import { listFilesInDir, readJsonFile } from "../utils/files";
 
 const TEST_MAPPINGS: Mapping[] = [
   {
+    id: "51111A10-9016-4426-93D8-9C7C5897707F",
     priority: 10,
     requestMatch: {
       urlType: UrlMatchType.Path,
@@ -36,6 +38,7 @@ const TEST_MAPPINGS: Mapping[] = [
     },
   },
   {
+    id: "51111A10-9016-4426-93D8-9C7C5897707F",
     priority: 0,
     requestMatch: {
       urlType: UrlMatchType.Path,
@@ -54,6 +57,7 @@ const TEST_MAPPINGS: Mapping[] = [
     },
   },
   {
+    id: "51111A10-9016-4426-93D8-9C7C5897707F",
     priority: 10,
     requestMatch: {
       urlType: UrlMatchType.Path,
@@ -106,6 +110,8 @@ describe("Find Mapping", () => {
 });
 
 const TEST_JSON_MAPPING_PARSE_ONE = {
+  id: "51111A10-9016-4426-93D8-9C7C5897707F",
+  name: "this is a name",
   priority: 1000,
   request: {
     urlPath: "/everything",
@@ -174,6 +180,8 @@ describe("Parse mapping", () => {
 
     expect(actual).toBeDefined();
     expect(actual.priority).toBe(1000);
+    expect(actual.id).toBe("51111a10-9016-4426-93d8-9c7c5897707f");
+    expect(actual.name).toBe("this is a name");
     expect(actual.requestMatch).toBeDefined();
     expect(actual.requestMatch.method).toBe("ANY");
     expect(actual.requestMatch.url).toBe("/everything");
@@ -258,7 +266,7 @@ describe("Parse mapping", () => {
   });
 });
 
-jest.mock("./utils/templating", () => ({
+jest.mock("../utils/templating", () => ({
   processTemplate: jest
     .fn()
     .mockImplementation((template: string, _data: any) => {
@@ -283,9 +291,14 @@ describe("Transform Response Definition", () => {
       fixedDelayMilliseconds: 123,
       transform: false,
     };
-    const data = { template: "transformed" };
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const data = { template: "transformed" } as Context;
 
-    const actual = transformResponseDefinition(responseDefinition, data);
+    const actual = transformResponseDefinition(
+      responseDefinition,
+      data as Context,
+    );
 
     expect(actual).toBeDefined();
     expect(actual.body).toBe("transformed");
@@ -304,7 +317,7 @@ describe("Transform Response Definition", () => {
 });
 
 // mock listFilesInDir to return an empty array
-jest.mock("./utils/files", () => ({
+jest.mock("../utils/files", () => ({
   listFilesInDir: jest.fn().mockImplementation((dir: string) => {
     if (dir !== "a-dir") {
       throw new Error("Unexpected dir: " + dir);

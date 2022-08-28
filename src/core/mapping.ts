@@ -1,4 +1,8 @@
-import { Context } from "node:vm";
+import {
+  v4 as uuid,
+  parse as uuidParse,
+  stringify as uuidStringify,
+} from "uuid";
 import { intersection, head } from "ramda";
 import {
   Configuration,
@@ -9,9 +13,10 @@ import {
   RequestMatcher,
   ResponseDefinition,
   UrlMatchType,
-} from "./types";
-import { listFilesInDir, readJsonFile } from "./utils/files";
-import { processTemplate } from "./utils/templating";
+  Context,
+} from "../types";
+import { listFilesInDir, readJsonFile } from "../utils/files";
+import { processTemplate } from "../utils/templating";
 
 export const findMapping = (
   requestMatchers: RequestMatcher[],
@@ -92,6 +97,8 @@ const parseAttributeSpecs = (
 
 export const parseOne = (json: any): Mapping =>
   ({
+    id: json.id ? uuidStringify(uuidParse(json.id)) : uuid(),
+    name: json.name,
     priority: json.priority ?? 0,
     requestMatch: {
       ...parseUrl(json.request),
