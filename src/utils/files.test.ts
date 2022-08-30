@@ -1,4 +1,4 @@
-import { readFile, readJsonFile } from "./files";
+import { readFile, readJsonFile, readYamlFile } from "./files";
 
 describe("file operations", () => {
   test("should read a test file as string", async () => {
@@ -15,5 +15,15 @@ describe("file operations", () => {
       name: "A test name",
       amount: 1234.5,
     });
+  });
+
+  test("should read a yaml file as an object", async () => {
+    const actual = await readYamlFile("./test-data/files/response-yaml.yaml");
+    expect(actual).toStrictEqual([
+      {
+        name: "A test name",
+        amount: 1234.5,
+      },
+    ]);
   });
 });
