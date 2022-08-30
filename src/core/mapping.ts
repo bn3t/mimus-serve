@@ -1,3 +1,4 @@
+import path from "path";
 import {
   v4 as uuid,
   parse as uuidParse,
@@ -15,7 +16,7 @@ import {
   UrlMatchType,
   Context,
 } from "../types";
-import { listFilesInDir, readJsonFile } from "../utils/files";
+import { listFilesInDir, readJsonFile, readYamlFile } from "../utils/files";
 import { processTemplate } from "../utils/templating";
 import { Runtime } from "./runtime";
 
@@ -108,6 +109,20 @@ const parseAttributeSpecs = (
       )
     : [];
 
+const parseLoadedMappings = (loadedMappings: any): Mapping[] => {
+  if (Array.isArray(loadedMappings)) {
+    // Check if multi document
+    return loadedMappings.map((mapping) => parseLoadedMappings(mapping)).flat();
+  } else if (loadedMappings.mappings !== undefined) {
+    // Multipile config
+    return loadedMappings.mappings.map((jsonMapping: any) =>
+      parseOne(jsonMapping),
+    );
+  } else {
+    return [parseOne(loadedMappings)];
+  }
+};
+
 export const parseOne = (json: any): Mapping =>
   ({
     id: json.id ? uuidStringify(uuidParse(json.id)) : uuid(),
@@ -144,18 +159,21 @@ export const parseOne = (json: any): Mapping =>
   } as Mapping);
 
 export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
-  const files = await listFilesInDir(mappingDir, [".json"]);
+  const files = await listFilesInDir(mappingDir, [".json", ".yaml", ".yml"]);
   const mappings: Mapping[] = (
     await Promise.all(
       files.map(async (file) => {
-        const json = await readJsonFile(file);
-
-        if (json.mappings !== undefined) {
-          // Multipile config
-          return json.mappings.map((jsonMapping: any) => parseOne(jsonMapping));
+        let loadedMappings;
+        const ext = path.extname(file);
+        if (ext === ".json") {
+          loadedMappings = await readJsonFile(file);
+        } else if (ext === ".yaml" || ext === ".yml") {
+          loadedMappings = await readYamlFile(file);
         } else {
-          return parseOne(json);
+          throw new Error(`Unknown file extension: ${file}`);
         }
+
+        return parseLoadedMappings(loadedMappings);
       }),
     )
   ).flat();
