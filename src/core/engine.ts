@@ -16,6 +16,7 @@ import {
 } from "../types";
 import { readFile } from "../utils/files";
 import { buildRequestModel } from "../utils/request";
+import { Runtime } from "./runtime";
 
 const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new UrlMatcher(),
@@ -27,6 +28,7 @@ const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
 
 export const processRequest = async (
   configuration: Configuration,
+  runtime: Runtime,
   incomingMessage: IncomingMessage,
   serverResponse: ServerResponse,
   body: any,
@@ -56,34 +58,54 @@ export const processRequest = async (
   const mapping = findMapping(
     DEFAULT_REQUEST_MATCHERS,
     configuration.mappings,
+    runtime,
     mappedRequest,
   );
+
   if (mapping !== undefined) {
     const context: Context = {
       request: requestModel,
     };
-    const responseDefinition = mapping.responseDefinition.transform
-      ? transformResponseDefinition(mapping.responseDefinition, context)
-      : mapping.responseDefinition;
+    const responseDefinition =
+      mapping.responseDefinition.transform || configuration.transform
+        ? transformResponseDefinition(mapping.responseDefinition, context)
+        : mapping.responseDefinition;
     const sendResponse = async () => {
-      if (responseDefinition.status !== undefined) {
-        serverResponse.statusCode = responseDefinition.status;
-      }
+      try {
+        if (responseDefinition.status !== undefined) {
+          serverResponse.statusCode = responseDefinition.status;
+        }
 
-      if (responseDefinition.statusMessage !== undefined) {
-        serverResponse.statusMessage = responseDefinition.statusMessage;
-      }
+        if (responseDefinition.statusMessage !== undefined) {
+          serverResponse.statusMessage = responseDefinition.statusMessage;
+        }
 
-      responseDefinition.headers.forEach((h) =>
-        serverResponse.setHeader(h.name, h.value ?? ""),
-      );
-
-      if (responseDefinition.body !== undefined) {
-        await writeResponse(responseDefinition.body);
-      } else if (responseDefinition.bodyFileName !== undefined) {
-        await writeResponse(
-          await readFile(configuration.files, responseDefinition.bodyFileName),
+        responseDefinition.headers.forEach((h) =>
+          serverResponse.setHeader(h.name, h.value ?? ""),
         );
+
+        if (responseDefinition.body !== undefined) {
+          await writeResponse(responseDefinition.body);
+        } else if (responseDefinition.bodyFileName !== undefined) {
+          await writeResponse(
+            await readFile(
+              configuration.files,
+              responseDefinition.bodyFileName,
+            ),
+          );
+        }
+        if (
+          mapping.scenarioName !== undefined &&
+          mapping.newScenarioState !== undefined
+        ) {
+          runtime.changeScenarioState(
+            mapping.scenarioName,
+            mapping.newScenarioState,
+          );
+        }
+      } catch (error) {
+        serverResponse.statusCode = 500;
+        await writeResponse("Error processing request: " + error);
       }
       serverResponse.end();
     };

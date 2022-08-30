@@ -7,10 +7,8 @@ describe("Response Definition specifics", () => {
 
     expect(actual.status).toBe(200);
     expect(actual.data).toBe("Delayed response 1s");
-    expect(new Date().getTime() / 1000).toBeCloseTo(
-      (now.getTime() + 1000) / 1000,
-      1,
-    );
+    const difference = (new Date().getTime() - now.getTime()) / 1000;
+    expect(difference).toBeCloseTo(1.05, 1);
   });
 
   test.each([
@@ -28,5 +26,10 @@ describe("Response Definition specifics", () => {
     const actual = await myaxios.get(url);
     expect(actual.status).toBe(200);
     expect(actual.data).toBe(expected);
+  });
+
+  test("should return 500 when trying to get a file that does not exist", async () => {
+    const actual = await myaxios.get("/read-a-file-not-found");
+    expect(actual.status).toBe(500);
   });
 });

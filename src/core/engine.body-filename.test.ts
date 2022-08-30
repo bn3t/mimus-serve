@@ -5,6 +5,7 @@ import { Mapping, UrlMatchType } from "../types";
 
 import { findMapping } from "./mapping";
 import { buildRequestModel } from "../utils/request";
+import { Runtime } from "./runtime";
 
 const MOCK_MAPPINGS: Mapping[] = [
   {
@@ -81,7 +82,8 @@ describe("Engine - case find mapping body file name", () => {
     };
     // const serverResponse = jest.mock(ServerResponse);
     await processRequest(
-      { mappings: MOCK_MAPPINGS, files: "./files" },
+      { mappings: MOCK_MAPPINGS, files: "./files", transform: false },
+      new Runtime(),
       //@ts-ignore
       { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
       serverResponse,

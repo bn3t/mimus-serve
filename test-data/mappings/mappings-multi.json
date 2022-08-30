@@ -22,6 +22,16 @@
     },
     {
       "request": {
+        "urlPath": "/read-a-file-not-found",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "response-blah.json"
+      }
+    },
+    {
+      "request": {
         "urlPath": "/get-body",
         "method": "GET"
       },
