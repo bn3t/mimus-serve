@@ -5,6 +5,7 @@ import "dotenv/config";
 import { IncomingMessage, Server, ServerResponse } from "http";
 import { fastify, FastifyInstance } from "fastify";
 import { loadConfiguration } from "./core/mapping";
+import { Runtime } from "./core/runtime";
 import { MockRoutes } from "./core/mock-routes";
 import { AdminRoutes } from "./admin/admin-routes";
 
@@ -18,6 +19,7 @@ type Options = {
   logger?: string;
   files: string;
   mappings: string;
+  transform: boolean;
 };
 
 const optionDefinitions = [
@@ -56,6 +58,13 @@ const optionDefinitions = [
     alias: "m",
     description: "Specify the path mappings are located",
     type: String,
+  },
+  {
+    name: "transform",
+    alias: "t",
+    description: "Force transforming responses using templating",
+    type: Boolean,
+    defaultValue: false,
   },
 ];
 
@@ -109,9 +118,19 @@ if (options !== undefined) {
       fastify({
         logger,
       });
+    const configuration = await loadConfiguration(
+      options.files,
+      options.mappings,
+      options.transform,
+    );
+    server.decorate("configuration", configuration);
     server.decorate(
-      "configuration",
-      await loadConfiguration(options.files, options.mappings),
+      "runtime",
+      new Runtime(
+        configuration.mappings
+          .map((mapping) => mapping.scenarioName)
+          .filter((scenarioName) => scenarioName !== undefined) as string[],
+      ),
     );
     server.register(AdminRoutes, { prefix: "/__admin" });
     server.register(MockRoutes);

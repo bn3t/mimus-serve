@@ -57,11 +57,15 @@ export interface Mapping {
   id: string;
   name?: string;
   priority: number;
+  scenarioName?: string;
+  requiredScenarioState?: string;
+  newScenarioState?: string;
   requestMatch: RequestMatch;
   responseDefinition: ResponseDefinition;
 }
 
 export interface Configuration {
+  transform: boolean;
   files: string;
   mappings: Mapping[];
 }

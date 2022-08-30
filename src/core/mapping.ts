@@ -17,23 +17,36 @@ import {
 } from "../types";
 import { listFilesInDir, readJsonFile } from "../utils/files";
 import { processTemplate } from "../utils/templating";
+import { Runtime } from "./runtime";
 
 export const findMapping = (
   requestMatchers: RequestMatcher[],
   mappings: Mapping[],
+  runtime: Runtime,
   mappedRequest: HttpRequest,
 ) => {
-  const matchedMappings = mappings.filter((mapping) =>
-    requestMatchers.every((requestMatcher) => {
-      const matchResult = requestMatcher.match(
-        mapping.requestMatch,
-        mappedRequest,
-      );
+  const matchedMappings = mappings
+    .filter((mapping) =>
+      requestMatchers.every((requestMatcher) => {
+        const matchResult = requestMatcher.match(
+          mapping.requestMatch,
+          mappedRequest,
+        );
+        return (
+          matchResult === MatchResult.Match ||
+          matchResult === MatchResult.Discard
+        );
+      }),
+    )
+    .filter((mapping) => {
+      if (mapping.scenarioName === undefined) {
+        return true;
+      }
       return (
-        matchResult === MatchResult.Match || matchResult === MatchResult.Discard
+        mapping.requiredScenarioState ===
+        runtime.getScenarioState(mapping.scenarioName)
       );
-    }),
-  );
+    });
   matchedMappings.sort((a, b) => b.priority - a.priority);
   if (matchedMappings.length > 0) {
     return matchedMappings[matchedMappings.length - 1];
@@ -99,6 +112,9 @@ export const parseOne = (json: any): Mapping =>
   ({
     id: json.id ? uuidStringify(uuidParse(json.id)) : uuid(),
     name: json.name,
+    scenarioName: json.scenarioName,
+    requiredScenarioState: json.requiredScenarioState,
+    newScenarioState: json.newScenarioState,
     priority: json.priority ?? 0,
     requestMatch: {
       ...parseUrl(json.request),
@@ -149,9 +165,14 @@ export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
 export const loadConfiguration = async (
   filesDir: string,
   mappingsDir: string,
+  transform: boolean,
 ): Promise<Configuration> => {
   const mappings = await loadMappings(mappingsDir);
-  return { files: filesDir, mappings };
+  return {
+    transform,
+    mappings,
+    files: filesDir,
+  };
 };
 
 // process response definition heders through templating

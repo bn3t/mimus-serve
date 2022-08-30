@@ -9,6 +9,7 @@
     "build:types": "tsc --emitDeclarationOnly -p ./tsconfig-prod.json",
     "build": "npm run lint && npm run build:check && npm run build:types && npm run build:js",
     "clean": "rimraf build coverage node_modules junit.xml",
+    "dev:webui": "ts-node src/main.ts --transform --files /Users/bernard/projects/kensuio/dam-mock-module-webui/__files --mappings /Users/bernard/projects/kensuio/dam-mock-module-webui/mappings --logger=info",
     "dev": "ts-node src/main.ts --files ./test-data/files --mappings ./test-data/mappings",
     "lint": "eslint --ext ts,js --fix src",
     "ncu": "ncu -u",

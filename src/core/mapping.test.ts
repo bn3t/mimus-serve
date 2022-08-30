@@ -16,6 +16,7 @@ import {
 } from "../types";
 import { processTemplate } from "../utils/templating";
 import { listFilesInDir, readJsonFile } from "../utils/files";
+import { Runtime } from "./runtime";
 
 const TEST_MAPPINGS: Mapping[] = [
   {
@@ -75,6 +76,48 @@ const TEST_MAPPINGS: Mapping[] = [
       transform: false,
     },
   },
+  {
+    id: "51111A10-9016-4426-93D8-9C7C5897707E",
+    scenarioName: "scenario-01",
+    requiredScenarioState: "Started",
+    priority: 0,
+    requestMatch: {
+      urlType: UrlMatchType.Path,
+      url: "/url-scenario-01",
+      method: "GET",
+      queryParameters: [],
+      headers: [],
+      bodyPatterns: [],
+    },
+    responseDefinition: {
+      status: 200,
+      headers: [{ name: "Content-Type", value: "application/json" }],
+      body: "scenario-01 in Started",
+      fixedDelayMilliseconds: 0,
+      transform: false,
+    },
+  },
+  {
+    id: "51111A10-9016-4426-93D8-9C7C5897707C",
+    scenarioName: "scenario-01",
+    requiredScenarioState: "Finished",
+    priority: 0,
+    requestMatch: {
+      urlType: UrlMatchType.Path,
+      url: "/url-scenario-01",
+      method: "GET",
+      queryParameters: [],
+      headers: [],
+      bodyPatterns: [],
+    },
+    responseDefinition: {
+      status: 200,
+      headers: [{ name: "Content-Type", value: "application/json" }],
+      body: "scenario-01 in Finished",
+      fixedDelayMilliseconds: 0,
+      transform: false,
+    },
+  },
 ];
 
 describe("Find Mapping", () => {
@@ -83,7 +126,7 @@ describe("Find Mapping", () => {
       if (httpRequest.url === "/discard") {
         return MatchResult.Discard;
       }
-      return httpRequest.url === "/url-to-match-method-02"
+      return requestMatch.url === httpRequest.url
         ? MatchResult.Match
         : MatchResult.NoMatch;
     }
@@ -95,14 +138,34 @@ describe("Find Mapping", () => {
       url: "/url-to-match-method-02",
       expectedBody: "match 02",
     },
-  ])(`should $testname`, ({ url, expectedBody }) => {
+    {
+      testname: "find get mapping - with a scenario in Started",
+      url: "/url-scenario-01",
+      expectedBody: "scenario-01 in Started",
+    },
+    {
+      testname: "find get mapping - with a scenario - in Finished",
+      url: "/url-scenario-01",
+      expectedBody: "scenario-01 in Finished",
+      requiredScenarioState: "Finished",
+    },
+  ])(`should $testname`, ({ url, requiredScenarioState, expectedBody }) => {
     const request: HttpRequest = {
       method: "GET",
       url,
       headers: [],
       body: "",
     };
-    const actual = findMapping([new TestMatcher()], TEST_MAPPINGS, request);
+    const runtime = new Runtime(["scenario-01"]);
+    if (requiredScenarioState !== undefined) {
+      runtime.changeScenarioState("scenario-01", requiredScenarioState);
+    }
+    const actual = findMapping(
+      [new TestMatcher()],
+      TEST_MAPPINGS,
+      runtime,
+      request,
+    );
 
     expect(actual).toBeDefined();
     expect(actual?.responseDefinition.body).toBe(expectedBody);
@@ -113,6 +176,9 @@ const TEST_JSON_MAPPING_PARSE_ONE = {
   id: "51111A10-9016-4426-93D8-9C7C5897707F",
   name: "this is a name",
   priority: 1000,
+  scenarioName: "A scenario name",
+  requiredScenarioState: "A required scenario state",
+  newScenarioState: "A new scenario state",
   request: {
     urlPath: "/everything",
     method: "ANY",
@@ -182,6 +248,9 @@ describe("Parse mapping", () => {
     expect(actual.priority).toBe(1000);
     expect(actual.id).toBe("51111a10-9016-4426-93d8-9c7c5897707f");
     expect(actual.name).toBe("this is a name");
+    expect(actual.scenarioName).toBe("A scenario name");
+    expect(actual.requiredScenarioState).toBe("A required scenario state");
+    expect(actual.newScenarioState).toBe("A new scenario state");
     expect(actual.requestMatch).toBeDefined();
     expect(actual.requestMatch.method).toBe("ANY");
     expect(actual.requestMatch.url).toBe("/everything");

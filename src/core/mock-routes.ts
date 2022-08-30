@@ -1,6 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { Configuration } from "../types";
 import { processRequest } from "./engine";
+import { Runtime } from "./runtime";
 
 export const MockRoutes = async (
   fastifyServer: FastifyInstance,
@@ -8,8 +9,9 @@ export const MockRoutes = async (
 ) => {
   const server = fastifyServer as FastifyInstance & {
     configuration: Configuration;
+    runtime: Runtime;
   };
-  const configuration = server.configuration;
+  const { configuration, runtime } = server;
 
   server.addContentTypeParser(
     ["application/json", "application/x-www-form-urlencoded"],
@@ -33,6 +35,7 @@ export const MockRoutes = async (
     reply.hijack();
     await processRequest(
       configuration,
+      runtime,
       request.raw,
       reply.raw,
       request.body,
