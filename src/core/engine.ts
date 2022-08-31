@@ -1,21 +1,26 @@
 import { IncomingMessage, ServerResponse } from "node:http";
 
 import { promisify } from "util";
-import { findMapping, transformResponseDefinition } from "./mapping";
 import { BodyPatternsMatcher } from "../matchers/body-patterns";
 import { HeadersMatcher } from "../matchers/headers";
 import { MethodMatcher } from "../matchers/method";
 import { QueryParametersMatcher } from "../matchers/query-params";
 import { UrlMatcher } from "../matchers/url";
+import { BaseResponseRenderer } from "../renderers/BaseResponseRenderer";
+import { JsonataResponseRenderer } from "../renderers/JsonataResponseRenderer";
 import {
   Configuration,
   Context,
+  DEFAULT_HTTP_RESPONSE,
   HttpRequest,
+  HttpResponse,
   Method,
   RequestMatcher,
+  ResponseRenderer,
 } from "../types";
-import { readFile } from "../utils/files";
+import { delay } from "../utils/promises";
 import { buildRequestModel } from "../utils/request";
+import { findMapping, transformResponseDefinition } from "./mapping";
 import { Runtime } from "./runtime";
 
 const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
@@ -24,6 +29,11 @@ const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new QueryParametersMatcher(),
   new HeadersMatcher(),
   new BodyPatternsMatcher(),
+];
+
+const DEFAULT_RESPONSE_RENDERERS: ResponseRenderer[] = [
+  new BaseResponseRenderer(),
+  new JsonataResponseRenderer(),
 ];
 
 export const processRequest = async (
@@ -70,50 +80,50 @@ export const processRequest = async (
       mapping.responseDefinition.transform || configuration.transform
         ? transformResponseDefinition(mapping.responseDefinition, context)
         : mapping.responseDefinition;
-    const sendResponse = async () => {
-      try {
-        if (responseDefinition.status !== undefined) {
-          serverResponse.statusCode = responseDefinition.status;
-        }
 
-        if (responseDefinition.statusMessage !== undefined) {
-          serverResponse.statusMessage = responseDefinition.statusMessage;
-        }
-
-        responseDefinition.headers.forEach((h) =>
-          serverResponse.setHeader(h.name, h.value ?? ""),
+    let response: HttpResponse = DEFAULT_HTTP_RESPONSE;
+    //loop over all renderers and render the response
+    try {
+      for (const renderer of DEFAULT_RESPONSE_RENDERERS) {
+        response = await renderer.render(
+          configuration,
+          responseDefinition,
+          context,
+          response,
         );
-
-        if (responseDefinition.body !== undefined) {
-          await writeResponse(responseDefinition.body);
-        } else if (responseDefinition.bodyFileName !== undefined) {
-          await writeResponse(
-            await readFile(
-              configuration.files,
-              responseDefinition.bodyFileName,
-            ),
-          );
-        }
-        if (
-          mapping.scenarioName !== undefined &&
-          mapping.newScenarioState !== undefined
-        ) {
-          runtime.changeScenarioState(
-            mapping.scenarioName,
-            mapping.newScenarioState,
-          );
-        }
-      } catch (error) {
-        serverResponse.statusCode = 500;
-        await writeResponse("Error processing request: " + error);
       }
-      serverResponse.end();
-    };
-    if (responseDefinition.fixedDelayMilliseconds > 0) {
-      setTimeout(sendResponse, responseDefinition.fixedDelayMilliseconds);
-    } else {
-      sendResponse();
+
+      await delay(responseDefinition.fixedDelayMilliseconds);
+
+      serverResponse.statusCode = response.status;
+
+      if (response.statusMessage !== undefined) {
+        serverResponse.statusMessage = response.statusMessage;
+      }
+
+      response.headers.forEach((h) =>
+        serverResponse.setHeader(h.name, h.value ?? ""),
+      );
+
+      if (response.body !== undefined) {
+        await writeResponse(response.body);
+      }
+
+      // Change scenario state if necessary
+      if (
+        mapping.scenarioName !== undefined &&
+        mapping.newScenarioState !== undefined
+      ) {
+        runtime.changeScenarioState(
+          mapping.scenarioName,
+          mapping.newScenarioState,
+        );
+      }
+    } catch (error) {
+      serverResponse.statusCode = 500;
+      await writeResponse("Error processing request: " + error);
     }
+    serverResponse.end();
   } else {
     serverResponse.statusCode = 500;
     await writeResponse("No mapping found for this request");

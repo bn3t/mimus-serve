@@ -62,6 +62,12 @@ describe("Headers Test", () => {
       url: "/headers-for-absent",
       expected: "Not Found",
     },
+    {
+      testname: "get with headers present",
+      headers: { "X-myheader": "anything" },
+      url: "/headers-for-present",
+      expected: "headers present works",
+    },
   ])(
     "should $testname",
     async ({

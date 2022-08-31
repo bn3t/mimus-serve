@@ -90,6 +90,21 @@
         "status": 200,
         "body": "headers absent works"
       }
+    },
+    {
+      "request": {
+        "urlPath": "/headers-for-present",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "present": true
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers present works"
+      }
     }
   ]
 }

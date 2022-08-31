@@ -1,5 +1,6 @@
 import { Method, NameValuePair } from "./common";
-import { HttpRequest } from "./http";
+import { Context } from "./context";
+import { HttpRequest, HttpResponse } from "./http";
 
 export enum UrlMatchType {
   Url = "Url", // Equality on the url (full)
@@ -18,12 +19,29 @@ export interface RequestMatcher {
   match(requestMatch: RequestMatch, request: HttpRequest): MatchResult;
 }
 
+export interface ResponseRenderer {
+  render(
+    configuration: Configuration,
+    responseDefinition: ResponseDefinition,
+    context: Context,
+    response: HttpResponse,
+  ): Promise<HttpResponse>;
+}
+
+export interface ResponseDefinitionTransforer {
+  transform(
+    responseDefinition: ResponseDefinition,
+    context: Context,
+  ): ResponseDefinition;
+}
+
 export type OperatorType =
   | "equalTo"
   | "matches"
   | "contains"
   | "doesNotMatch"
   | "absent"
+  | "present"
   | "equalToJson"
   | "matchesJsonPath";
 
@@ -44,13 +62,14 @@ export interface RequestMatch {
 }
 
 export interface ResponseDefinition {
-  status: number;
+  status?: number;
   statusMessage?: string;
   headers: NameValuePair[];
   body?: string;
   bodyFileName?: string;
   fixedDelayMilliseconds: number;
   transform: boolean;
+  jsonataExpression?: string;
 }
 
 export interface Mapping {

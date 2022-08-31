@@ -77,6 +77,7 @@ const mapOperator = (spec: Record<string, any>) => {
       "contains",
       "doesNotMatch",
       "absent",
+      "present",
       "equalToJson",
       "matchesJsonPath",
     ]),
@@ -155,6 +156,7 @@ export const parseOne = (json: any): Mapping =>
         : [],
       fixedDelayMilliseconds: json.response.fixedDelayMilliseconds ?? 0,
       transform: json.response.transformers !== undefined,
+      jsonataExpression: json.response.jsonataExpression,
     },
   } as Mapping);
 
