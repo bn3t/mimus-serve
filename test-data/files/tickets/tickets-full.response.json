@@ -1,0 +1,980 @@
+[
+  {
+    "ticketId": "FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+    "status": "CLOSED",
+    "message": "DataSource 'FB1B426A' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:25:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "A2BB9D48-E590-4988-8444-BDA9D4588B2E",
+    "status": "OPEN",
+    "message": "neg_mean_absolute_error in 'A2BB9D48' has varied by more than 15% (compared to the average of the latest 20 runs)",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:24:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-3",
+        "name": "The datasource 3"
+      },
+      "lineage": {
+        "id": "k-lineage-1-3",
+        "name": "Python:Sklearn:LinearRegression"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "Project 1"
+      },
+      "process": {
+        "id": "k-process-3",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "DEV",
+      "type": "MODEL_METRICS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "neg_mean_absolute_error",
+        "functionName": "Variability",
+        "expectedTime": "2 days",
+        "expected": "20",
+        "observed": "25"
+      }
+    }
+  },
+  {
+    "ticketId": "C4A47B19-6A3B-4BB0-9A68-4E4B2B12FCC3",
+    "status": "WONTFIX",
+    "message": "DataSource 'C4A47B19' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "resolution": "I don't get it",
+    "creationTimestamp": "2020-07-15T07:23:42.163Z",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "474ED082-5A16-4A8B-BBF1-3EA0BD5EE983",
+    "status": "OPEN",
+    "message": "'474ED082' was not updated on time",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:22:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "KENSU_NONE",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "functionName": "Frequency",
+        "expectedTime": "2 days",
+        "expected": "16-02-2021 - 14:00"
+      }
+    }
+  },
+  {
+    "ticketId": "015FB065-C421-40CD-940F-F3EE9CD459CF",
+    "status": "OPEN",
+    "message": "DataSource '015FB065' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:21:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "094BB757-BE3E-43B2-AC1F-27487B5E8FFB",
+    "status": "OPEN",
+    "message": "Beer_sales.min is out of range in '094BB757'",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "71DCC77A-1D6D-4946-86EC-92F157549CD4",
+    "status": "OPEN",
+    "message": "DataSource '71DCC77A' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:20:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "functionName": "Frequency",
+        "expected": "16-02-2021 - 14:00",
+        "observed": ""
+      }
+    }
+  },
+  {
+    "ticketId": "6385652D-3944-4F5E-BB80-E5BD989244C7",
+    "status": "CLOSED",
+    "message": "DataSource '6385652D' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:19:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "934CAAE6-C8A7-437C-B268-0B6A5E47030F",
+    "status": "CLOSED",
+    "message": "DataSource '934CAAE6' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:18:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "A9BF8EF3-0C27-4C97-8745-F8EB9117FDC5",
+    "status": "CLOSED",
+    "message": "DataSource 'A9BF8EF3' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:17:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "540EDA70-90BC-4F73-AA32-D7F9CFE373EC",
+    "status": "CLOSED",
+    "message": "DataSource '540EDA70' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:16:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "3B793420-6405-4840-A1EC-C84931433E36",
+    "status": "CLOSED",
+    "message": "DataSource '3B793420' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:15:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "DB9CB288-7B1D-4AB3-A7F9-3111A0D043FD",
+    "status": "CLOSED",
+    "message": "DataSource 'DB9CB288' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:14:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "DFA6480B-4A88-4121-9C8B-6C4361D4E789",
+    "status": "OPEN",
+    "message": "DataSource 'DFA6480B' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:13:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "F1D8215E-9B85-4E3D-9094-E7CA251BA8DC",
+    "status": "OPEN",
+    "message": "DataSource 'F1D8215E' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:12:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "1966C6BB-6A7D-460B-BF30-74E267F9A3FE",
+    "status": "OPEN",
+    "message": "DataSource '1966C6BB' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-01T07:11:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "8F421BAC-9760-456F-B741-7CCBD036BA1F",
+    "status": "CLOSED",
+    "message": "DataSource '8F421BAC' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-01T07:10:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "25C11C0B-C39F-4897-8F81-D37B176F733B",
+    "status": "CLOSED",
+    "message": "DataSource '25C11C0B' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:09:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "0F39C7A3-2ACE-4894-9E1F-6D8122BB9310",
+    "status": "CLOSED",
+    "message": "DataSource '0F39C7A3' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:08:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "B63161A7-5FC6-4FA7-B90F-BCE83D116D82",
+    "status": "CLOSED",
+    "message": "DataSource 'B63161A7' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:07:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "E4D54F6F-B609-43BE-9E9F-DEDFA2CC01B8",
+    "status": "CLOSED",
+    "message": "DataSource 'E4D54F6F' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:06:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "8C6803C8-2B0D-4509-A103-616A7FACF9E4",
+    "status": "WONTFIX",
+    "message": "DataSource '8C6803C8' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:05:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "C9A07249-CA1A-4038-B2A4-E5C4E65C9117",
+    "status": "CLOSED",
+    "message": "DataSource 'C9A07249' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:04:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "64E4C574-7F68-4CC4-ABFE-EE0462EAB1AE",
+    "status": "CLOSED",
+    "message": "DataSource '64E4C574' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:03:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "A19FFBD0-E621-4B0F-B74B-25DFFF8BA44D",
+    "status": "CLOSED",
+    "message": "DataSource 'A19FFBD0' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:02:42.163Z",
+    "resolution": "It's fixed!",
+    "resolutionTimestamp": "2020-07-16T07:25:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "DC2A0CF8-1186-4421-B1AB-1A3A483F8617",
+    "status": "OPEN",
+    "message": "DataSource 'DC2A0CF8' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-15T07:02:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  },
+  {
+    "ticketId": "D77C3289-1E73-45CE-AC42-526DEE67CA9A",
+    "status": "OPEN",
+    "message": "DataSource 'D77C3289' has quality issues",
+    "type": "PREDICATE_ISSUE",
+    "creationTimestamp": "2020-07-01T07:01:42.163Z",
+    "context": {
+      "datasource": {
+        "id": "k-datasource-1",
+        "name": "The datasource 1"
+      },
+      "lineage": {
+        "id": "k-lineage-1-2",
+        "name": "k-lineage-1-2"
+      },
+      "project": {
+        "id": "k-project1",
+        "name": "k-project1"
+      },
+      "process": {
+        "id": "k-process2",
+        "name": "The important process"
+      },
+      "logical": true,
+      "environment": "PROD",
+      "type": "DATA_STATS",
+      "issueDetails": {
+        "uuid": "0EF783A8-4899-4F91-91DC-F5297F7CA4A0",
+        "fieldName": "Beer_sales.min",
+        "functionName": "Range",
+        "expected": "10-100",
+        "observed": "150"
+      }
+    }
+  }
+]

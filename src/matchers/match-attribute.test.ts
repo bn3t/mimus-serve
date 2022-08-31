@@ -149,6 +149,18 @@ describe("Match Attribute Specs", () => {
       expected: MatchResult.Match,
     },
     {
+      testname: "match present parameter",
+      actualParams: [
+        ["a", "bblah"],
+        ["c", "d"],
+      ] as [string, string][],
+      operator: "present" as OperatorType,
+      caseInsensitive: false,
+      name: "a",
+      value: "",
+      expected: MatchResult.Match,
+    },
+    {
       testname: "not match absent parameter but present",
       actualParams: [
         ["a", "b"],

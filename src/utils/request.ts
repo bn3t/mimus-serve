@@ -12,21 +12,26 @@ export const buildRequestModel = (
     throw new Error("Invalid request");
   }
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+
   const requestModel: RequestModel = {
     url: parsedUrl.href,
     path: parsedUrl.pathname,
     pathSegments: parsedUrl.pathname.split("/").filter(Boolean) ?? [],
-    query: Array.from<[string, string | string[]]>(
+    query: Array.from<[string, string]>(
       parsedUrl.searchParams.entries(),
     ).reduce(
       (
         acc: Record<string, string | string[]>,
-        [key, value]: [string, string | string[]],
+        [key, value]: [string, string],
       ) => {
-        if (Array.isArray(value)) {
+        if (acc[key] === undefined) {
           acc[key] = value;
         } else {
-          acc[key] = [value];
+          if (Array.isArray(acc[key])) {
+            (acc[key] as string[]).push(value);
+          } else {
+            acc[key] = [acc[key] as string, value];
+          }
         }
         return acc;
       },

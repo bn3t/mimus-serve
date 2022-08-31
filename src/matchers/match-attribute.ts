@@ -27,6 +27,8 @@ const verifyAttributeSpec = (
       return actualParamValue.includes(queryParameterValue);
     case "absent":
       return false;
+    case "present":
+      return true;
     case "equalToJson":
       return matchJson(queryParameterValue, actualParamValue);
     case "matchesJsonPath":
