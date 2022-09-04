@@ -11,6 +11,7 @@ import { BaseResponseRenderer } from "../renderers/BaseResponseRenderer";
 import { DatasetResponseRenderer } from "../renderers/DatasetResponseRenderer";
 import { JsonataResponseRenderer } from "../renderers/JsonataResponseRenderer";
 import { ProcessingResponseRenderer } from "../renderers/ProcessingResponseRenderer";
+import { ProxyResponseRenderer } from "../renderers/ProxyResponseRenderer";
 import {
   Configuration,
   Context,
@@ -39,6 +40,7 @@ const DEFAULT_RESPONSE_RENDERERS: ResponseRenderer[] = [
   new BaseResponseRenderer(),
   new ProcessingResponseRenderer(),
   new DatasetResponseRenderer(),
+  new ProxyResponseRenderer(),
   new JsonataResponseRenderer(),
 ];
 

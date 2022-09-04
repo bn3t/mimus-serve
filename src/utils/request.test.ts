@@ -46,9 +46,7 @@ describe("Request", () => {
     const requestModel = buildRequestModel(req, headers, "body", false);
 
     expect(requestModel).toBeDefined();
-    expect(requestModel.url).toBe(
-      "http://localhost:3000/test/path?query=value",
-    );
+    expect(requestModel.url).toBe("/test/path?query=value");
     expect(requestModel.path).toBe("/test/path");
     expect(requestModel.pathSegments).toEqual(["test", "path"]);
     expect(requestModel.query).toEqual({ query: "value" });
@@ -83,9 +81,7 @@ describe("Request", () => {
     const requestModel = buildRequestModel(req, headers, "body", false);
 
     expect(requestModel).toBeDefined();
-    expect(requestModel.url).toBe(
-      "http://localhost:3000/test/path?query=value1&query=value2",
-    );
+    expect(requestModel.url).toBe("/test/path?query=value1&query=value2");
     expect(requestModel.path).toBe("/test/path");
     expect(requestModel.pathSegments).toEqual(["test", "path"]);
     expect(requestModel.query).toEqual({ query: ["value1", "value2"] });

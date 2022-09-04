@@ -75,6 +75,8 @@ export interface ResponseDefinition {
   transform: boolean;
   jsonataExpression?: string;
   dataset?: string;
+  proxyBaseUrl?: string;
+  proxyUrlPrefixToRemove?: string;
 }
 
 export interface InputProcessing {

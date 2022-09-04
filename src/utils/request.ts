@@ -14,7 +14,7 @@ export const buildRequestModel = (
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
 
   const requestModel: RequestModel = {
-    url: parsedUrl.href,
+    url: parsedUrl.href.replace(parsedUrl.origin, ""),
     path: parsedUrl.pathname,
     pathSegments: parsedUrl.pathname.split("/").filter(Boolean) ?? [],
     query: Array.from<[string, string]>(

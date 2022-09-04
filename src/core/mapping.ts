@@ -188,6 +188,8 @@ export const parseOne = (json: any): Mapping =>
       transform: json.response.transformers !== undefined,
       jsonataExpression: json.response.jsonataExpression,
       dataset: json.response.dataset,
+      proxyBaseUrl: json.response.proxyBaseUrl,
+      proxyUrlPrefixToRemove: json.response.proxyUrlPrefixToRemove,
     },
   } as Mapping);
 
