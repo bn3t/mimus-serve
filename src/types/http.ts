@@ -4,6 +4,7 @@ export interface HttpRequest {
   method: Method;
   url: string;
   headers: NameValuePair[];
+  cookies: NameValuePair[];
   body: string;
 }
 

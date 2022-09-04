@@ -1,4 +1,6 @@
 import { FastifyInstance } from "fastify";
+import cookie from "@fastify/cookie";
+
 import { Configuration } from "../types";
 import { processRequest } from "./engine";
 import { Runtime } from "./runtime";
@@ -12,6 +14,11 @@ export const MockRoutes = async (
     runtime: Runtime;
   };
   const { configuration, runtime } = server;
+
+  server.register(cookie, {
+    hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
+    parseOptions: {}, // options for parsing cookies
+  });
 
   server.addContentTypeParser(
     ["application/json", "application/x-www-form-urlencoded"],
@@ -37,6 +44,7 @@ export const MockRoutes = async (
       configuration,
       runtime,
       request.raw,
+      request.cookies,
       reply.raw,
       request.body,
       isHttps,

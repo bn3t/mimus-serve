@@ -94,7 +94,7 @@ const mapOperator = (spec: Record<string, any>) => {
 
 const parseAttributeSpecs = (
   specs: Record<string, any> | undefined,
-  lowerCaseName = false,
+  lowerCaseName: boolean,
   forceName: string | undefined = undefined,
 ) =>
   specs !== undefined
@@ -163,8 +163,9 @@ export const parseOne = (json: any): Mapping =>
     requestMatch: {
       ...parseUrl(json.request),
       method: json.request.method,
-      queryParameters: parseAttributeSpecs(json.request.queryParameters),
+      queryParameters: parseAttributeSpecs(json.request.queryParameters, false),
       headers: parseAttributeSpecs(json.request.headers, true),
+      cookies: parseAttributeSpecs(json.request.cookies, false),
       bodyPatterns: parseAttributeSpecs(
         json.request.bodyPatterns,
         false,

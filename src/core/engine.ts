@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from "node:http";
 
 import { promisify } from "util";
 import { BodyPatternsMatcher } from "../matchers/body-patterns";
+import { CookiesMatcher } from "../matchers/cookies";
 import { HeadersMatcher } from "../matchers/headers";
 import { MethodMatcher } from "../matchers/method";
 import { QueryParametersMatcher } from "../matchers/query-params";
@@ -29,6 +30,7 @@ const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
   new UrlMatcher(),
   new MethodMatcher(),
   new QueryParametersMatcher(),
+  new CookiesMatcher(),
   new HeadersMatcher(),
   new BodyPatternsMatcher(),
 ];
@@ -44,6 +46,7 @@ export const processRequest = async (
   configuration: Configuration,
   runtime: Runtime,
   incomingMessage: IncomingMessage,
+  incomingCookies: Record<string, string | undefined>,
   serverResponse: ServerResponse,
   body: any,
   isHttps: boolean,
@@ -57,10 +60,17 @@ export const processRequest = async (
       value,
     }),
   );
+  // map incoming cookies to NameValuePair[]
+  const cookies = Object.entries(incomingCookies).map(([name, value]) => ({
+    name,
+    value,
+  }));
+
   const mappedRequest: HttpRequest = {
     method: incomingMessage.method as Method,
     url: incomingMessage.url ?? "",
     headers,
+    cookies,
     body: body,
   };
   const requestModel = buildRequestModel(

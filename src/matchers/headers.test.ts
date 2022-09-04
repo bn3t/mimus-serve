@@ -24,6 +24,7 @@ describe("Headers Matcher", () => {
         urlType: UrlMatchType.Path,
         queryParameters: [],
         headers,
+        cookies: [],
         bodyPatterns: [],
       },
       {
@@ -35,6 +36,7 @@ describe("Headers Matcher", () => {
             value: "testvalue",
           },
         ],
+        cookies: [],
         body: "",
       },
     );
