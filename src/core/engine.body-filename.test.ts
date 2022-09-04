@@ -17,6 +17,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       method: "GET",
       queryParameters: [],
       headers: [],
+      cookies: [],
       bodyPatterns: [],
     },
     processing: [],
@@ -38,6 +39,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       method: "GET",
       queryParameters: [],
       headers: [],
+      cookies: [],
       bodyPatterns: [],
     },
     processing: [],
@@ -90,8 +92,13 @@ describe("Engine - case find mapping body file name", () => {
         transform: false,
       },
       new Runtime([], new Map<string, any>()),
-      //@ts-ignore
-      { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
+      {
+        url: "http://localhost:4000/test/path",
+        //@ts-ignore
+        headers: [],
+        method: "GET",
+      },
+      {},
       serverResponse,
       "",
       false,

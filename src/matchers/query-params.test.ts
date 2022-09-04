@@ -24,12 +24,14 @@ describe("Query Parameters", () => {
         urlType: UrlMatchType.Path,
         queryParameters,
         headers: [],
+        cookies: [],
         bodyPatterns: [],
       },
       {
         url: "https://example.org/?a=b&c=d",
         method: "DELETE",
         headers: [],
+        cookies: [],
         body: "",
       },
     );

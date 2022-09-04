@@ -16,6 +16,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-02",
       method: "GET",
       queryParameters: [],
+      cookies: [],
       headers: [],
       bodyPatterns: [],
     },
@@ -37,6 +38,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       url: "/url-to-match-method-02",
       method: "GET",
       queryParameters: [],
+      cookies: [],
       headers: [],
       bodyPatterns: [],
     },
@@ -84,6 +86,7 @@ describe("Engine - case find mapping undefined", () => {
       new Runtime([], new Map<string, any>()),
       //@ts-ignore
       { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
+      {},
       serverResponse,
       "",
       false,

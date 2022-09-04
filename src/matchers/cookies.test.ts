@@ -1,17 +1,17 @@
 import { UrlMatchType, MatchAttributeSpec } from "../types";
+import { CookiesMatcher } from "./cookies";
 
 import { matchAttributeSpecs } from "./match-attribute";
-import { BodyPatternsMatcher } from "./body-patterns";
 
 jest.mock("./match-attribute");
 
-describe("Body Patterns", () => {
-  test("should match body patterns", () => {
-    const matcher = new BodyPatternsMatcher();
+describe("Cookes Matcher", () => {
+  test("should match cookie attribute", () => {
+    const matcher = new CookiesMatcher();
 
-    const bodyPatterns = [
+    const cookies = [
       {
-        name: "body",
+        name: "test",
         operator: "equalTo",
         value: "testvalue",
         caseInsensitive: false,
@@ -24,20 +24,25 @@ describe("Body Patterns", () => {
         urlType: UrlMatchType.Path,
         queryParameters: [],
         headers: [],
-        cookies: [],
-        bodyPatterns,
+        cookies,
+        bodyPatterns: [],
       },
       {
         url: "https://example.org/?a=b&c=d",
         method: "DELETE",
         headers: [],
-        cookies: [],
-        body: "testvalue",
+        cookies: [
+          {
+            name: "test",
+            value: "testvalue",
+          },
+        ],
+        body: "",
       },
     );
     expect(matchAttributeSpecs).toHaveBeenCalledTimes(1);
     expect(matchAttributeSpecs).toHaveBeenCalledWith(
-      bodyPatterns,
+      cookies,
       expect.anything(),
     );
   });

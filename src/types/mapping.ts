@@ -60,6 +60,7 @@ export interface RequestMatch {
   url?: string;
   method: Method | "ANY";
   queryParameters: MatchAttributeSpec[];
+  cookies: MatchAttributeSpec[];
   headers: MatchAttributeSpec[];
   bodyPatterns: MatchAttributeSpec[];
 }

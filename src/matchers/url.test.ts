@@ -90,12 +90,14 @@ describe("Url Matching", () => {
         method: "ANY",
         queryParameters: [],
         headers: [],
+        cookies: [],
         bodyPatterns: [],
       },
       {
         url: httpUrl,
         method: "GET",
         headers: [],
+        cookies: [],
         body: "",
       },
     );

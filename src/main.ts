@@ -1,9 +1,9 @@
+import { fastify, FastifyInstance } from "fastify";
 import path from "path";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import "dotenv/config";
 import { IncomingMessage, Server, ServerResponse } from "http";
-import { fastify, FastifyInstance } from "fastify";
 import { Runtime } from "./core/runtime";
 import { MockRoutes } from "./core/mock-routes";
 import { AdminRoutes } from "./admin/admin-routes";
