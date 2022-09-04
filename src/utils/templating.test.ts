@@ -61,6 +61,12 @@ describe("Template", () => {
       data: { request: REQUEST_MODEL },
       expected: "12345",
     },
+    {
+      testname: "parse return undefined if template is undefined",
+      template: undefined,
+      data: { request: REQUEST_MODEL },
+      expected: undefined,
+    },
   ])("should $testname", ({ data, template, expected }) => {
     const result = processTemplate(template, data);
     expect(result).toBe(expected);

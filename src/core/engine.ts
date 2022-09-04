@@ -7,7 +7,9 @@ import { MethodMatcher } from "../matchers/method";
 import { QueryParametersMatcher } from "../matchers/query-params";
 import { UrlMatcher } from "../matchers/url";
 import { BaseResponseRenderer } from "../renderers/BaseResponseRenderer";
+import { DatasetResponseRenderer } from "../renderers/DatasetResponseRenderer";
 import { JsonataResponseRenderer } from "../renderers/JsonataResponseRenderer";
+import { ProcessingResponseRenderer } from "../renderers/ProcessingResponseRenderer";
 import {
   Configuration,
   Context,
@@ -33,6 +35,8 @@ const DEFAULT_REQUEST_MATCHERS: RequestMatcher[] = [
 
 const DEFAULT_RESPONSE_RENDERERS: ResponseRenderer[] = [
   new BaseResponseRenderer(),
+  new ProcessingResponseRenderer(),
+  new DatasetResponseRenderer(),
   new JsonataResponseRenderer(),
 ];
 
@@ -87,7 +91,9 @@ export const processRequest = async (
       for (const renderer of DEFAULT_RESPONSE_RENDERERS) {
         response = await renderer.render(
           configuration,
+          runtime,
           responseDefinition,
+          mapping.processing,
           context,
           response,
         );

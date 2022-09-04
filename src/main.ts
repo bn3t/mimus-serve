@@ -4,10 +4,11 @@ import commandLineUsage from "command-line-usage";
 import "dotenv/config";
 import { IncomingMessage, Server, ServerResponse } from "http";
 import { fastify, FastifyInstance } from "fastify";
-import { loadConfiguration } from "./core/mapping";
 import { Runtime } from "./core/runtime";
 import { MockRoutes } from "./core/mock-routes";
 import { AdminRoutes } from "./admin/admin-routes";
+import { loadConfiguration } from "./core/configuration";
+import { loadDatasets } from "./core/datasets";
 
 const environment = process.env.NODE_ENV ?? "production";
 const currentDirectory = process.cwd();
@@ -19,6 +20,7 @@ type Options = {
   logger?: string;
   files: string;
   mappings: string;
+  datasets: string;
   transform: boolean;
 };
 
@@ -57,6 +59,12 @@ const optionDefinitions = [
     name: "mappings",
     alias: "m",
     description: "Specify the path mappings are located",
+    type: String,
+  },
+  {
+    name: "datasets",
+    alias: "d",
+    description: "Specify the path datasets are located",
     type: String,
   },
   {
@@ -123,6 +131,8 @@ if (options !== undefined) {
       options.mappings,
       options.transform,
     );
+    const datasets = await loadDatasets(options.datasets);
+
     server.decorate("configuration", configuration);
     server.decorate(
       "runtime",
@@ -130,6 +140,7 @@ if (options !== undefined) {
         configuration.mappings
           .map((mapping) => mapping.scenarioName)
           .filter((scenarioName) => scenarioName !== undefined) as string[],
+        datasets,
       ),
     );
     server.register(AdminRoutes, { prefix: "/__admin" });

@@ -5,11 +5,11 @@ import {
   RequestModel,
   ResponseDefinition,
 } from "../types";
-import { BaseResponseRenderer } from "./BaseResponseRenderer";
+import { DatasetResponseRenderer } from "./DatasetResponseRenderer";
 
-describe("BaseResponseRenderer", () => {
+describe("DatasetResponseRenderer", () => {
   it("should render the response", async () => {
-    const renderer = new BaseResponseRenderer();
+    const renderer = new DatasetResponseRenderer();
     const responseDefinition: ResponseDefinition = {
       status: 200,
       statusMessage: "OK",
@@ -17,16 +17,17 @@ describe("BaseResponseRenderer", () => {
       body: "Hello World",
       fixedDelayMilliseconds: 0,
       transform: false,
+      dataset: "test",
     };
     const response: HttpResponse = {
-      status: 500,
+      status: 200,
       statusMessage: "OK",
       headers: [],
-      body: "",
     };
+    const datasets = new Map([["test", { a: 1 }]]);
     const result = await renderer.render(
       { files: "./a-folder" } as Configuration,
-      new Runtime([], new Map<string, any>()),
+      new Runtime([], datasets),
       responseDefinition,
       [],
       {
@@ -46,8 +47,8 @@ describe("BaseResponseRenderer", () => {
     expect(result).toEqual({
       status: 200,
       statusMessage: "OK",
-      headers: [{ name: "Content-Type", value: "text/plain" }],
-      body: "Hello World",
+      headers: [],
+      body: '{"a":1}',
     });
   });
 });

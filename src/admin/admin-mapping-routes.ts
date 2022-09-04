@@ -69,9 +69,10 @@ export const AdminMappingRoutes = async (
     const mapping = configuration.mappings.find(
       (mapping) => mapping.id === mappingId,
     );
-    if (mapping !== undefined) {
+    if (mapping === undefined) {
+      reply.code(404);
+    } else {
       reply.send(convertMapping(mapping));
     }
-    reply.send(404);
   });
 };

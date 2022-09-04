@@ -1,6 +1,4 @@
-import yaml from "js-yaml";
 import { Runtime } from "../core/runtime";
-
 import {
   Configuration,
   Context,
@@ -9,12 +7,11 @@ import {
   ResponseDefinition,
   ResponseRenderer,
 } from "../types";
-import { evaluateJsonata } from "../utils/jsonata";
 
 /**
  * A response renderer to process the existing response with jsonata expressions.
  */
-export class JsonataResponseRenderer implements ResponseRenderer {
+export class DatasetResponseRenderer implements ResponseRenderer {
   /**
    * Render the response.
    * @param response The target http response
@@ -23,30 +20,23 @@ export class JsonataResponseRenderer implements ResponseRenderer {
    */
   async render(
     _configuration: Configuration,
-    _runtime: Runtime,
+    runtime: Runtime,
     responseDefinition: ResponseDefinition,
     _processing: ProcessingDefinition[],
-    context: Context,
+    _context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse> {
-    if (responseDefinition.jsonataExpression === undefined) {
+    if (responseDefinition.dataset === undefined) {
       return response;
     }
+
     const result: HttpResponse = {
       ...response,
     };
 
     result.body = JSON.stringify(
-      evaluateJsonata(
-        responseDefinition.jsonataExpression,
-        yaml.load(response.body ?? ""),
-        context,
-      ),
+      runtime.getDataset(responseDefinition.dataset),
     );
-    if (result.body === undefined) {
-      result.status = 404;
-      result.statusMessage = "Not Found (jsonata)";
-    }
     return result;
   }
 }

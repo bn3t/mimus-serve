@@ -3,14 +3,37 @@ const STARTED = "Started";
 export class Runtime {
   // Map of scenario names to states
   private scenarios: Map<string, string> = new Map();
+  private loadedDatasets: Map<string, any>;
+  private _datasets: Map<string, any>;
 
   // constuct runtime with scenario names initalized to STARTED
-  constructor(scenarioNames?: string[]) {
+  constructor(scenarioNames: string[], datasets: Map<string, any>) {
     if (scenarioNames !== undefined) {
       scenarioNames.forEach((scenarioName) =>
         this.scenarios.set(scenarioName, STARTED),
       );
     }
+    this.loadedDatasets = datasets;
+    this._datasets = new Map(this.loadedDatasets);
+  }
+
+  public resetDatasets() {
+    this._datasets = new Map(this.loadedDatasets);
+  }
+
+  // get one dataset by name
+  public getDataset(datasetName: string): any {
+    return this._datasets.get(datasetName);
+  }
+
+  // set one dataset by name
+  public setDataset(datasetName: string, data: any) {
+    this._datasets.set(datasetName, data);
+  }
+
+  // has dataset by name
+  public hasDataset(datasetName: string): boolean {
+    return this._datasets.has(datasetName);
   }
 
   // Start scenario (it has the state STARTED at start)
