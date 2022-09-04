@@ -1,0 +1,74 @@
+---
+request:
+  url: /datasets/tickets
+  method: GET
+response:
+  status: 200
+  dataset: tickets
+  jsonataExpression: $ ~> | $ | {}, ['context', 'resolution', 'resolutionTimestamp'] |
+---
+request:
+  urlPathPattern: /datasets/tickets/.+
+  method: GET
+response:
+  status: 200
+  dataset: tickets
+  jsonataExpression: $[ticketId=$request.pathSegments[2]]
+---
+request:
+  urlPathPattern: /datasets/tickets/.+
+  method: PUT
+processing:
+  - type: input
+    dataset: tickets
+    expression: $
+  - type: match
+    expression: $[ticketId=$request.pathSegments[2]]
+  - type: output
+    operation: replaceWithRequestBody
+response:
+  status: 200
+  jsonataExpression: $[ticketId=$request.pathSegments[2]]
+---
+request:
+  urlPathPattern: /datasets/tickets/.+
+  method: DELETE
+processing:
+  - type: input
+    dataset: tickets
+    expression: $
+  - type: match
+    expression: $[ticketId=$request.pathSegments[2]]
+  - type: output
+    operation: deleteMatching
+response:
+  status: 200
+  body: OK
+---
+request:
+  urlPathPattern: /datasets/tickets/.+
+  method: PATCH
+processing:
+  - type: input
+    dataset: tickets
+    expression: $
+  - type: match
+    expression: $[ticketId=$request.pathSegments[2]]
+  - type: output
+    operation: mergeWithRequestBody
+response:
+  status: 200
+  jsonataExpression: $[ticketId=$request.pathSegments[2]]
+---
+request:
+  url: /datasets/tickets
+  method: POST
+processing:
+  - type: input
+    dataset: tickets
+    expression: $
+  - type: output
+    operation: insertRequestBody
+response:
+  status: 200
+  body: OK

@@ -19,7 +19,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       headers: [],
       bodyPatterns: [],
     },
-
+    processing: [],
     responseDefinition: {
       status: 200,
       statusMessage: "All is ok",
@@ -40,7 +40,7 @@ const MOCK_MAPPINGS: Mapping[] = [
       headers: [],
       bodyPatterns: [],
     },
-
+    processing: [],
     responseDefinition: {
       status: 200,
       statusMessage: "All is ok",
@@ -76,8 +76,12 @@ describe("Engine - case find mapping body", () => {
     };
     // const serverResponse = jest.mock(ServerResponse);
     await processRequest(
-      { mappings: MOCK_MAPPINGS, files: "./files", transform: false },
-      new Runtime(),
+      {
+        mappings: MOCK_MAPPINGS,
+        files: "./files",
+        transform: false,
+      },
+      new Runtime([], new Map<string, any>()),
       //@ts-ignore
       { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
       serverResponse,

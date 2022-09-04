@@ -1,6 +1,6 @@
 ---
 request:
-  urlPattern: /tickets
+  urlPath: /tickets
   method: GET
 response:
   status: 200
@@ -8,7 +8,7 @@ response:
   jsonataExpression: "$ ~> | $ | {}, ['context', 'resolution', 'resolutionTimestamp'] |"
 ---
 request:
-  urlPattern: /tickets
+  urlPath: /tickets
   method: GET
   queryParameters:
     status:
@@ -19,9 +19,9 @@ response:
   jsonataExpression: "[$[status=$request.query.status]] ~> | $ | {}, ['context', 'resolution', 'resolutionTimestamp'] |"
 ---
 request:
-  urlPattern: /tickets/.+
+  urlPathPattern: /tickets/.+
   method: GET
 response:
   status: 200
   bodyFileName: tickets/tickets-full.response.json
-  jsonataExpression: "$[ticketId=$request.pathSegments[1]]"
+  jsonataExpression: $[ticketId=$request.pathSegments[1]]

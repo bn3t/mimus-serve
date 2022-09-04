@@ -30,6 +30,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [],
       bodyPatterns: [],
     },
+    processing: [],
     responseDefinition: {
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
@@ -49,6 +50,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [],
       bodyPatterns: [],
     },
+    processing: [],
     responseDefinition: {
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
@@ -68,6 +70,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [],
       bodyPatterns: [],
     },
+    processing: [],
     responseDefinition: {
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
@@ -89,6 +92,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [],
       bodyPatterns: [],
     },
+    processing: [],
     responseDefinition: {
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
@@ -110,6 +114,7 @@ const TEST_MAPPINGS: Mapping[] = [
       headers: [],
       bodyPatterns: [],
     },
+    processing: [],
     responseDefinition: {
       status: 200,
       headers: [{ name: "Content-Type", value: "application/json" }],
@@ -156,7 +161,7 @@ describe("Find Mapping", () => {
       headers: [],
       body: "",
     };
-    const runtime = new Runtime(["scenario-01"]);
+    const runtime = new Runtime(["scenario-01"], new Map<string, any>());
     if (requiredScenarioState !== undefined) {
       runtime.changeScenarioState("scenario-01", requiredScenarioState);
     }
@@ -238,6 +243,21 @@ const TEST_JSON_MAPPING_PARSE_ONE = {
     body: "Text body",
     fixedDelayMilliseconds: 123,
   },
+  processing: [
+    {
+      type: "input",
+      dataset: "tickets",
+      expression: "$",
+    },
+    {
+      type: "match",
+      expression: "$",
+    },
+    {
+      type: "output",
+      operation: "replaceWithBody",
+    },
+  ],
 };
 
 describe("Parse mapping", () => {
@@ -284,6 +304,22 @@ describe("Parse mapping", () => {
       { name: "Cache-Control", value: "no-cache" },
     ]);
     expect(actual.responseDefinition.fixedDelayMilliseconds).toBe(123);
+
+    expect(actual.processing).toBeDefined();
+    expect(actual.processing.length).toBe(3);
+    expect(actual.processing[0]).toStrictEqual({
+      type: "input",
+      dataset: "tickets",
+      expression: "$",
+    });
+    expect(actual.processing[1]).toStrictEqual({
+      type: "match",
+      expression: "$",
+    });
+    expect(actual.processing[2]).toStrictEqual({
+      type: "output",
+      operation: "replaceWithBody",
+    });
   });
 
   test.each([

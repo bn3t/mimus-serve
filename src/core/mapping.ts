@@ -6,7 +6,6 @@ import {
 } from "uuid";
 import { intersection, head } from "ramda";
 import {
-  Configuration,
   HttpRequest,
   Mapping,
   MatchResult,
@@ -15,6 +14,7 @@ import {
   ResponseDefinition,
   UrlMatchType,
   Context,
+  ProcessingDefinition,
 } from "../types";
 import { listFilesInDir, readJsonFile, readYamlFile } from "../utils/files";
 import { processTemplate } from "../utils/templating";
@@ -124,6 +124,34 @@ const parseLoadedMappings = (loadedMappings: any): Mapping[] => {
   }
 };
 
+const parseProcessing = (
+  processing: any,
+): ProcessingDefinition[] | undefined => {
+  if (processing === undefined) {
+    return [];
+  }
+  return processing.map((processing: any) => {
+    switch (processing.type) {
+      case "input":
+        return {
+          type: "input",
+          dataset: processing.dataset,
+          expression: processing.expression,
+        };
+      case "match":
+        return {
+          type: "match",
+          expression: processing.expression,
+        };
+      case "output":
+        return {
+          type: "output",
+          operation: processing.operation,
+        };
+    }
+  });
+};
+
 export const parseOne = (json: any): Mapping =>
   ({
     id: json.id ? uuidStringify(uuidParse(json.id)) : uuid(),
@@ -143,6 +171,7 @@ export const parseOne = (json: any): Mapping =>
         "body",
       ),
     },
+    processing: parseProcessing(json.processing),
     responseDefinition: {
       status: json.response.status,
       statusMessage: json.response.statusMessage,
@@ -157,6 +186,7 @@ export const parseOne = (json: any): Mapping =>
       fixedDelayMilliseconds: json.response.fixedDelayMilliseconds ?? 0,
       transform: json.response.transformers !== undefined,
       jsonataExpression: json.response.jsonataExpression,
+      dataset: json.response.dataset,
     },
   } as Mapping);
 
@@ -180,19 +210,6 @@ export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
     )
   ).flat();
   return mappings;
-};
-
-export const loadConfiguration = async (
-  filesDir: string,
-  mappingsDir: string,
-  transform: boolean,
-): Promise<Configuration> => {
-  const mappings = await loadMappings(mappingsDir);
-  return {
-    transform,
-    mappings,
-    files: filesDir,
-  };
 };
 
 // process response definition heders through templating

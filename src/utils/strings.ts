@@ -1,8 +1,11 @@
 import { JSONPath } from "jsonpath-plus";
 import { equals } from "ramda";
 
-export const matchRegexp = (regexp: string, value: string) =>
-  (value.match(regexp)?.length ?? 0) > 0;
+export const matchRegexp = (regexp: string, value: string) => {
+  const re = new RegExp(regexp, "g");
+  const match = value.match(re);
+  return match !== null && (match[0]?.length ?? 0) === value.length;
+};
 
 export const matchJson = (value1: string, value2: string) => {
   try {

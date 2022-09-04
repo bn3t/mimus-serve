@@ -1,7 +1,9 @@
+import { Runtime } from "../core/runtime";
 import {
   Configuration,
   Context,
   HttpResponse,
+  ProcessingDefinition,
   ResponseDefinition,
   ResponseRenderer,
 } from "../types";
@@ -19,7 +21,9 @@ export class BaseResponseRenderer implements ResponseRenderer {
    */
   async render(
     configuration: Configuration,
+    _runtime: Runtime,
     responseDefinition: ResponseDefinition,
+    _processing: ProcessingDefinition[],
     _context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse> {

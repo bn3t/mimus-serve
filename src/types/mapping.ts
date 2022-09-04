@@ -1,3 +1,4 @@
+import { Runtime } from "../core/runtime";
 import { Method, NameValuePair } from "./common";
 import { Context } from "./context";
 import { HttpRequest, HttpResponse } from "./http";
@@ -22,7 +23,9 @@ export interface RequestMatcher {
 export interface ResponseRenderer {
   render(
     configuration: Configuration,
+    runtime: Runtime,
     responseDefinition: ResponseDefinition,
+    processing: ProcessingDefinition[],
     context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse>;
@@ -70,8 +73,34 @@ export interface ResponseDefinition {
   fixedDelayMilliseconds: number;
   transform: boolean;
   jsonataExpression?: string;
+  dataset?: string;
 }
 
+export interface InputProcessing {
+  type: "input";
+  dataset: string;
+  expression: string;
+}
+export interface MatchProcessing {
+  type: "match";
+  expression: string;
+}
+
+export interface OutputProcessing {
+  type: "output";
+  operation:
+    | "replaceWithRequestBody"
+    | "mergeWithRequestBody"
+    | "insertRequestBody"
+    | "deleteMatching";
+}
+
+export type OutputProcessingOperation = OutputProcessing["operation"];
+
+export type ProcessingDefinition =
+  | InputProcessing
+  | MatchProcessing
+  | OutputProcessing;
 export interface Mapping {
   id: string;
   name?: string;
@@ -81,6 +110,7 @@ export interface Mapping {
   newScenarioState?: string;
   requestMatch: RequestMatch;
   responseDefinition: ResponseDefinition;
+  processing: ProcessingDefinition[];
 }
 
 export interface Configuration {
