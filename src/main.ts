@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { fastify, FastifyInstance } from "fastify";
 import path from "path";
 import commandLineArgs from "command-line-args";
