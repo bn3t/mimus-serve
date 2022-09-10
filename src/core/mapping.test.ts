@@ -260,7 +260,7 @@ const TEST_JSON_MAPPING_PARSE_ONE = {
       expression: "$",
     },
     {
-      type: "output",
+      type: "store",
       operation: "replaceWithBody",
     },
   ],
@@ -323,7 +323,7 @@ describe("Parse mapping", () => {
       expression: "$",
     });
     expect(actual.processing[2]).toStrictEqual({
-      type: "output",
+      type: "store",
       operation: "replaceWithBody",
     });
   });

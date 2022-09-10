@@ -19,16 +19,19 @@ export const replaceMatchingObjectInArray = (
   operation: OutputProcessingOperation,
 ): any[] => {
   if (operation === "insertRequestBody") {
-    return [...input, objectToReplace];
+    return [[...input, objectToReplace], objectToReplace];
   }
 
   const result = [];
+  let currentData;
   for (const item of input) {
     if (equals(item, objectToMatch)) {
       if (operation === "mergeWithRequestBody") {
-        result.push({ ...item, ...objectToReplace });
+        currentData = { ...item, ...objectToReplace };
+        result.push(currentData);
       } else if (operation === "replaceWithRequestBody") {
-        result.push(objectToReplace);
+        currentData = objectToReplace;
+        result.push(currentData);
       } else if (operation === "deleteMatching") {
         // do not insert anything
       } else {
@@ -38,7 +41,7 @@ export const replaceMatchingObjectInArray = (
       result.push(item);
     }
   }
-  return result;
+  return [result, currentData];
 };
 
 /**
@@ -70,6 +73,9 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
     let datasetName;
     let processedData;
     let match;
+    let requestBody = context.request.body;
+    let currentData;
+    let body;
     for (const processingDefinition of processing) {
       switch (processingDefinition.type) {
         case "input":
@@ -93,28 +99,62 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
             match = evaluateJsonata(expression, processedData, context);
           }
           break;
-        case "output":
+        case "transform":
           {
-            const operation = processingDefinition.operation;
-            if (operation === undefined) {
+            const { expression, input } = processingDefinition;
+
+            if (expression === undefined || input === undefined) {
               throw new Error(
-                "Operation should be defined for output processing",
+                "Expression and input should be defined for transform processing",
+              );
+            } else if (input !== "requestBody") {
+              throw new Error(
+                "Only requestBody is supported as input for transform processing",
               );
             }
-            let objectToReplace;
+            if (context.request.body !== undefined) {
+              const data = JSON.parse(context.request.body);
+              const transformed = evaluateJsonata(expression, data, context);
+              requestBody = JSON.stringify(transformed);
+            }
+          }
+          break;
+        case "store":
+          {
+            const { operation } = processingDefinition;
+            if (operation === undefined) {
+              throw new Error(
+                "Only insertRequestBody is supported as output processing",
+              );
+            }
             try {
-              if (context.request.body !== undefined) {
-                objectToReplace = JSON.parse(context.request.body);
+              if (requestBody !== undefined) {
+                currentData = JSON.parse(requestBody);
               }
             } catch (error) {
-              // ignore error, objectToReplace will be undefined
+              // ignore error, currentData will be undefined
             }
-            processedData = replaceMatchingObjectInArray(
-              processedData,
-              match,
-              objectToReplace,
-              operation,
-            );
+            const [newProcessedData, newCurrentData] =
+              replaceMatchingObjectInArray(
+                processedData,
+                match,
+                currentData,
+                operation,
+              );
+            processedData = newProcessedData;
+            currentData = newCurrentData;
+          }
+          break;
+        case "response":
+          {
+            const { output } = processingDefinition;
+            if (output === undefined && output !== "currentData") {
+              throw new Error(
+                "Only currentData is supported as output for response processing",
+              );
+            }
+
+            body = JSON.stringify(currentData);
           }
           break;
       }
@@ -124,8 +164,8 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
       runtime.setDataset(datasetName, processedData);
     }
 
-    if (responseDefinition.jsonataExpression !== undefined) {
-      result.body = JSON.stringify(processedData);
+    if (body !== undefined) {
+      result.body = body;
     }
     return result;
   }

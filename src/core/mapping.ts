@@ -143,10 +143,21 @@ const parseProcessing = (
           type: "match",
           expression: processing.expression,
         };
-      case "output":
+      case "transform":
         return {
-          type: "output",
+          type: "transform",
+          expression: processing.expression,
+          input: processing.input,
+        };
+      case "store":
+        return {
+          type: "store",
           operation: processing.operation,
+        };
+      case "response":
+        return {
+          type: "response",
+          output: processing.output,
         };
     }
   });

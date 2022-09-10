@@ -89,8 +89,13 @@ export interface MatchProcessing {
   expression: string;
 }
 
-export interface OutputProcessing {
-  type: "output";
+export interface TransformProcessing {
+  type: "transform";
+  input: string;
+  expression: string;
+}
+export interface StoreProcessing {
+  type: "store";
   operation:
     | "replaceWithRequestBody"
     | "mergeWithRequestBody"
@@ -98,12 +103,20 @@ export interface OutputProcessing {
     | "deleteMatching";
 }
 
-export type OutputProcessingOperation = OutputProcessing["operation"];
+export interface ResponseProcessing {
+  type: "response";
+  output: "currentData";
+}
+
+export type OutputProcessingOperation = StoreProcessing["operation"];
 
 export type ProcessingDefinition =
   | InputProcessing
   | MatchProcessing
-  | OutputProcessing;
+  | TransformProcessing
+  | StoreProcessing
+  | ResponseProcessing;
+
 export interface Mapping {
   id: string;
   name?: string;

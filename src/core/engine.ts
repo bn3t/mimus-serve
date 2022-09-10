@@ -139,6 +139,7 @@ export const processRequest = async (
       }
     } catch (error) {
       serverResponse.statusCode = 500;
+      console.error("Error while processing request", error);
       await writeResponse("Error processing request: " + error);
     }
     serverResponse.end();

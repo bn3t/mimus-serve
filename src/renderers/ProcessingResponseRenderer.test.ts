@@ -184,7 +184,7 @@ describe("ProcessingResponseRenderer", () => {
         expression: "a",
       },
       {
-        type: "output",
+        type: "store",
         operation: "replaceWithRequestBody",
       },
     ];
@@ -236,7 +236,7 @@ describe("replaceMatchingObjectInArray", () => {
       objectToMatch: { a: 2 },
       objectToReplace: { b: 4 },
       operation: "replaceWithRequestBody" as OutputProcessingOperation,
-      expectedResut: [{ a: 1 }, { b: 4 }],
+      expectedResut: [[{ a: 1 }, { b: 4 }], { b: 4 }],
     },
     {
       testname: "merge the matching object in the array",
@@ -244,7 +244,7 @@ describe("replaceMatchingObjectInArray", () => {
       objectToMatch: { a: 2 },
       objectToReplace: { b: 4 },
       operation: "mergeWithRequestBody" as OutputProcessingOperation,
-      expectedResut: [{ a: 1 }, { a: 2, b: 4 }],
+      expectedResut: [[{ a: 1 }, { a: 2, b: 4 }], { a: 2, b: 4 }],
     },
     {
       testname: "delete the matching object in the array",
@@ -252,7 +252,7 @@ describe("replaceMatchingObjectInArray", () => {
       objectToMatch: { a: 2 },
       objectToReplace: undefined,
       operation: "deleteMatching" as OutputProcessingOperation,
-      expectedResut: [{ a: 1 }],
+      expectedResut: [[{ a: 1 }], undefined],
     },
     {
       testname: "insert the matching object in the array",
@@ -260,7 +260,7 @@ describe("replaceMatchingObjectInArray", () => {
       objectToMatch: undefined,
       objectToReplace: { a: 3 },
       operation: "insertRequestBody" as OutputProcessingOperation,
-      expectedResut: [{ a: 1 }, { a: 2 }, { a: 3 }],
+      expectedResut: [[{ a: 1 }, { a: 2 }, { a: 3 }], { a: 3 }],
     },
   ])(
     "should $testname",

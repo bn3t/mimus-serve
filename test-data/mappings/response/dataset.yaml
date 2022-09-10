@@ -24,8 +24,10 @@ processing:
     expression: $
   - type: match
     expression: $[ticketId=$request.pathSegments[2]]
-  - type: output
+  - type: store
     operation: replaceWithRequestBody
+  - type: response
+    output: currentData
 response:
   status: 200
   jsonataExpression: $[ticketId=$request.pathSegments[2]]
@@ -39,7 +41,7 @@ processing:
     expression: $
   - type: match
     expression: $[ticketId=$request.pathSegments[2]]
-  - type: output
+  - type: store
     operation: deleteMatching
 response:
   status: 200
@@ -54,11 +56,12 @@ processing:
     expression: $
   - type: match
     expression: $[ticketId=$request.pathSegments[2]]
-  - type: output
+  - type: store
     operation: mergeWithRequestBody
+  - type: response
+    output: currentData
 response:
   status: 200
-  jsonataExpression: $[ticketId=$request.pathSegments[2]]
 ---
 request:
   url: /datasets/tickets
@@ -67,8 +70,12 @@ processing:
   - type: input
     dataset: tickets
     expression: $
-  - type: output
+  - type: transform
+    input: requestBody
+    expression: '$merge([$, {"ticketId": $uuid()}])'
+  - type: store
     operation: insertRequestBody
+  - type: response
+    output: currentData
 response:
   status: 200
-  body: OK
