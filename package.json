@@ -22,6 +22,9 @@
   },
   "homepage": "https://gitlab.com/bn3t/mimus-serve",
   "main": "build/main.js",
+  "bin": {
+    "mimus-serve": "./build/main.js"
+  },
   "files": [
     "build"
   ],

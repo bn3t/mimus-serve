@@ -5,6 +5,7 @@ stages:
   - test
   - deploy
   - "release"
+  - publish
 
 build:
   stage: build
@@ -113,8 +114,7 @@ release_job:
 publish:
   only:
     - master
-  stage: release
-  needs: ["build", "release_job"]
+  stage: publish
   dependencies:
     - build
   interruptible: false
