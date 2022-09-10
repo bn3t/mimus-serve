@@ -55,18 +55,21 @@ const optionDefinitions = [
     alias: "f",
     description: "Specify the path where files are located (from bodyFileName)",
     type: String,
+    defaultValue: "./files",
   },
   {
     name: "mappings",
     alias: "m",
     description: "Specify the path mappings are located",
     type: String,
+    defaultValue: "./mappings",
   },
   {
     name: "datasets",
     alias: "d",
     description: "Specify the path datasets are located",
     type: String,
+    defaultValue: "./datasets",
   },
   {
     name: "transform",
@@ -96,7 +99,7 @@ try {
   console.error("Unrecognised option");
 }
 
-if (options !== undefined) {
+if (options !== undefined && !options.help) {
   options.files = path.resolve(path.normalize(currentDirectory), options.files);
   options.mappings = path.resolve(
     path.normalize(currentDirectory),
@@ -159,7 +162,9 @@ if (options !== undefined) {
       process.exit(1);
     }
   };
-  start().catch(console.error);
+  start().catch((e) => {
+    console.error(e.message);
+  });
 } else {
   const usage = commandLineUsage(optionUsage);
   console.error(usage);
