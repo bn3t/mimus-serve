@@ -109,3 +109,17 @@ release_job:
     tag_name: $PACKAGE_VERSION
     name: "Release $PACKAGE_VERSION"
     description: RELEASE_NOTES.md
+
+publish:
+  only:
+    - master
+  stage: release
+  needs: ["build", "release_job"]
+  dependencies:
+    - build
+  interruptible: false
+  retry: 1
+  script:
+    - npm config set -- '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
+    - ls -l && ls -l build/*
+    - npm publish --access public

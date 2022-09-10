@@ -21,7 +21,7 @@
         "method": "GET",
         "headers": {
           "X-myheader": {
-            "matches": "^Dream.*"
+            "matches": "^Mimus.*"
           }
         }
       },

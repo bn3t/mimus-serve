@@ -1,7 +1,7 @@
 openapi: 3.0.0
 
 info:
-  title: Dream Mock Admin API
+  title: Mimus Serve Admin API
   version: 0.0.1
 
 tags:

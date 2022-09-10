@@ -14,7 +14,7 @@ describe("Query Params Test", () => {
     },
     {
       testname: "get with query param matches",
-      url: "/query-params?search_term=DreamMock",
+      url: "/query-params?search_term=MimusServe",
       expected: "matches works",
     },
     {

@@ -8,7 +8,6 @@ import {
   ResponseDefinition,
   ResponseRenderer,
 } from "../types";
-import { readFile } from "../utils/files";
 
 /**
  * A base response renderer for basic rendering of responses.

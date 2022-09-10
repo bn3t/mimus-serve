@@ -1,17 +1,39 @@
 {
-  "name": "dream-mock-server",
+  "name": "@bn3t/mimus-serve",
   "version": "1.0.0",
-  "description": "Dream Mock Server - serve mock data",
+  "description": "Mimus Serve - serve mock data",
+  "author": "Bernard Niset",
+  "license": "MIT",
+  "keywords": [
+    "mock",
+    "server",
+    "mock-server",
+    "node",
+    "fastify",
+    "rest",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/bn3t/mimus-serve"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/bn3t/mimus-serve/-/issues"
+  },
+  "homepage": "https://gitlab.com/bn3t/mimus-serve",
   "main": "build/main.js",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "build:check": "tsc -p ./tsconfig-check.json",
     "build:js": "babel src --out-dir build --extensions \".ts,.tsx\" --source-maps inline --ignore \"src/**/*.spec.ts\",\"src/**/*.test.ts\"",
     "build:types": "tsc --emitDeclarationOnly -p ./tsconfig-prod.json",
     "build": "npm run lint && npm run build:check && npm run build:types && npm run build:js",
     "clean": "rimraf build coverage node_modules junit.xml",
-    "dev:webui": "ts-node src/main.ts --transform --files /Users/bernard/projects/kensuio/dam-mock-module-webui/__files --mappings /Users/bernard/projects/kensuio/dam-mock-module-webui/mappings --logger=info",
     "dev": "ts-node src/main.ts --files ./test-data/files --mappings ./test-data/mappings --datasets ./test-data/datasets",
-    "lint": "eslint --ext ts,js --fix src",
+    "lint": "eslint --ext ts,js src",
+    "lint:fix": "eslint --ext ts,js --fix src",
     "ncu": "ncu -u",
     "preversion": "npm run build && npm run test:ci",
     "start": "node build/main.js",
@@ -25,8 +47,6 @@
     "type-check": "tsc --noEmit",
     "version": "standard-version --skip.tag --tag-prefix ''"
   },
-  "author": "You",
-  "license": "MIT",
   "dependencies": {
     "@fastify/cookie": "^8.1.0",
     "axios": "^0.27.2",

@@ -22,7 +22,7 @@ describe("Headers Test", () => {
     },
     {
       testname: "get with headers matches",
-      headers: { "X-myheader": "DreamMock" },
+      headers: { "X-myheader": "MimusServe" },
       url: "/headers",
       expected: "headers matches works",
     },

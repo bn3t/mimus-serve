@@ -14,7 +14,7 @@ export const AdminRoutes = async (
     routePrefix: "/api-docs",
     exposeRoute: true,
     specification: {
-      path: "./src/admin/swagger/dream-mock-admin-api.yaml",
+      path: "./src/admin/swagger/mimus-serve-admin-api.yaml",
     } as StaticPathSpec,
   });
   fastifyServer.register(AdminScenariosRoutes, { prefix: "/scenarios" });

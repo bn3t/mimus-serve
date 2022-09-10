@@ -21,7 +21,7 @@
         "method": "GET",
         "queryParameters": {
           "search_term": {
-            "matches": "^Dream.*"
+            "matches": "^Mimus.*"
           }
         }
       },

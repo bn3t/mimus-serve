@@ -78,8 +78,8 @@ const optionDefinitions = [
 
 const optionUsage = [
   {
-    header: "Dream Mock Server",
-    content: "Dream Mock Server",
+    header: "Mimus Serve",
+    content: "Mimus Serve",
   },
   {
     header: "Options",
