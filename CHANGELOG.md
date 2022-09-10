@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://gitlab.com/bn3t/mimus-serve/compare/1.0.3...1.0.4) (2022-09-10)
+
+
+### Bug Fixes
+
+* fix problems when running as installed cli ([896e28b](https://gitlab.com/bn3t/mimus-serve/commit/896e28bdc64bb633d0527542e860313bec23078b))
+
 ### [1.0.3](https://gitlab.com/bn3t/mimus-serve/compare/1.0.2...1.0.3) (2022-09-10)
 
 ## [1.0.0](https://gitlab.com/bn3t/mimus-serve/compare/0.0.4...1.0.0) (2022-09-10)
