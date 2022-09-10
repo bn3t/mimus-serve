@@ -23,7 +23,7 @@
     "test:integration:ci": "start-server-and-test start:integration http://localhost:4000 test:integration:nowatch",
     "type-check:watch": "npm run type-check -- --watch",
     "type-check": "tsc --noEmit",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    "version": "standard-version --skip.tag --tag-prefix ''"
   },
   "author": "You",
   "license": "MIT",
@@ -73,6 +73,7 @@
     "pino-pretty": "^9.1.0",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
+    "standard-version": "^9.5.0",
     "start-server-and-test": "^1.14.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.7.4"
