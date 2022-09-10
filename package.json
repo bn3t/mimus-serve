@@ -1,6 +1,6 @@
 {
   "name": "dream-mock-server",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Dream Mock Server - serve mock data",
   "main": "build/main.js",
   "scripts": {
