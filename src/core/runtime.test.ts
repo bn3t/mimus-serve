@@ -35,6 +35,28 @@ describe("Scenario", () => {
     runtime.resetScenariosStates();
     expect(runtime.getScenarioState("scenario1")).toBe("Started");
   });
+
+  test("should verify that a scenario exists", () => {
+    const runtime = new Runtime([], new Map<string, any>());
+    runtime.startScenario("scenario1");
+    expect(runtime.hasScenario("scenario1")).toBe(true);
+  });
+
+  test("should verify we can get all scenarios", () => {
+    const runtime = new Runtime([], new Map<string, any>());
+    runtime.startScenario("scenario1");
+    runtime.startScenario("scenario2");
+    expect(runtime.getScenarios()).toEqual([
+      {
+        name: "scenario1",
+        state: "Started",
+      },
+      {
+        name: "scenario2",
+        state: "Started",
+      },
+    ]);
+  });
 });
 
 describe("Datasets", () => {

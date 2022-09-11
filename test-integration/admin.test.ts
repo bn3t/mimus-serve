@@ -1,6 +1,10 @@
-import { myaxios } from "./test-utils";
+import { myaxios, resetScenarios } from "./test-utils";
 
-describe("Admin Routes", () => {
+describe("Admin Mapping Routes", () => {
+  beforeEach(async () => {
+    await resetScenarios();
+  });
+
   test("should reply with mappings", async () => {
     const response = await myaxios.get("/__admin/mappings");
     expect(response).toBeDefined();
@@ -56,5 +60,34 @@ describe("Admin Routes", () => {
     expect(response.data).toBeDefined();
     expect(response.data.id).toBe("51111a10-9016-4426-93d8-9c7c5897707f");
     expect(response.data.name).toBe("Catch all undefined routes");
+  });
+});
+
+describe("Admin Scenarios Routes", () => {
+  test("should reply with scenarios", async () => {
+    const response = await myaxios.get("/__admin/scenarios");
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+    expect(response.data).toBeDefined();
+    expect(response.data.length).toBe(1);
+    expect(response.data[0].name).toBe("Login");
+    expect(response.data[0].state).toBe("Started");
+  });
+
+  test("should reset change the state of one", async () => {
+    const response = await myaxios.put("/__admin/scenarios/Login/state", {
+      state: "Stopped",
+    });
+    expect(response).toBeDefined();
+    expect(response.status).toBe(200);
+
+    // Check the state has changed
+    const response2 = await myaxios.get("/__admin/scenarios");
+    expect(response2).toBeDefined();
+    expect(response2.status).toBe(200);
+    expect(response2.data).toBeDefined();
+    expect(response2.data.length).toBe(1);
+    expect(response2.data[0].name).toBe("Login");
+    expect(response2.data[0].state).toBe("Stopped");
   });
 });

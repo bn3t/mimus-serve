@@ -50,6 +50,11 @@ export class Runtime {
     this.scenarios.set(scenarioName, newState);
   }
 
+  // Verify that a scenarion exists
+  public hasScenario(scenarioName: string): boolean {
+    return this.scenarios.has(scenarioName);
+  }
+
   // Return the state of a scenario
   public getScenarioState(scenarioName: string): string {
     // verify that the scenario exists
@@ -64,5 +69,16 @@ export class Runtime {
     this.scenarios.forEach((_, scenarioName) =>
       this.changeScenarioState(scenarioName, STARTED),
     );
+  }
+
+  // get all scenarios as an array of strings and states
+  public getScenarios(): {
+    name: string;
+    state: string;
+  }[] {
+    return Array.from(this.scenarios.entries()).map(([name, state]) => ({
+      name,
+      state,
+    }));
   }
 }
