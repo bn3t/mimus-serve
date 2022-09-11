@@ -1,6 +1,6 @@
 {
   "name": "@bn3t/mimus-serve",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Mimus Serve - serve mock data",
   "author": "Bernard Niset",
   "license": "MIT",
