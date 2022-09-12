@@ -6,5 +6,5 @@ describe("Proxy Tests", () => {
     expect(actual.status).toBe(200);
     expect(actual.data).toBeDefined();
     expect(actual.data.name).toBe("Tatooine");
-  });
+  }, 10000);
 });

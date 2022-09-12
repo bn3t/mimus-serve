@@ -5,7 +5,7 @@ describe("Basic Get Tests", () => {
     const response = await myaxios.get("/ot-exist");
     expect(response).toBeDefined();
     expect(response.status).toBe(404);
-    expect(response.statusText).toBe("Handled but not found");
+    expect(response.statusText).toBe("Not Found");
   });
 
   test("should return 200 on / head", async () => {

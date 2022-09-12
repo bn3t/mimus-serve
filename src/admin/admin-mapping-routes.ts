@@ -25,8 +25,9 @@ export const AdminMappingRoutes = async (
 ) => {
   const server = fastifyServer as FastifyInstance & {
     configuration: Configuration;
+    mappings: Mapping[];
   };
-  const configuration = server.configuration;
+  const { mappings } = server;
   server.get<{ Querystring: GetMappingsQuery }>(
     "/",
     {
@@ -47,12 +48,9 @@ export const AdminMappingRoutes = async (
         const normalizedOffset = offset !== undefined ? offset : 0;
         const normalizedLimit =
           limit !== undefined ? normalizedOffset + limit : undefined;
-        filteredMappings = configuration.mappings.slice(
-          normalizedOffset,
-          normalizedLimit,
-        );
+        filteredMappings = mappings.slice(normalizedOffset, normalizedLimit);
       } else {
-        filteredMappings = configuration.mappings;
+        filteredMappings = mappings;
       }
       reply.send({
         meta: {
@@ -66,9 +64,7 @@ export const AdminMappingRoutes = async (
     Params: { mappingId: string };
   }>("/:mappingId", async (request, reply) => {
     const { mappingId } = request.params;
-    const mapping = configuration.mappings.find(
-      (mapping) => mapping.id === mappingId,
-    );
+    const mapping = mappings.find((mapping) => mapping.id === mappingId);
     if (mapping === undefined) {
       reply.code(404);
     } else {

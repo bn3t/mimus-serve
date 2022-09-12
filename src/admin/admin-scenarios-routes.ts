@@ -22,7 +22,6 @@ export const AdminScenariosRoutes = async (
   server.put<{ Params: { name: string }; Body: PutRequestBody }>(
     "/:name/state",
     async (request, reply) => {
-      console.log("PUT /scenarios/:name/state");
       const { name } = request.params;
       const data = request.body;
       if (!runtime.hasScenario(name)) {

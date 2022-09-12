@@ -5,25 +5,13 @@ import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import "dotenv/config";
 import { IncomingMessage, Server, ServerResponse } from "http";
-import { Runtime } from "./core/runtime";
-import { MockRoutes } from "./core/mock-routes";
+import { MockRoutes, Runtime, loadDatasets, loadMappings } from "./core";
 import { AdminRoutes } from "./admin/admin-routes";
-import { loadConfiguration } from "./core/configuration";
-import { loadDatasets } from "./core/datasets";
+import { Options } from "./types";
+import { makeConfiguration } from "./configuration/configuration";
 
 const environment = process.env.NODE_ENV ?? "production";
 const currentDirectory = process.cwd();
-
-type Options = {
-  help?: boolean;
-  port?: number;
-  host?: string;
-  logger?: string;
-  files: string;
-  mappings: string;
-  datasets: string;
-  transform: boolean;
-};
 
 const optionDefinitions = [
   {
@@ -31,6 +19,12 @@ const optionDefinitions = [
     description: "Display this usage guide.",
     alias: "h",
     type: Boolean,
+  },
+  {
+    name: "config",
+    description: "Path to the configuration file.",
+    alias: "c",
+    type: String,
   },
   {
     name: "port",
@@ -55,21 +49,18 @@ const optionDefinitions = [
     alias: "f",
     description: "Specify the path where files are located (from bodyFileName)",
     type: String,
-    defaultValue: "./files",
   },
   {
     name: "mappings",
     alias: "m",
     description: "Specify the path mappings are located",
     type: String,
-    defaultValue: "./mappings",
   },
   {
     name: "datasets",
     alias: "d",
     description: "Specify the path datasets are located",
     type: String,
-    defaultValue: "./datasets",
   },
   {
     name: "transform",
@@ -100,12 +91,6 @@ try {
 }
 
 if (options !== undefined && !options.help) {
-  options.files = path.resolve(path.normalize(currentDirectory), options.files);
-  options.mappings = path.resolve(
-    path.normalize(currentDirectory),
-    options.mappings,
-  );
-
   const logger =
     options?.logger !== undefined
       ? {
@@ -126,22 +111,28 @@ if (options !== undefined && !options.help) {
     if (options === undefined) {
       throw new Error("options is undefined");
     }
+    const configuration = await makeConfiguration(options);
+    configuration.files = path.resolve(
+      path.normalize(currentDirectory),
+      configuration.files,
+    );
+    configuration.mappings = path.resolve(
+      path.normalize(currentDirectory),
+      configuration.mappings,
+    );
     const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
       fastify({
         logger,
       });
-    const configuration = await loadConfiguration(
-      options.files,
-      options.mappings,
-      options.transform,
-    );
-    const datasets = await loadDatasets(options.datasets);
+    const mappings = await loadMappings(configuration.mappings);
+    const datasets = await loadDatasets(configuration.datasets);
 
+    server.decorate("mappings", mappings);
     server.decorate("configuration", configuration);
     server.decorate(
       "runtime",
       new Runtime(
-        configuration.mappings
+        mappings
           .map((mapping) => mapping.scenarioName)
           .filter((scenarioName) => scenarioName !== undefined) as string[],
         datasets,
@@ -163,7 +154,7 @@ if (options !== undefined && !options.help) {
     }
   };
   start().catch((e) => {
-    console.error(e.message);
+    console.error(e);
   });
 } else {
   const usage = commandLineUsage(optionUsage);

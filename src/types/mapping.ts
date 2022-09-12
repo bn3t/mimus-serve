@@ -1,5 +1,6 @@
 import { Runtime } from "../core/runtime";
 import { Method, NameValuePair } from "./common";
+import { Configuration } from "./configuration";
 import { Context } from "./context";
 import { HttpRequest, HttpResponse } from "./http";
 
@@ -23,6 +24,7 @@ export interface RequestMatcher {
 export interface ResponseRenderer {
   render(
     configuration: Configuration,
+    mappings: Mapping[],
     runtime: Runtime,
     responseDefinition: ResponseDefinition,
     processing: ProcessingDefinition[],
@@ -127,10 +129,4 @@ export interface Mapping {
   requestMatch: RequestMatch;
   responseDefinition: ResponseDefinition;
   processing: ProcessingDefinition[];
-}
-
-export interface Configuration {
-  transform: boolean;
-  files: string;
-  mappings: Mapping[];
 }

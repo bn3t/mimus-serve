@@ -16,7 +16,11 @@ import {
   Context,
   ProcessingDefinition,
 } from "../types";
-import { listFilesInDir, readJsonFile, readYamlFile } from "../utils/files";
+import {
+  listFilesInDir,
+  readJsonFile,
+  readYamlFileMulti,
+} from "../utils/files";
 import { processTemplate } from "../utils/templating";
 import { Runtime } from "./runtime";
 
@@ -214,7 +218,7 @@ export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
         if (ext === ".json") {
           loadedMappings = await readJsonFile(file);
         } else if (ext === ".yaml" || ext === ".yml") {
-          loadedMappings = await readYamlFile(file);
+          loadedMappings = await readYamlFileMulti(file);
         } else {
           throw new Error(`Unknown file extension: ${file}`);
         }

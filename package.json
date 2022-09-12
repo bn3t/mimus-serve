@@ -35,6 +35,8 @@
     "build": "npm run lint && npm run build:check && npm run build:types && npm run build:js",
     "clean": "rimraf build coverage node_modules junit.xml",
     "dev": "ts-node src/main.ts --files ./test-data/files --mappings ./test-data/mappings --datasets ./test-data/datasets",
+    "dev:config-cors": "ts-node src/main.ts --config ./test-data/configuration-cors.yaml",
+    "dev:config-nocors": "ts-node src/main.ts --config ./test-data/configuration-nocors.yaml",
     "dev:no-params": "ts-node src/main.ts",
     "lint": "eslint --ext ts,js src",
     "lint:fix": "eslint --ext ts,js --fix src",
@@ -54,6 +56,7 @@
   "dependencies": {
     "@babel/runtime": "^7.19.0",
     "@fastify/cookie": "^8.1.0",
+    "@fastify/cors": "^8.1.0",
     "@fastify/swagger": "^7.4.1",
     "axios": "^0.27.2",
     "command-line-args": "^5.2.1",

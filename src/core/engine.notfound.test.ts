@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { ServerResponse } from "http";
 import { processRequest } from "./engine";
-import { Mapping, UrlMatchType } from "../types";
+import { Configuration, Mapping, UrlMatchType } from "../types";
 
 import { findMapping } from "./mapping";
 import { buildRequestModel } from "../utils/request";
@@ -65,37 +64,32 @@ jest.mock("./mapping", () => ({
 describe("Engine - case find mapping undefined", () => {
   test("should process a request - undefined", async () => {
     //@ts-ignore
-    const serverResponse: ServerResponse = {
+    const reply: FastifyReply = {
       statusCode: 200,
+      code: jest.fn().mockImplementation(() => reply),
       //@ts-ignore
-      write: jest
-        .fn()
-        .mockImplementation((data: unknown, cb: (error: unknown) => void) =>
-          cb(null),
-        ),
-      setHeader: jest.fn(),
-      end: jest.fn(),
+      send: jest.fn().mockImplementation(() => reply),
+      header: jest.fn(),
     };
     // const serverResponse = jest.mock(ServerResponse);
     await processRequest(
       {
-        mappings: MOCK_MAPPINGS,
         files: "./files",
         transform: false,
-      },
+      } as Configuration,
+      MOCK_MAPPINGS,
       new Runtime([], new Map<string, any>()),
       //@ts-ignore
       { url: "http://localhost:4000/test/path", headers: [], method: "GET" },
       {},
-      serverResponse,
+      reply,
       "",
       false,
     );
     expect(findMapping).toHaveBeenCalledTimes(1);
-    expect(serverResponse.write).toHaveBeenCalledTimes(1);
-    expect(serverResponse.write).toHaveBeenCalledWith(
+    expect(reply.send).toHaveBeenCalledTimes(1);
+    expect(reply.send).toHaveBeenCalledWith(
       "No mapping found for this request",
-      expect.anything(),
     );
     expect(buildRequestModel).toHaveBeenCalledTimes(1);
   });

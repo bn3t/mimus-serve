@@ -1,6 +1,6 @@
-import { IncomingMessage, ServerResponse } from "node:http";
+import { FastifyReply } from "fastify";
+import { IncomingMessage } from "node:http";
 
-import { promisify } from "util";
 import { BodyPatternsMatcher } from "../matchers/body-patterns";
 import { CookiesMatcher } from "../matchers/cookies";
 import { HeadersMatcher } from "../matchers/headers";
@@ -18,6 +18,7 @@ import {
   DEFAULT_HTTP_RESPONSE,
   HttpRequest,
   HttpResponse,
+  Mapping,
   Method,
   RequestMatcher,
   ResponseRenderer,
@@ -46,16 +47,14 @@ const DEFAULT_RESPONSE_RENDERERS: ResponseRenderer[] = [
 
 export const processRequest = async (
   configuration: Configuration,
+  mappings: Mapping[],
   runtime: Runtime,
   incomingMessage: IncomingMessage,
   incomingCookies: Record<string, string | undefined>,
-  serverResponse: ServerResponse,
+  reply: FastifyReply,
   body: any,
   isHttps: boolean,
 ) => {
-  const writeResponse = promisify<unknown, void>(
-    serverResponse.write.bind(serverResponse),
-  );
   const headers = Object.entries(incomingMessage.headers).map(
     ([name, value]) => ({
       name,
@@ -83,7 +82,7 @@ export const processRequest = async (
   );
   const mapping = findMapping(
     DEFAULT_REQUEST_MATCHERS,
-    configuration.mappings,
+    mappings,
     runtime,
     mappedRequest,
   );
@@ -103,6 +102,7 @@ export const processRequest = async (
       for (const renderer of DEFAULT_RESPONSE_RENDERERS) {
         response = await renderer.render(
           configuration,
+          mappings,
           runtime,
           responseDefinition,
           mapping.processing,
@@ -113,18 +113,16 @@ export const processRequest = async (
 
       await delay(responseDefinition.fixedDelayMilliseconds);
 
-      serverResponse.statusCode = response.status;
+      reply.code(response.status);
 
-      if (response.statusMessage !== undefined) {
-        serverResponse.statusMessage = response.statusMessage;
-      }
+      // if (response.statusMessage !== undefined) {
+      //   serverResponse.statusMessage = response.statusMessage;
+      // }
 
-      response.headers.forEach((h) =>
-        serverResponse.setHeader(h.name, h.value ?? ""),
-      );
+      response.headers.forEach((h) => reply.header(h.name, h.value ?? ""));
 
       if (response.body !== undefined) {
-        await writeResponse(response.body);
+        reply.send(response.body);
       }
 
       // Change scenario state if necessary
@@ -138,14 +136,14 @@ export const processRequest = async (
         );
       }
     } catch (error) {
-      serverResponse.statusCode = 500;
+      reply.code(500);
       console.error("Error while processing request", error);
-      await writeResponse("Error processing request: " + error);
+      reply.send("Error processing request: " + error);
     }
-    serverResponse.end();
+    // serverResponse.end();
   } else {
-    serverResponse.statusCode = 500;
-    await writeResponse("No mapping found for this request");
-    serverResponse.end();
+    reply.code(500);
+    reply.send("No mapping found for this request");
+    // serverResponse.end();
   }
 };

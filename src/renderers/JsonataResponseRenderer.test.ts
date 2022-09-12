@@ -49,6 +49,7 @@ describe("JsonataResponseRenderer", () => {
     };
     const result = await renderer.render(
       { files: "./a-folder" } as Configuration,
+      [],
       new Runtime([], new Map<string, any>()),
       responseDefinition,
       [],
@@ -91,6 +92,7 @@ describe("JsonataResponseRenderer", () => {
     };
     const result = await renderer.render(
       { files: "./a-folder" } as Configuration,
+      [],
       new Runtime([], new Map<string, any>()),
       responseDefinition,
       [],

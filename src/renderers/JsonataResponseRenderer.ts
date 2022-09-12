@@ -5,6 +5,7 @@ import {
   Configuration,
   Context,
   HttpResponse,
+  Mapping,
   ProcessingDefinition,
   ResponseDefinition,
   ResponseRenderer,
@@ -23,6 +24,7 @@ export class JsonataResponseRenderer implements ResponseRenderer {
    */
   async render(
     _configuration: Configuration,
+    _mappings: Mapping[],
     _runtime: Runtime,
     responseDefinition: ResponseDefinition,
     _processing: ProcessingDefinition[],

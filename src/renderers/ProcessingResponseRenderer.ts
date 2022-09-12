@@ -8,6 +8,7 @@ import {
   ResponseDefinition,
   ResponseRenderer,
   OutputProcessingOperation,
+  Mapping,
 } from "../types";
 import { evaluateJsonata } from "../utils/jsonata";
 
@@ -56,6 +57,7 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
    */
   async render(
     _configuration: Configuration,
+    _mappings: Mapping[],
     runtime: Runtime,
     responseDefinition: ResponseDefinition,
     processing: ProcessingDefinition[],

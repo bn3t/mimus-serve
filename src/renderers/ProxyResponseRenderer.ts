@@ -4,6 +4,7 @@ import {
   Configuration,
   Context,
   HttpResponse,
+  Mapping,
   ProcessingDefinition,
   ResponseDefinition,
   ResponseRenderer,
@@ -21,6 +22,7 @@ export class ProxyResponseRenderer implements ResponseRenderer {
    */
   async render(
     _configuration: Configuration,
+    _mappings: Mapping[],
     _runtime: Runtime,
     responseDefinition: ResponseDefinition,
     _processing: ProcessingDefinition[],
@@ -50,12 +52,12 @@ export class ProxyResponseRenderer implements ResponseRenderer {
     });
 
     result.status = proxyResponse.status;
-    result.headers = Object.entries(proxyResponse.headers).map(
-      ([name, value]) => ({
+    result.headers = Object.entries(proxyResponse.headers)
+      .filter(([name]) => name !== "transfer-encoding")
+      .map(([name, value]) => ({
         name,
         value,
-      }),
-    );
+      }));
     result.body = proxyResponse.data;
 
     return result;

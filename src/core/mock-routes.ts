@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
 import cookie from "@fastify/cookie";
+import cors from "@fastify/cors";
 
 import { Configuration } from "../types";
 import { processRequest } from "./engine";
@@ -12,9 +13,18 @@ export const MockRoutes = async (
   const server = fastifyServer as FastifyInstance & {
     configuration: Configuration;
     runtime: Runtime;
+    mappings: any[];
   };
-  const { configuration, runtime } = server;
+  const { configuration, runtime, mappings } = server;
 
+  server.register(cors, {
+    origin: configuration.cors.origin,
+    methods: configuration.cors.methods,
+    allowedHeaders: configuration.cors.allowedHeaders,
+    exposedHeaders: configuration.cors.exposedHeaders,
+    credentials: configuration.cors.credentials,
+    maxAge: configuration.cors.maxAge,
+  });
   server.register(cookie, {
     hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
     parseOptions: {}, // options for parsing cookies
@@ -37,17 +47,38 @@ export const MockRoutes = async (
     },
   );
 
-  server.all("/*", async (request, reply) => {
-    const isHttps = server.initialConfig.https === true;
-    reply.hijack();
-    await processRequest(
-      configuration,
-      runtime,
-      request.raw,
-      request.cookies,
-      reply.raw,
-      request.body,
-      isHttps,
-    );
+  server.route({
+    method: [
+      "DELETE",
+      "GET",
+      "HEAD",
+      "PATCH",
+      "POST",
+      "PUT",
+      "SEARCH",
+      "TRACE",
+      "PROPFIND",
+      "PROPPATCH",
+      "MKCOL",
+      "COPY",
+      "MOVE",
+      "LOCK",
+      "UNLOCK",
+    ],
+    url: "/*",
+    handler: async (request, reply) => {
+      const isHttps = server.initialConfig.https === true;
+      // reply.hijack();
+      await processRequest(
+        configuration,
+        mappings,
+        runtime,
+        request.raw,
+        request.cookies,
+        reply,
+        request.body,
+        isHttps,
+      );
+    },
   });
 };

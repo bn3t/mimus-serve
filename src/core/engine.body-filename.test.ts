@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { ServerResponse } from "http";
 import { processRequest } from "./engine";
-import { Mapping, UrlMatchType } from "../types";
+import { Configuration, Mapping, UrlMatchType } from "../types";
 
 import { findMapping } from "./mapping";
 import { buildRequestModel } from "../utils/request";
@@ -73,24 +72,19 @@ jest.mock("../utils/files", () => ({
 describe("Engine - case find mapping body file name", () => {
   test("should process a request - body file name", async () => {
     //@ts-ignore
-    const serverResponse: ServerResponse = {
+    const reply: FastifyReply = {
       statusCode: 200,
+      code: jest.fn().mockImplementation(() => reply),
       //@ts-ignore
-      write: jest
-        .fn()
-        .mockImplementation((data: unknown, cb: (error: unknown) => void) =>
-          cb(null),
-        ),
-      setHeader: jest.fn(),
-      end: jest.fn(),
+      send: jest.fn().mockImplementation(() => reply),
+      header: jest.fn(),
     };
-    // const serverResponse = jest.mock(ServerResponse);
     await processRequest(
       {
-        mappings: MOCK_MAPPINGS,
         files: "./files",
         transform: false,
-      },
+      } as Configuration,
+      MOCK_MAPPINGS,
       new Runtime([], new Map<string, any>()),
       {
         url: "http://localhost:4000/test/path",
@@ -99,16 +93,13 @@ describe("Engine - case find mapping body file name", () => {
         method: "GET",
       },
       {},
-      serverResponse,
+      reply,
       "",
       false,
     );
     expect(findMapping).toHaveBeenCalledTimes(1);
-    expect(serverResponse.write).toHaveBeenCalledTimes(1);
-    expect(serverResponse.write).toHaveBeenCalledWith(
-      "read file content match 02",
-      expect.anything(),
-    );
+    expect(reply.send).toHaveBeenCalledTimes(1);
+    expect(reply.send).toHaveBeenCalledWith("read file content match 02");
     expect(buildRequestModel).toHaveBeenCalledTimes(1);
   });
 });

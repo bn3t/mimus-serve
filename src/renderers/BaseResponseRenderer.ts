@@ -3,6 +3,7 @@ import {
   Configuration,
   Context,
   HttpResponse,
+  Mapping,
   ProcessingDefinition,
   ResponseDefinition,
   ResponseRenderer,
@@ -21,6 +22,7 @@ export class BaseResponseRenderer implements ResponseRenderer {
    */
   async render(
     configuration: Configuration,
+    _mappings: Mapping[],
     _runtime: Runtime,
     responseDefinition: ResponseDefinition,
     _processing: ProcessingDefinition[],
