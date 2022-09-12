@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://gitlab.com/bn3t/mimus-serve/compare/1.0.5...1.1.0) (2022-09-12)
+
+
+### Features
+
+* Add cookie support into the req model ([a98742f](https://gitlab.com/bn3t/mimus-serve/commit/a98742fb191c58ea9d9ba16755d24fe30015fe88))
+* Add cors support ([e9b24f3](https://gitlab.com/bn3t/mimus-serve/commit/e9b24f3ee413916ef8109f5a6e0501a0072e27de))
+* Allow scenarios to be controlled from admin ([1b4563a](https://gitlab.com/bn3t/mimus-serve/commit/1b4563a65932e8276f0fd437c8da7b97f56fa8ca))
+* support global fixed delays. ([563b52f](https://gitlab.com/bn3t/mimus-serve/commit/563b52f3f8899dfdd53d929e56313a014068c66c))
+
 ### [1.0.5](https://gitlab.com/bn3t/mimus-serve/compare/1.0.4...1.0.5) (2022-09-11)
 
 ### [1.0.4](https://gitlab.com/bn3t/mimus-serve/compare/1.0.3...1.0.4) (2022-09-10)
