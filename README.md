@@ -38,6 +38,10 @@ Added features:
 - Dataset support
 - Dataset modification with processing
 
+## Documentation
+
+[See Documentation in this Wiki](https://gitlab.com/bn3t/mimus-serve/-/wikis/home)
+
 ## Conventional Commits cheatsheet
 
 ### General form
