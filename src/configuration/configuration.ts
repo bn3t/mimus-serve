@@ -38,6 +38,7 @@ export const makeConfiguration = async (
     files: options.files ?? configFromYaml?.files ?? "./files",
     mappings: options.mappings ?? configFromYaml?.mappings ?? "./mappings",
     datasets: options.datasets ?? configFromYaml?.datasets ?? "./datasets",
+    fixedDelayMilliseconds: configFromYaml?.fixedDelayMilliseconds ?? 0,
     cors: {
       origin: configFromYaml?.cors.origin ?? false,
       methods: configFromYaml?.cors.methods ?? ["GET", "POST", "PUT", "DELETE"],

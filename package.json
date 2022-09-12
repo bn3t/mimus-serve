@@ -20,7 +20,7 @@
   "bugs": {
     "url": "https://gitlab.com/bn3t/mimus-serve/-/issues"
   },
-  "homepage": "https://gitlab.com/bn3t/mimus-serve",
+  "homepage": "https://gitlab.com/bn3t/mimus-serve/-/wikis/home",
   "main": "build/main.js",
   "bin": {
     "mimus-serve": "./build/main.js"

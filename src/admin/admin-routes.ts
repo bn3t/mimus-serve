@@ -4,6 +4,7 @@ import { FastifyInstance } from "fastify";
 import { AdminMappingRoutes } from "./admin-mapping-routes";
 import { AdminScenariosRoutes } from "./admin-scenarios-routes";
 import { AdminDatasetsRoutes } from "./admin-datasets-routes";
+import { AdminSettingsRoutes } from "./admin-settings-routes";
 
 export const AdminRoutes = async (
   fastifyServer: FastifyInstance,
@@ -18,6 +19,7 @@ export const AdminRoutes = async (
   //   } as StaticPathSpec,
   // });
   fastifyServer.register(AdminScenariosRoutes, { prefix: "/scenarios" });
+  fastifyServer.register(AdminSettingsRoutes, { prefix: "/settings" });
   fastifyServer.register(AdminDatasetsRoutes, { prefix: "/datasets" });
   fastifyServer.register(AdminMappingRoutes, { prefix: "/mappings" });
 };

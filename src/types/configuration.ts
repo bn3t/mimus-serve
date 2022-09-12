@@ -3,6 +3,7 @@ export interface Configuration {
   files: string;
   mappings: string;
   datasets: string;
+  fixedDelayMilliseconds: number;
   cors: {
     origin: boolean | string | (string | RegExp)[] | RegExp;
     methods: string[];

@@ -112,7 +112,12 @@ export const processRequest = async (
         );
       }
 
-      await delay(responseDefinition.fixedDelayMilliseconds);
+      await delay(
+        Math.max(
+          responseDefinition.fixedDelayMilliseconds,
+          configuration.fixedDelayMilliseconds,
+        ),
+      );
 
       reply.code(response.status);
 

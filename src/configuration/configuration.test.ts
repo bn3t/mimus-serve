@@ -9,6 +9,7 @@ const TEST_CONFIGURATION_YAML = {
     files: "./files-config",
     mappings: "./mappings-config",
     datasets: "./datasets-config",
+    fixedDelayMilliseconds: 1000,
     cors: {
       origin: false,
       methods: ["GET", "POST", "PUT", "DELETE"],
@@ -56,6 +57,7 @@ describe("Make Configuration", () => {
         files: "./files-options",
         mappings: "./mappings-options",
         datasets: "./datasets-options",
+        fixedDelayMilliseconds: 1000,
         cors: {
           origin: false,
           methods: ["GET", "POST", "PUT", "DELETE"],
@@ -76,6 +78,7 @@ describe("Make Configuration", () => {
         files: "resolved/./files-config",
         mappings: "resolved/./mappings-config",
         datasets: "resolved/./datasets-config",
+        fixedDelayMilliseconds: 1000,
         cors: {
           origin: false,
           methods: ["GET", "POST", "PUT", "DELETE"],
@@ -94,6 +97,7 @@ describe("Make Configuration", () => {
         files: "./files",
         mappings: "./mappings",
         datasets: "./datasets",
+        fixedDelayMilliseconds: 0,
         cors: {
           origin: false,
           methods: ["GET", "POST", "PUT", "DELETE"],
