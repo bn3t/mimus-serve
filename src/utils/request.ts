@@ -6,6 +6,7 @@ export const buildRequestModel = (
   req: Pick<IncomingMessage, "url" | "method" | "headers">,
   headers: NameValuePair[],
   body: string,
+  incomingCookies: Record<string, string | undefined>,
   isHttps: boolean,
 ): RequestModel => {
   if (req.url === undefined || req.method === undefined) {
@@ -49,7 +50,7 @@ export const buildRequestModel = (
       },
       {},
     ),
-    cookies: {},
+    cookies: incomingCookies,
     body,
   };
   return requestModel;

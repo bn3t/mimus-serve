@@ -9,6 +9,12 @@ describe("Cookies Test", () => {
       expected: "request had a cookie search_term with value WireMock",
     },
     {
+      testname: "get with cookie with template",
+      headers: { Cookie: "search_term=WireMock" },
+      url: "/cookies-with-template",
+      expected: "cookie in template respoonse: WireMock",
+    },
+    {
       testname: "get without cookie equal to - match",
       headers: {},
       url: "/cookies",

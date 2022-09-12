@@ -9,6 +9,6 @@ export interface RequestModel {
   scheme: string;
   baseUrl: string;
   headers: { [key: string]: string | string[] };
-  cookies: { [key: string]: string };
+  cookies: { [key: string]: string | undefined };
   body?: string;
 }

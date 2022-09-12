@@ -12,7 +12,7 @@ describe("Request", () => {
       },
       body: "body",
     };
-    expect(() => buildRequestModel(req, [], "", false)).toThrow();
+    expect(() => buildRequestModel(req, [], "", {}, false)).toThrow();
   });
 
   test("should throw if req.method is undefined", () => {
@@ -25,7 +25,7 @@ describe("Request", () => {
       },
       body: "body",
     };
-    expect(() => buildRequestModel(req, [], "", false)).toThrow();
+    expect(() => buildRequestModel(req, [], "", {}, false)).toThrow();
   });
 
   test("should build a RequestModel from a request", () => {
@@ -43,7 +43,18 @@ describe("Request", () => {
       { name: "host", value: "localhost" },
     ];
 
-    const requestModel = buildRequestModel(req, headers, "body", false);
+    const cookies = {
+      cookie1: "value1",
+      cookie2: undefined,
+    };
+
+    const requestModel = buildRequestModel(
+      req,
+      headers,
+      "body",
+      cookies,
+      false,
+    );
 
     expect(requestModel).toBeDefined();
     expect(requestModel.url).toBe("/test/path?query=value");
@@ -59,7 +70,10 @@ describe("Request", () => {
       "content-type": "application/json",
       host: "localhost",
     });
-    expect(requestModel.cookies).toEqual({});
+    expect(requestModel.cookies).toEqual({
+      cookie1: "value1",
+      cookie2: undefined,
+    });
     expect(requestModel.body).toBe("body");
   });
 
@@ -78,7 +92,7 @@ describe("Request", () => {
       { name: "host", value: "localhost" },
     ];
 
-    const requestModel = buildRequestModel(req, headers, "body", false);
+    const requestModel = buildRequestModel(req, headers, "body", {}, false);
 
     expect(requestModel).toBeDefined();
     expect(requestModel.url).toBe("/test/path?query=value1&query=value2");

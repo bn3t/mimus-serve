@@ -78,6 +78,7 @@ export const processRequest = async (
     incomingMessage,
     headers,
     body,
+    incomingCookies,
     isHttps,
   );
   const mapping = findMapping(
