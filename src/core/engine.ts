@@ -141,10 +141,10 @@ export const processRequest = async (
           mapping.newScenarioState,
         );
       }
-    } catch (error) {
+    } catch (error: any) {
       reply.code(500);
-      console.error("Error while processing request", error);
-      reply.send("Error processing request: " + error);
+      console.error("Error while processing request", error.message);
+      reply.send("Error processing request: " + error.message);
     }
     // serverResponse.end();
   } else {

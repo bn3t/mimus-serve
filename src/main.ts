@@ -154,7 +154,7 @@ if (options !== undefined && !options.help) {
     }
   };
   start().catch((e) => {
-    console.error(e);
+    console.error(e.message);
   });
 } else {
   const usage = commandLineUsage(optionUsage);
