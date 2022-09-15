@@ -9,9 +9,17 @@ import { MockRoutes, Runtime, loadDatasets, loadMappings } from "./core";
 import { AdminRoutes } from "./admin/admin-routes";
 import { Options } from "./types";
 import { makeConfiguration } from "./configuration/configuration";
+import { dump } from "js-yaml";
 
 const environment = process.env.NODE_ENV ?? "production";
 const currentDirectory = process.cwd();
+const banner = String.raw`
+__  __ _                ___                  
+|  \/  (_)_ __ _  _ ___ / __| ___ _ ___ _____ 
+| |\/| | | '  \ || (_-< \__ \/ -_) '_\ V / -_)
+|_|  |_|_|_|_|_\_,_/__/ |___/\___|_|  \_/\___|
+                                              
+`;
 
 const optionDefinitions = [
   {
@@ -19,6 +27,14 @@ const optionDefinitions = [
     description: "Display this usage guide.",
     alias: "h",
     type: Boolean,
+    defaultValue: false,
+  },
+  {
+    name: "verbose",
+    description: "Set verbose output",
+    alias: "v",
+    type: Boolean,
+    defaultValue: false,
   },
   {
     name: "config",
@@ -67,7 +83,6 @@ const optionDefinitions = [
     alias: "t",
     description: "Force transforming responses using templating",
     type: Boolean,
-    defaultValue: false,
   },
 ];
 
@@ -120,6 +135,10 @@ if (options !== undefined && !options.help) {
       path.normalize(currentDirectory),
       configuration.mappings,
     );
+    console.info(banner);
+    if (options.verbose) {
+      console.info("configuration:\n\n", dump(configuration));
+    }
     const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
       fastify({
         logger,

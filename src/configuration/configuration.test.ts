@@ -1,7 +1,6 @@
 import { Options } from "../types";
 import { readYamlFile } from "../utils/files";
 import { makeConfiguration } from "./configuration";
-import path from "path";
 
 const TEST_CONFIGURATION_YAML = {
   configuration: {
@@ -23,7 +22,7 @@ const TEST_CONFIGURATION_YAML = {
 
 // mock path.resolve
 jest.mock("path", () => ({
-  resolve: (...args: string[]) => "configdir",
+  resolve: (..._args: string[]) => "configdir",
   dirname: (path: string) => path,
 }));
 

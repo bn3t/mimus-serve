@@ -15,7 +15,8 @@ export interface Configuration {
 }
 
 export interface Options {
-  help?: boolean;
+  help: boolean;
+  verbose: boolean;
   config?: string;
   port?: number;
   host?: string;
