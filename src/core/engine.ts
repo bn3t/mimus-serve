@@ -93,7 +93,7 @@ export const processRequest = async (
       request: requestModel,
     };
     const responseDefinition =
-      mapping.responseDefinition.transform || configuration.transform
+      mapping.responseDefinition.transform || configuration.general.transform
         ? transformResponseDefinition(mapping.responseDefinition, context)
         : mapping.responseDefinition;
 
@@ -115,7 +115,7 @@ export const processRequest = async (
       await delay(
         Math.max(
           responseDefinition.fixedDelayMilliseconds,
-          configuration.fixedDelayMilliseconds,
+          configuration.general.fixedDelayMilliseconds,
         ),
       );
 

@@ -107,7 +107,7 @@ export interface StoreProcessing {
 
 export interface ResponseProcessing {
   type: "response";
-  output: "currentData";
+  output: "currentData" | "originalRequestBody";
 }
 
 export type OutputProcessingOperation = StoreProcessing["operation"];

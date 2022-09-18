@@ -22,7 +22,9 @@ export const replaceMatchingObjectInArray = (
   if (operation === "insertRequestBody") {
     return [[...input, objectToReplace], objectToReplace];
   }
-
+  if (objectToMatch === undefined) {
+    throw new Error("No match specified for operation " + operation);
+  }
   const result = [];
   let currentData;
   for (const item of input) {
@@ -76,6 +78,7 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
     let processedData;
     let match;
     let requestBody = context.request.body;
+    const originalRequestBody = requestBody;
     let currentData;
     let body;
     for (const processingDefinition of processing) {
@@ -150,13 +153,21 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
         case "response":
           {
             const { output } = processingDefinition;
-            if (output === undefined && output !== "currentData") {
+            if (output === undefined) {
               throw new Error(
-                "Only currentData is supported as output for response processing",
+                "Output should be defined for response processing",
               );
             }
-
-            body = JSON.stringify(currentData);
+            switch (output) {
+              case "originalRequestBody":
+                body = originalRequestBody;
+                break;
+              case "currentData":
+                body = JSON.stringify(currentData);
+                break;
+              default:
+                throw new Error(`Unknown output ${output}`);
+            }
           }
           break;
       }

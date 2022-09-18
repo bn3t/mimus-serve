@@ -67,7 +67,7 @@ describe("ProcessingResponseRenderer", () => {
 
     expect(
       renderer.render(
-        { files: "./a-folder" } as Configuration,
+        { general: { files: "./a-folder" } } as Configuration,
         [],
         new Runtime([], datasets),
         responseDefinition,
@@ -130,7 +130,7 @@ describe("ProcessingResponseRenderer", () => {
 
     expect(
       renderer.render(
-        { files: "./a-folder" } as Configuration,
+        { general: { files: "./a-folder" } } as Configuration,
         [],
         new Runtime([], datasets),
         responseDefinition,
@@ -192,7 +192,7 @@ describe("ProcessingResponseRenderer", () => {
     ];
 
     const result = await renderer.render(
-      { files: "./a-folder" } as Configuration,
+      { general: { files: "./a-folder" } } as Configuration,
       [],
       new Runtime([], datasets),
       responseDefinition,

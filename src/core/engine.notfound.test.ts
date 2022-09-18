@@ -74,8 +74,10 @@ describe("Engine - case find mapping undefined", () => {
     // const serverResponse = jest.mock(ServerResponse);
     await processRequest(
       {
-        files: "./files",
-        transform: false,
+        general: {
+          files: "./files",
+          transform: false,
+        },
       } as Configuration,
       MOCK_MAPPINGS,
       new Runtime([], new Map<string, any>()),

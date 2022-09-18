@@ -43,7 +43,7 @@ export class BaseResponseRenderer implements ResponseRenderer {
       result.body = responseDefinition.body;
     } else if (responseDefinition.bodyFileName !== undefined) {
       result.body = await readFile(
-        configuration.files,
+        configuration.general.files,
         responseDefinition.bodyFileName,
       );
     }

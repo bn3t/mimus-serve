@@ -106,34 +106,34 @@ try {
 }
 
 if (options !== undefined && !options.help) {
-  const logger =
-    options?.logger !== undefined
-      ? {
-          level: options.logger,
-          transport:
-            environment === "development"
-              ? {
-                  target: "pino-pretty",
-                  options: {
-                    translateTime: "HH:MM:ss Z",
-                    ignore: "pid,hostname",
-                  },
-                }
-              : undefined,
-        }
-      : false;
   const start = async () => {
     if (options === undefined) {
       throw new Error("options is undefined");
     }
     const configuration = await makeConfiguration(options);
-    configuration.files = path.resolve(
+    const logger =
+      configuration.logging.logger !== undefined
+        ? {
+            level: configuration.logging.logger,
+            transport:
+              environment === "development"
+                ? {
+                    target: "pino-pretty",
+                    options: {
+                      translateTime: "HH:MM:ss Z",
+                      ignore: "pid,hostname",
+                    },
+                  }
+                : undefined,
+          }
+        : false;
+    configuration.general.files = path.resolve(
       path.normalize(currentDirectory),
-      configuration.files,
+      configuration.general.files,
     );
-    configuration.mappings = path.resolve(
+    configuration.general.mappings = path.resolve(
       path.normalize(currentDirectory),
-      configuration.mappings,
+      configuration.general.mappings,
     );
     console.info(banner);
     if (options.verbose) {
@@ -143,8 +143,8 @@ if (options !== undefined && !options.help) {
       fastify({
         logger,
       });
-    const mappings = await loadMappings(configuration.mappings);
-    const datasets = await loadDatasets(configuration.datasets);
+    const mappings = await loadMappings(configuration.general.mappings);
+    const datasets = await loadDatasets(configuration.general.datasets);
 
     server.decorate("mappings", mappings);
     server.decorate("configuration", configuration);
@@ -160,9 +160,11 @@ if (options !== undefined && !options.help) {
     server.register(AdminRoutes, { prefix: "/__admin" });
     server.register(MockRoutes);
     try {
-      const host = options.host !== undefined ? { host: options.host } : {};
       await server
-        .listen({ port: options?.port ?? 4000, ...host })
+        .listen({
+          port: configuration.general.port,
+          host: configuration.general.host,
+        })
         .then(
           (address) =>
             !logger && console.info(`server listening on ${address}`),

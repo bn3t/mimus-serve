@@ -1,9 +1,11 @@
-configuration:
+general:
+  host: localhost
+  port: 4000
   files: "./files"
   mappings: "./mappings"
   datasets: "./datasets"
   transform: true
-  cors:
-    origin:
-      - http://www.test-cors.org
-      - http://localhost:3001
+cors:
+  origin:
+    - http://www.test-cors.org
+    - http://localhost:3001

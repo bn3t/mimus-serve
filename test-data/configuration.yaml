@@ -1,7 +1,5 @@
-configuration:
+general:
   files: "./files"
   mappings: "./mappings"
   datasets: "./datasets"
-  transform: true
-  cors:
-    origin: false
+  transform: false

@@ -81,8 +81,10 @@ describe("Engine - case find mapping body file name", () => {
     };
     await processRequest(
       {
-        files: "./files",
-        transform: false,
+        general: {
+          files: "./files",
+          transform: false,
+        },
       } as Configuration,
       MOCK_MAPPINGS,
       new Runtime([], new Map<string, any>()),

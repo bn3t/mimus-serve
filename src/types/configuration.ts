@@ -1,11 +1,18 @@
 export interface Configuration {
-  transform: boolean;
-  files: string;
-  mappings: string;
-  datasets: string;
-  fixedDelayMilliseconds: number;
+  general: {
+    transform: boolean;
+    files: string;
+    mappings: string;
+    datasets: string;
+    fixedDelayMilliseconds: number;
+    port: number;
+    host: string;
+  };
+  logging: {
+    logger?: string;
+  };
   cors: {
-    origin: boolean | string | (string | RegExp)[] | RegExp;
+    origin: boolean | string | string[];
     methods: string[];
     allowedHeaders?: string;
     exposedHeaders?: string;

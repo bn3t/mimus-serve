@@ -30,7 +30,7 @@ export const AdminSettingsRoutes = async (
     },
     async (request, reply) => {
       const { fixedDelayMilliseconds } = request.body;
-      configuration.fixedDelayMilliseconds = fixedDelayMilliseconds;
+      configuration.general.fixedDelayMilliseconds = fixedDelayMilliseconds;
       reply.send({ fixedDelayMilliseconds });
     },
   );
