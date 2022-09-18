@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
+
+
+### Features
+
+* Refactor configuration file format. ([effc0cd](https://gitlab.com/bn3t/mimus-serve/commit/effc0cdb8e2bb9917bf8d15042ba32ff4aa8acbb))
+
+
+### Bug Fixes
+
+* improve behavior when starting up no config ([1c44252](https://gitlab.com/bn3t/mimus-serve/commit/1c44252a3d5a81e02c65ccbb83c89bc501a58401))
+
 ## [1.1.0](https://gitlab.com/bn3t/mimus-serve/compare/1.0.5...1.1.0) (2022-09-12)
 
 
