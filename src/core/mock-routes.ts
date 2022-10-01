@@ -17,7 +17,7 @@ export const MockRoutes = async (
   };
   const { configuration, runtime, mappings } = server;
 
-  server.register(cors, {
+  await server.register(cors, {
     origin: configuration.cors.origin,
     methods: configuration.cors.methods,
     allowedHeaders: configuration.cors.allowedHeaders,
@@ -25,7 +25,7 @@ export const MockRoutes = async (
     credentials: configuration.cors.credentials,
     maxAge: configuration.cors.maxAge,
   });
-  server.register(cookie, {
+  await server.register(cookie, {
     hook: "onRequest", // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
     parseOptions: {}, // options for parsing cookies
   });

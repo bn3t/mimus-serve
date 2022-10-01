@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Runtime } from "../core/runtime";
 import {
   Configuration,

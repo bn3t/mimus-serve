@@ -157,8 +157,8 @@ if (options !== undefined && !options.help) {
         datasets,
       ),
     );
-    server.register(AdminRoutes, { prefix: "/__admin" });
-    server.register(MockRoutes);
+    await server.register(AdminRoutes, { prefix: "/__admin" });
+    await server.register(MockRoutes);
     try {
       await server
         .listen({

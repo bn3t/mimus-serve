@@ -17,7 +17,7 @@ export const AdminScenariosRoutes = async (
     runtime.resetScenariosStates();
   });
   server.get("/", async (_request, reply) => {
-    reply.send(runtime.getScenarios());
+    await reply.send(runtime.getScenarios());
   });
   server.put<{ Params: { name: string }; Body: PutRequestBody }>(
     "/:name/state",
@@ -25,7 +25,7 @@ export const AdminScenariosRoutes = async (
       const { name } = request.params;
       const data = request.body;
       if (!runtime.hasScenario(name)) {
-        reply.code(404);
+        await reply.code(404);
       } else {
         if (data.state !== undefined) {
           runtime.changeScenarioState(name, data.state);

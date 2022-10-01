@@ -14,7 +14,7 @@ export const AdminSettingsRoutes = async (
   };
   const { configuration } = server;
   server.get("/", async (_request, reply) => {
-    reply.send(configuration);
+    await reply.send(configuration);
   });
   server.patch<{ Body: PostRequestBody }>(
     "/",
@@ -31,7 +31,7 @@ export const AdminSettingsRoutes = async (
     async (request, reply) => {
       const { fixedDelayMilliseconds } = request.body;
       configuration.general.fixedDelayMilliseconds = fixedDelayMilliseconds;
-      reply.send({ fixedDelayMilliseconds });
+      await reply.send({ fixedDelayMilliseconds });
     },
   );
 };

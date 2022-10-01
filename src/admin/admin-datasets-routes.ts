@@ -18,9 +18,9 @@ export const AdminDatasetsRoutes = async (
     const { name } = request.params;
     const dataset = runtime.getDataset(name);
     if (dataset === undefined) {
-      reply.code(404);
+      await reply.code(404);
     } else {
-      reply.send(dataset);
+      await reply.send(dataset);
     }
   });
 };

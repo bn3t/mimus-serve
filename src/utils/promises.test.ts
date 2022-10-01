@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { delay } from "./promises";
 
 describe("promises", () => {

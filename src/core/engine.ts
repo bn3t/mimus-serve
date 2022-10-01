@@ -119,6 +119,7 @@ export const processRequest = async (
         ),
       );
 
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       reply.code(response.status);
 
       // if (response.statusMessage !== undefined) {
@@ -128,7 +129,7 @@ export const processRequest = async (
       response.headers.forEach((h) => reply.header(h.name, h.value ?? ""));
 
       if (response.body !== undefined) {
-        reply.send(response.body);
+        await reply.send(response.body);
       }
 
       // Change scenario state if necessary
@@ -142,14 +143,16 @@ export const processRequest = async (
         );
       }
     } catch (error: any) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       reply.code(500);
       console.error("Error while processing request", error.message);
-      reply.send("Error processing request: " + error.message);
+      await reply.send("Error processing request: " + error.message);
     }
     // serverResponse.end();
   } else {
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
     reply.code(500);
-    reply.send("No mapping found for this request");
+    await reply.send("No mapping found for this request");
     // serverResponse.end();
   }
 };

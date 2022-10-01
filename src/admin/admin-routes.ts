@@ -18,8 +18,8 @@ export const AdminRoutes = async (
   //     path: "./src/admin/swagger/mimus-serve-admin-api.yaml",
   //   } as StaticPathSpec,
   // });
-  fastifyServer.register(AdminScenariosRoutes, { prefix: "/scenarios" });
-  fastifyServer.register(AdminSettingsRoutes, { prefix: "/settings" });
-  fastifyServer.register(AdminDatasetsRoutes, { prefix: "/datasets" });
-  fastifyServer.register(AdminMappingRoutes, { prefix: "/mappings" });
+  await fastifyServer.register(AdminScenariosRoutes, { prefix: "/scenarios" });
+  await fastifyServer.register(AdminSettingsRoutes, { prefix: "/settings" });
+  await fastifyServer.register(AdminDatasetsRoutes, { prefix: "/datasets" });
+  await fastifyServer.register(AdminMappingRoutes, { prefix: "/mappings" });
 };

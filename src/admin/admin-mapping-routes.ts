@@ -52,7 +52,7 @@ export const AdminMappingRoutes = async (
       } else {
         filteredMappings = mappings;
       }
-      reply.send({
+      await reply.send({
         meta: {
           total: filteredMappings.length,
         },
@@ -66,9 +66,10 @@ export const AdminMappingRoutes = async (
     const { mappingId } = request.params;
     const mapping = mappings.find((mapping) => mapping.id === mappingId);
     if (mapping === undefined) {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
       reply.code(404);
     } else {
-      reply.send(convertMapping(mapping));
+      await reply.send(convertMapping(mapping));
     }
   });
 };
