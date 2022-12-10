@@ -71,13 +71,12 @@ changelog:
   artifacts:
     when: on_success
     paths:
-      - packages/mimus-serve/RELEASE_NOTES.md
+      - RELEASE_NOTES.md
       - packages/mimus-serve/package.json
-      - packages/mimus-serve/package-lock.json
+      - package-lock.json
     reports:
       dotenv: build.env
   before_script:
-    - cd packages/mimus-serve
     - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$GIT_SSH_PRIV_KEY")
@@ -88,13 +87,17 @@ changelog:
   script:
     - git remote rm origin && git remote add origin git@gitlab.com:$CI_PROJECT_PATH.git
     - git pull origin $CI_COMMIT_REF_NAME
+    - mv CHANGELOG.md packages/mimus-serve
+    - cd packages/mimus-serve
     - |-
       if [ "$RELEASE_AS" != "" ]; then
         npm run version -- --release-as $RELEASE_AS
       else 
         npm run version
       fi
-    - echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> build.env
+    - echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> ../../build.env
+    - cd ../..
+    - mv packages/mimus-serve/CHANGELOG.md .
     - git push -o ci.skip origin HEAD:$CI_COMMIT_REF_NAME # Pushes to the same branch as the trigger
     - diff --changed-group-format='%>' --unchanged-group-format='' <( git show HEAD~1:CHANGELOG.md ) CHANGELOG.md > RELEASE_NOTES.md || true
 
@@ -104,8 +107,6 @@ release_job:
   needs: ["changelog"]
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
-  before_script:
-    - cd packages/mimus-serve
   script:
     - echo $PACKAGE_VERSION
   release:
