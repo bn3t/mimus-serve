@@ -7,6 +7,9 @@ import tsconfigPaths from "vite-tsconfig-paths";
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/ui/",
+  build: {
+    chunkSizeWarningLimit: 1000,
+  },
   test: {
     globals: true,
     environment: "jsdom",
