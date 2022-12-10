@@ -1,0 +1,8 @@
+name: YAML configuration proxy
+request:
+  urlPathPattern: /proxy/.*
+  method: GET
+response:
+  status: 200
+  proxyBaseUrl: https://swapi.dev
+  proxyUrlPrefixToRemove: /proxy

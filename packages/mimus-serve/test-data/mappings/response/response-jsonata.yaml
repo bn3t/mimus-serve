@@ -1,0 +1,30 @@
+---
+name: Filter response with JSONata expression (ticket list)
+request:
+  urlPath: /tickets
+  method: GET
+response:
+  status: 200
+  bodyFileName: tickets/tickets-full.response.json
+  jsonataExpression: "$ ~> | $ | {}, ['context', 'resolution', 'resolutionTimestamp'] |"
+---
+name: Filter response with JSONata expression (by status)
+request:
+  urlPath: /tickets
+  method: GET
+  queryParameters:
+    status:
+      present: true
+response:
+  status: 200
+  bodyFileName: tickets/tickets-full.response.json
+  jsonataExpression: "[$[status=$request.query.status]] ~> | $ | {}, ['context', 'resolution', 'resolutionTimestamp'] |"
+---
+name: Filter response with JSONata expression (one ticket by id)
+request:
+  urlPathPattern: /tickets/.+
+  method: GET
+response:
+  status: 200
+  bodyFileName: tickets/tickets-full.response.json
+  jsonataExpression: $[ticketId=$request.pathSegments[1]]

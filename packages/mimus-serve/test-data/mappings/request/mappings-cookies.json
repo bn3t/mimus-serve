@@ -1,0 +1,48 @@
+{
+  "mappings": [
+    {
+      "name": "Request /cookie without cookies",
+      "request": {
+        "urlPath": "/cookies",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Request did not have a cookie"
+      }
+    },
+    {
+      "name": "Request /cookie match cookie WireMock",
+      "request": {
+        "urlPath": "/cookies",
+        "method": "GET",
+        "cookies": {
+          "search_term": {
+            "equalTo": "WireMock"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "request had a cookie search_term with value WireMock"
+      }
+    },
+    {
+      "name": "Request /cookie match cookie WireMock - response is templated",
+      "request": {
+        "urlPath": "/cookies-with-template",
+        "method": "GET",
+        "cookies": {
+          "search_term": {
+            "equalTo": "WireMock"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "cookie in template respoonse: {{request.cookies.search_term}}",
+        "transformers": ["response-template"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+---
+name: YAML configuration multi document (ex 1)
+request:
+  urlPattern: /yaml/get-from-url-patt.*
+  method: GET
+response:
+  status: 200
+  body: Get from url pattern - yaml
+---
+name: YAML configuration multi document (ex 1)
+request:
+  urlPathPattern: /yaml/get-from-url-path-patt.*
+  method: GET
+response:
+  status: 200
+  body: Get from url path pattern - yaml
+---
+name: YAML configuration multi document (ex 1)
+request:
+  url: /yaml/get-body
+  method: PUT
+response:
+  status: 200
+  body: Should not be triggered by a get - yaml

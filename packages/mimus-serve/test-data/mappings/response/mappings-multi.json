@@ -1,0 +1,92 @@
+{
+  "mappings": [
+    {
+      "name": "JSON Mapping multi (1)",
+      "request": {
+        "urlPath": "/",
+        "method": "HEAD"
+      },
+      "response": {
+        "status": 200,
+        "statusMessage": "Server ready for testing"
+      }
+    },
+    {
+      "name": "JSON Mapping multi (2)",
+      "request": {
+        "urlPath": "/read-a-file",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "response.json"
+      }
+    },
+    {
+      "name": "JSON Mapping multi (3)",
+      "request": {
+        "urlPath": "/read-a-file-not-found",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "bodyFileName": "response-blah.json"
+      }
+    },
+    {
+      "name": "JSON Mapping multi (4)",
+      "request": {
+        "urlPath": "/get-body",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Text content in a body"
+      }
+    },
+    {
+      "name": "JSON Mapping multi (5)",
+      "request": {
+        "url": "/get-from-url?param=value",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Get from url"
+      }
+    },
+    {
+      "name": "JSON Mapping multi (6)",
+      "request": {
+        "urlPattern": "/get-from-url-patt.*",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Get from url pattern"
+      }
+    },
+    {
+      "name": "JSON Mapping multi (7)",
+      "request": {
+        "urlPathPattern": "/get-from-url-path-patt.*",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Get from url path pattern"
+      }
+    },
+    {
+      "name": "JSON Mapping multi (8)",
+      "request": {
+        "url": "/get-body",
+        "method": "PUT"
+      },
+      "response": {
+        "status": 200,
+        "body": "Should not be triggered by a get"
+      }
+    }
+  ]
+}

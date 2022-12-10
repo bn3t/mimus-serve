@@ -1,0 +1,117 @@
+{
+  "mappings": [
+    {
+      "name": "Request /headers match equalTo header X-myheader",
+      "request": {
+        "urlPath": "/headers",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "equalTo": "WireMock"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers equalTo works"
+      }
+    },
+    {
+      "name": "Request /headers match matches header X-myheader",
+      "request": {
+        "urlPath": "/headers",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "matches": "^Mimus.*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers matches works"
+      }
+    },
+    {
+      "name": "Request /headers match doesNotMatch header X-myheader",
+      "request": {
+        "urlPath": "/headers-for-does-not-match",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "doesNotMatch": "^everything.*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers does not match works"
+      }
+    },
+    {
+      "name": "Request /headers match matches header X-myheader - case insensitive",
+      "request": {
+        "urlPath": "/headers",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "matches": "^Another.*",
+            "caseInsensitive": true
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers matches case insensitive works"
+      }
+    },
+    {
+      "name": "Request /headers match contains header X-myheader",
+      "request": {
+        "urlPath": "/headers",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "contains": "word"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers contains works"
+      }
+    },
+    {
+      "name": "Request /headers match absent header X-myheader",
+      "request": {
+        "urlPath": "/headers-for-absent",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "absent": true
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers absent works"
+      }
+    },
+    {
+      "name": "Request /headers match present header X-myheader",
+      "request": {
+        "urlPath": "/headers-for-present",
+        "method": "GET",
+        "headers": {
+          "X-myheader": {
+            "present": true
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "headers present works"
+      }
+    }
+  ]
+}

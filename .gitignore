@@ -1,6 +1,8 @@
 node_modules/
 build/
+dist/
 coverage/
 junit.xml
 .vscode/
 .env
+.turbo

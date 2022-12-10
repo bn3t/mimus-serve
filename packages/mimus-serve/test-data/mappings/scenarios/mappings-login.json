@@ -1,0 +1,58 @@
+{
+  "mappings": [
+    {
+      "name": "Scenario login - Started (Login)",
+      "scenarioName": "Login",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Logged in",
+      "request": {
+        "urlPath": "/login",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "Logged in"
+      }
+    },
+    {
+      "name": "Scenario login - Logged in (Logout)",
+      "scenarioName": "Login",
+      "requiredScenarioState": "Logged in",
+      "newScenarioState": "Started",
+      "request": {
+        "urlPath": "/logout",
+        "method": "POST"
+      },
+      "response": {
+        "status": 200,
+        "body": "Logged out"
+      }
+    },
+    {
+      "name": "Scenario login - get login state (Started)",
+      "scenarioName": "Login",
+      "requiredScenarioState": "Started",
+      "request": {
+        "urlPath": "/get-login-state",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Is Not logged in"
+      }
+    },
+    {
+      "name": "Scenario login - get login state (Logged in)",
+      "scenarioName": "Login",
+      "requiredScenarioState": "Logged in",
+      "request": {
+        "urlPath": "/get-login-state",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "Is logged in"
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+mappings:
+  - name: YAML configuration mappings (ex 1)
+    request:
+      urlPath: /yaml/read-a-file
+      method: GET
+    response:
+      status: 200
+      bodyFileName: response.json
+  - name: YAML configuration mappings (ex 2)
+    request:
+      urlPath: /yaml/get-body
+      method: GET
+    response:
+      status: 200
+      body: Text content in a body - yaml
+  - name: YAML configuration mappings (ex 3)
+    request:
+      url: /yaml/get-from-url?param=value
+      method: GET
+    response:
+      status: 200
+      body: Get from url - yaml

@@ -1,0 +1,91 @@
+{
+  "mappings": [
+    {
+      "name": "Request match body pattern equalTo",
+      "request": {
+        "urlPath": "/request-body",
+        "method": "POST",
+        "bodyPatterns": [
+          {
+            "equalTo": "[\"WireMock\"]"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "body": "Request body patterns equalTo works"
+      }
+    },
+    {
+      "name": "Request match body pattern equalTo (ex 2)",
+      "request": {
+        "urlPath": "/request-body",
+        "method": "POST",
+        "bodyPatterns": [
+          {
+            "equalTo": "test=value"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "body": "Request body patterns equalTo works test=value"
+      }
+    },
+    {
+      "name": "Request match body pattern equalToJson",
+      "request": {
+        "urlPath": "/request-body",
+        "method": "POST",
+        "bodyPatterns": [
+          {
+            "equalToJson": "{\"a\":1}"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "body": "Request body patterns equalToJson works"
+      }
+    },
+    {
+      "name": "Request match body pattern jsonPath",
+      "request": {
+        "urlPath": "/request-body",
+        "method": "POST",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$.name"
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "body": "Request body patterns match json path works"
+      }
+    },
+    {
+      "name": "Request match return templated response",
+      "request": {
+        "urlPath": "/request-body/templated",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "transformed: {{request.pathSegments.[1]}}",
+        "transformers": ["response-template"]
+      }
+    },
+    {
+      "name": "Request match return templated NOT response",
+      "request": {
+        "urlPath": "/request-body/not-templated",
+        "method": "GET"
+      },
+      "response": {
+        "status": 200,
+        "body": "{{request.path.[0]}}"
+      }
+    }
+  ]
+}

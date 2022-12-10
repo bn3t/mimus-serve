@@ -1,9 +1,8 @@
-image: node:16
+image: node:18
 
 stages:
   - build
   - test
-  - deploy
   - "release"
   - publish
 
@@ -16,12 +15,14 @@ build:
     key: node-modules-$CI_COMMIT_REF_SLUG
     paths:
       - node_modules/
+      - packages/**/node_modules/
   artifacts:
     expire_in: 1 days
     when: on_success
     paths:
       - node_modules/
-      - build/
+      - packages/**/node_modules/
+      - packages/**/dist/
 
 test:
   stage: test
@@ -34,13 +35,14 @@ test:
     key: node-modules-$CI_COMMIT_REF_SLUG
     paths:
       - node_modules/
+      - packages/**/node_modules/
   artifacts:
     paths:
-      - coverage/
+      - packages/**/coverage/
     when: always
     reports:
       junit:
-        - junit.xml
+        - packages/mimus-serve/junit.xml
       coverage_report:
         coverage_format: cobertura
         path: coverage/cobertura-coverage.xml
@@ -51,24 +53,11 @@ integration-test:
     key: node-modules-$CI_COMMIT_REF_SLUG
     paths:
       - node_modules/
+      - packages/**/node_modules/
   dependencies:
     - build
   script:
     - npm run test:integration:ci
-
-pages:
-  stage: deploy
-  dependencies:
-    - test
-  script:
-    - mkdir public-tmp
-    - cp -r coverage/* public-tmp
-    - mv public-tmp public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
 
 changelog:
   stage: release
@@ -78,15 +67,17 @@ changelog:
     key: node-modules-$CI_COMMIT_REF_SLUG
     paths:
       - node_modules/
+      - packages/**/node_modules/
   artifacts:
     when: on_success
     paths:
-      - RELEASE_NOTES.md
-      - package.json
-      - package-lock.json
+      - packages/mimus-serve/RELEASE_NOTES.md
+      - packages/mimus-serve/package.json
+      - packages/mimus-serve/package-lock.json
     reports:
       dotenv: build.env
   before_script:
+    - cd packages/mimus-serve
     - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$GIT_SSH_PRIV_KEY")
@@ -113,6 +104,8 @@ release_job:
   needs: ["changelog"]
   stage: release
   image: registry.gitlab.com/gitlab-org/release-cli:latest
+  before_script:
+    - cd packages/mimus-serve
   script:
     - echo $PACKAGE_VERSION
   release:
@@ -129,6 +122,8 @@ publish:
     - changelog
   interruptible: false
   retry: 1
+  before_script:
+    - cd packages/mimus-serve
   script:
     - npm config set -- '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
     - head package.json

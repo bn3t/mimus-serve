@@ -1,0 +1,101 @@
+{
+  "mappings": [
+    {
+      "name": "Request /query-params match equalTo query param search_term",
+      "request": {
+        "urlPath": "/query-params",
+        "method": "GET",
+        "queryParameters": {
+          "search_term": {
+            "equalTo": "WireMock"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "equalTo works"
+      }
+    },
+    {
+      "name": "Request /query-params match matches query param search_term",
+      "request": {
+        "urlPath": "/query-params",
+        "method": "GET",
+        "queryParameters": {
+          "search_term": {
+            "matches": "^Mimus.*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "matches works"
+      }
+    },
+    {
+      "name": "Request /query-params match doesNotMatch query param search_term",
+      "request": {
+        "urlPath": "/query-params-for-does-not-match",
+        "method": "GET",
+        "queryParameters": {
+          "search_term": {
+            "doesNotMatch": "^everything.*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "Does not match works"
+      }
+    },
+    {
+      "name": "Request /query-params match matches query param search_term - case insensitive",
+      "request": {
+        "urlPath": "/query-params",
+        "method": "GET",
+        "queryParameters": {
+          "search_term": {
+            "matches": "^Another.*",
+            "caseInsensitive": true
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "matches case insensitive works"
+      }
+    },
+    {
+      "name": "Request /query-params match contains query param search_term",
+      "request": {
+        "urlPath": "/query-params",
+        "method": "GET",
+        "queryParameters": {
+          "search_term": {
+            "contains": "word"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "contains works"
+      }
+    },
+    {
+      "name": "Request /query-params match absent query param search_term",
+      "request": {
+        "urlPath": "/query-params-for-absent",
+        "method": "GET",
+        "queryParameters": {
+          "search_term": {
+            "absent": true
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": "absent works"
+      }
+    }
+  ]
+}
