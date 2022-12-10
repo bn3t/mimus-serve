@@ -2,13 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.3.0](https://gitlab.com/bn3t/mimus-serve/compare/1.2.0...1.3.0) (2022-12-10)
+### [1.3.1](https://gitlab.com/bn3t/mimus-serve/compare/1.3.0...1.3.1) (2022-12-10)
 
 
-### Features
+### Bug Fixes
 
-* start a ui to the mock server ([04789b6](https://gitlab.com/bn3t/mimus-serve/commit/04789b6a16cf9200b45a82dd575059b307d889a5))
-* start a ui to the mock server ([2e28fe5](https://gitlab.com/bn3t/mimus-serve/commit/2e28fe5d07eb05a7e15cbe0cb6a50c1e5c5617bb))
+* problem with publish in mono-repo ([6d08b11](https://gitlab.com/bn3t/mimus-serve/commit/6d08b1105b34161b8fabd231d7742787a96e85f4))
 
 ## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
 
