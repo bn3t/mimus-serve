@@ -1,6 +1,7 @@
 import axios from "./instance";
+import { Scenario } from "./model";
 import { Configuration } from "./model/configuration";
-import { Mapping, MappingsWithMeta } from "./model/mappings";
+import { Mapping, MappingsWithMeta } from "./model";
 
 class MimusServeAdmin {
   public getConfiguraton = async () => {
@@ -16,6 +17,25 @@ class MimusServeAdmin {
   public getMappingById = async (mappingId: string) => {
     const response = await axios.get<Mapping>(`mappings/${mappingId}`);
     return response.data;
+  };
+
+  public getScenarios = async () => {
+    const response = await axios.get<Scenario[]>("scenarios");
+    return response.data;
+  };
+
+  public resetScenarios = async () => {
+    await axios.post("scenarios/reset");
+  };
+
+  // call reset scenario state
+  public resetScenarioState = async (scenarioName: string) => {
+    await axios.put(`scenarios/${scenarioName}/state`, {});
+  };
+
+  // call set scenario state
+  public setScenarioState = async (scenarioName: string, state: string) => {
+    await axios.put(`scenarios/${scenarioName}/state`, { state });
   };
 }
 

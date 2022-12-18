@@ -2,7 +2,7 @@ import { Table, Typography } from "antd";
 import { ColumnsType } from "antd/es/table";
 
 import { useMappingsQuery } from "$lib/hooks/query-mappings";
-import { Mapping } from "$lib/api/model/mappings";
+import { Mapping } from "$lib/api/model";
 
 const { Title } = Typography;
 

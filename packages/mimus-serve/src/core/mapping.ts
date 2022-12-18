@@ -23,6 +23,7 @@ import {
 } from "../utils/files";
 import { processTemplate } from "../utils/templating";
 import { Runtime } from "./runtime";
+import { STARTED } from "../constants";
 
 export const findMapping = (
   requestMatchers: RequestMatcher[],
@@ -263,4 +264,39 @@ export const transformResponseDefinition = (
     headers: transformHeaders(responseDefinition.headers, context),
     bodyFileName: processTemplate(responseDefinition.bodyFileName, context),
   };
+};
+
+export const transformScenarioWithState = (
+  mappings: Mapping[],
+): Map<string, string[]> => {
+  const scenarios = new Map<
+    string,
+    { scenarioName: string; states: Set<string | undefined> }
+  >();
+  mappings.forEach((mapping) => {
+    if (mapping.scenarioName !== undefined) {
+      if (scenarios.has(mapping.scenarioName)) {
+        const scenario = scenarios.get(mapping.scenarioName);
+        if (scenario !== undefined) {
+          scenario.states.add(mapping.requiredScenarioState);
+          scenario.states.add(mapping.newScenarioState);
+        }
+      } else {
+        scenarios.set(mapping.scenarioName, {
+          scenarioName: mapping.scenarioName,
+          states: new Set([
+            STARTED,
+            mapping.requiredScenarioState,
+            mapping.newScenarioState,
+          ]),
+        });
+      }
+    }
+  });
+  return new Map(
+    Array.from(scenarios.values()).map((scenario) => [
+      scenario.scenarioName,
+      Array.from(scenario.states).filter((state) => state !== undefined),
+    ]),
+  ) as Map<string, string[]>;
 };

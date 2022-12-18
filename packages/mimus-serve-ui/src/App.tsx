@@ -10,6 +10,7 @@ import HomePage from "$containers/HomePage";
 import MappingsPage from "$containers/MappingsPage";
 import SettingsPage from "$containers/SettingsPage";
 import Root from "$containers/Root";
+import ScenariosPage from "$containers/ScenariosPage";
 
 const router = createBrowserRouter(
   [
@@ -31,6 +32,11 @@ const router = createBrowserRouter(
           path: "mappings",
 
           element: <MappingsPage />,
+        },
+        {
+          path: "scenarios",
+
+          element: <ScenariosPage />,
         },
       ],
     },

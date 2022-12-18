@@ -70,7 +70,7 @@ describe("ProcessingResponseRenderer", () => {
       renderer.render(
         { general: { files: "./a-folder" } } as Configuration,
         [],
-        new Runtime([], datasets),
+        new Runtime(new Map(), datasets),
         responseDefinition,
         processing,
         {
@@ -133,7 +133,7 @@ describe("ProcessingResponseRenderer", () => {
       renderer.render(
         { general: { files: "./a-folder" } } as Configuration,
         [],
-        new Runtime([], datasets),
+        new Runtime(new Map(), datasets),
         responseDefinition,
         processing,
         {
@@ -195,7 +195,7 @@ describe("ProcessingResponseRenderer", () => {
     const result = await renderer.render(
       { general: { files: "./a-folder" } } as Configuration,
       [],
-      new Runtime([], datasets),
+      new Runtime(new Map(), datasets),
       responseDefinition,
       processing,
       {

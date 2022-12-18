@@ -11,6 +11,7 @@ import { AdminRoutes } from "./admin/admin-routes";
 import { Options } from "./types";
 import { makeConfiguration } from "./configuration/configuration";
 import { dump } from "js-yaml";
+import { transformScenarioWithState } from "./core/mapping";
 
 const environment = process.env.NODE_ENV ?? "production";
 const currentDirectory = process.cwd();
@@ -149,14 +150,10 @@ if (options !== undefined && !options.help) {
 
     server.decorate("mappings", mappings);
     server.decorate("configuration", configuration);
+
     server.decorate(
       "runtime",
-      new Runtime(
-        mappings
-          .map((mapping) => mapping.scenarioName)
-          .filter((scenarioName) => scenarioName !== undefined) as string[],
-        datasets,
-      ),
+      new Runtime(transformScenarioWithState(mappings), datasets),
     );
     console.log(path.join(__dirname, "../dist", "public"));
     // @ts-ignore

@@ -1,18 +1,21 @@
-const STARTED = "Started";
+import { STARTED } from "../constants";
+import { Scenario } from "../types";
 
 export class Runtime {
   // Map of scenario names to states
-  private scenarios: Map<string, string> = new Map();
+  private scenariosPossibleStates = new Map<string, string[]>();
+  private scenariosCurrentState = new Map<string, string>();
   private loadedDatasets: Map<string, any>;
   private _datasets: Map<string, any>;
 
   // constuct runtime with scenario names initalized to STARTED
-  constructor(scenarioNames: string[], datasets: Map<string, any>) {
-    if (scenarioNames !== undefined) {
-      scenarioNames.forEach((scenarioName) =>
-        this.scenarios.set(scenarioName, STARTED),
+  constructor(scenarios: Map<string, string[]>, datasets: Map<string, any>) {
+    if (scenarios !== undefined) {
+      Array.from(scenarios.keys()).forEach((scenarioName) =>
+        this.scenariosCurrentState.set(scenarioName, STARTED),
       );
     }
+    this.scenariosPossibleStates = scenarios;
     this.loadedDatasets = datasets;
     this._datasets = new Map(this.loadedDatasets);
   }
@@ -38,47 +41,47 @@ export class Runtime {
 
   // Start scenario (it has the state STARTED at start)
   public startScenario(scenarioName: string) {
-    this.scenarios.set(scenarioName, STARTED);
+    this.scenariosCurrentState.set(scenarioName, STARTED);
   }
 
   // change scenario state to a new state
   public changeScenarioState(scenarioName: string, newState: string) {
     // verify that the scenario exists
-    if (!this.scenarios.has(scenarioName)) {
+    if (!this.scenariosCurrentState.has(scenarioName)) {
       throw new Error(`Scenario ${scenarioName} does not exist`);
     }
-    this.scenarios.set(scenarioName, newState);
+    this.scenariosCurrentState.set(scenarioName, newState);
   }
 
   // Verify that a scenarion exists
   public hasScenario(scenarioName: string): boolean {
-    return this.scenarios.has(scenarioName);
+    return this.scenariosCurrentState.has(scenarioName);
   }
 
   // Return the state of a scenario
   public getScenarioState(scenarioName: string): string {
     // verify that the scenario exists
-    if (!this.scenarios.has(scenarioName)) {
+    if (!this.scenariosCurrentState.has(scenarioName)) {
       throw new Error(`Scenario ${scenarioName} does not exist`);
     }
-    return this.scenarios.get(scenarioName) as string;
+    return this.scenariosCurrentState.get(scenarioName) as string;
   }
 
   // Reset the state of all scenarios to STARTED
   public resetScenariosStates() {
-    this.scenarios.forEach((_, scenarioName) =>
+    this.scenariosCurrentState.forEach((_, scenarioName) =>
       this.changeScenarioState(scenarioName, STARTED),
     );
   }
 
   // get all scenarios as an array of strings and states
-  public getScenarios(): {
-    name: string;
-    state: string;
-  }[] {
-    return Array.from(this.scenarios.entries()).map(([name, state]) => ({
-      name,
-      state,
-    }));
+  public getScenarios(): Scenario[] {
+    return Array.from(this.scenariosCurrentState.entries()).map(
+      ([name, state]) => ({
+        name,
+        state,
+        possibleStates: this.scenariosPossibleStates.get(name) ?? [],
+      }),
+    );
   }
 }

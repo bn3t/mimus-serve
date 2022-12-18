@@ -28,7 +28,7 @@ describe("DatasetResponseRenderer", () => {
     const result = await renderer.render(
       { general: { files: "./a-folder" } } as Configuration,
       [],
-      new Runtime([], datasets),
+      new Runtime(new Map(), datasets),
       responseDefinition,
       [],
       {

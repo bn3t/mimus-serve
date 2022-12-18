@@ -4,6 +4,7 @@ import {
   parseOne,
   parseUrl,
   transformResponseDefinition,
+  transformScenarioWithState,
 } from "./mapping";
 import {
   Mapping,
@@ -167,7 +168,10 @@ describe("Find Mapping", () => {
       cookies: [],
       body: "",
     };
-    const runtime = new Runtime(["scenario-01"], new Map<string, any>());
+    const runtime = new Runtime(
+      new Map([["scenario-01", ["Started", "Finished"]]]),
+      new Map<string, any>(),
+    );
     if (requiredScenarioState !== undefined) {
       runtime.changeScenarioState("scenario-01", requiredScenarioState);
     }
@@ -475,5 +479,15 @@ describe("Load Mappings", () => {
     expect(actual[0].responseDefinition.body).toBe("Not Found");
     expect(listFilesInDir).toHaveBeenCalledTimes(1);
     expect(readJsonFile).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("tranform scenarios", () => {
+  test("should transform a scenario", () => {
+    const actual = transformScenarioWithState(TEST_MAPPINGS);
+
+    expect(actual).toBeDefined();
+    expect(Array.from(actual.keys())).toEqual(["scenario-01"]);
+    expect(actual.get("scenario-01")).toEqual(["Started", "Finished"]);
   });
 });

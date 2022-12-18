@@ -2,6 +2,7 @@ import {
   HomeOutlined,
   PicCenterOutlined,
   RetweetOutlined,
+  AlignLeftOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu, theme } from "antd";
 import { memo } from "react";
@@ -50,14 +51,20 @@ const Root = ({}: RootProps) => {
               {
                 key: "/mappings",
                 icon: <RetweetOutlined />,
-                label: "mappings",
+                label: "Mappings",
                 onClick: () => navigate("/mappings"),
               },
               {
                 key: "/settings",
                 icon: <PicCenterOutlined />,
-                label: "settings",
+                label: "Settings",
                 onClick: () => navigate("/settings"),
+              },
+              {
+                key: "/scenarios",
+                icon: <AlignLeftOutlined />,
+                label: "Scenarios",
+                onClick: () => navigate("/scenarios"),
               },
             ]}
           />

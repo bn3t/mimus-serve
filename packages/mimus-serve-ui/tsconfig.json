@@ -24,6 +24,9 @@
       "$lib/*": [
         "lib/*"
       ],
+      "$test-utils/*": [
+        "lib/test-utils/*"
+      ],
       "$components/*": [
         "components/*"
       ],

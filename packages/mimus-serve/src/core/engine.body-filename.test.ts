@@ -87,7 +87,7 @@ describe("Engine - case find mapping body file name", () => {
         },
       } as Configuration,
       MOCK_MAPPINGS,
-      new Runtime([], new Map<string, any>()),
+      new Runtime(new Map(), new Map<string, any>()),
       {
         url: "http://localhost:4000/test/path",
         //@ts-ignore
