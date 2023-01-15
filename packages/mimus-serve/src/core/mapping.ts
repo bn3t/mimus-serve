@@ -206,6 +206,7 @@ export const parseOne = (json: any): Mapping =>
       dataset: json.response.dataset,
       proxyBaseUrl: json.response.proxyBaseUrl,
       proxyUrlPrefixToRemove: json.response.proxyUrlPrefixToRemove,
+      proxyForwardHeaders: json.response.proxyForwardHeaders,
     },
   } as Mapping);
 

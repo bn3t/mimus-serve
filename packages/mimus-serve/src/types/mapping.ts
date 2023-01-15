@@ -79,6 +79,7 @@ export interface ResponseDefinition {
   dataset?: string;
   proxyBaseUrl?: string;
   proxyUrlPrefixToRemove?: string;
+  proxyForwardHeaders?: boolean;
 }
 
 export interface InputProcessing {

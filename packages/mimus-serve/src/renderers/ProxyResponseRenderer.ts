@@ -48,12 +48,27 @@ export class ProxyResponseRenderer implements ResponseRenderer {
     const proxyResponse = await axios.request({
       method: context.request.method,
       url: responseDefinition.proxyBaseUrl + url,
+      headers:
+        responseDefinition.proxyForwardHeaders !== undefined
+          ? Object.fromEntries(
+              Object.entries(context.request.headers).filter(
+                ([key]) =>
+                  !(
+                    ["host", "referer", "origin"].includes(key) ||
+                    key.startsWith("sec-")
+                  ),
+              ),
+            )
+          : undefined,
       transformResponse: (data) => data,
     });
 
     result.status = proxyResponse.status;
     result.headers = Object.entries(proxyResponse.headers)
-      .filter(([name]) => name !== "transfer-encoding")
+      .filter(
+        ([name]) =>
+          name !== "transfer-encoding" && !name.startsWith("access-control-"),
+      )
       .map(([name, value]) => ({
         name,
         value,
