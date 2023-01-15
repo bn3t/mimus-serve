@@ -2,12 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.3.1](https://gitlab.com/bn3t/mimus-serve/compare/1.3.0...1.3.1) (2022-12-10)
+## [1.4.0](https://gitlab.com/bn3t/mimus-serve/compare/1.3.1...1.4.0) (2023-01-15)
 
 
-### Bug Fixes
+### Features
 
-* problem with publish in mono-repo ([6d08b11](https://gitlab.com/bn3t/mimus-serve/commit/6d08b1105b34161b8fabd231d7742787a96e85f4))
+* Add scenario management to the UI ([2cfb2e4](https://gitlab.com/bn3t/mimus-serve/commit/2cfb2e482a652cedd1919c89182a97fc10942356))
+* Support forwarding headers when proxying ([a7f13b6](https://gitlab.com/bn3t/mimus-serve/commit/a7f13b6f3779b44237fbc33796112e827f42f1f3))
 
 ## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
 
