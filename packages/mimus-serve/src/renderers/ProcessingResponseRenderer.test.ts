@@ -185,10 +185,14 @@ describe("ProcessingResponseRenderer", () => {
       {
         type: "match",
         expression: "a",
+        output: "match",
       },
       {
         type: "store",
         operation: "replaceWithRequestBody",
+        input: "input",
+        output: "output",
+        match: "match",
       },
     ];
 

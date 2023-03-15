@@ -74,15 +74,20 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
       ...response,
     };
 
+    const processingContext = new Map<string, any>();
     let datasetName;
     let processedData;
-    let match;
-    let requestBody = context.request.body;
-    const originalRequestBody = requestBody;
-    let currentData;
+    processingContext.set(
+      "requestBody",
+      context.request.body !== undefined
+        ? JSON.parse(context.request.body)
+        : undefined,
+    );
+    const originalRequestBody = context.request.body;
     let body;
     for (const processingDefinition of processing) {
       switch (processingDefinition.type) {
+        // Selects the dataset to use for the processing
         case "input":
           datasetName = processingDefinition.dataset;
           if (datasetName === undefined) {
@@ -93,61 +98,63 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
           }
           processedData = runtime.getDataset(datasetName);
           break;
+        // Creates a match from the processedData that can be used in the store processing step
         case "match":
           {
-            const expression = processingDefinition.expression;
-            if (expression === undefined) {
+            const { expression, output } = processingDefinition;
+            if (expression === undefined || output === undefined) {
               throw new Error(
-                "Expression should be defined for match processing",
+                "Expression and output should be defined for match processing",
               );
             }
-            match = evaluateJsonata(expression, processedData, context);
+            const result = evaluateJsonata(expression, processedData, context);
+            processingContext.set(output, result);
           }
           break;
+        // Transforms data in input to data in output using the expression
         case "transform":
           {
-            const { expression, input } = processingDefinition;
+            const { expression, input, output } = processingDefinition;
 
-            if (expression === undefined || input === undefined) {
+            if (
+              expression === undefined ||
+              input === undefined ||
+              output === undefined
+            ) {
               throw new Error(
-                "Expression and input should be defined for transform processing",
-              );
-            } else if (input !== "requestBody") {
-              throw new Error(
-                "Only requestBody is supported as input for transform processing",
+                "Expression, input and output should be defined for transform processing",
               );
             }
-            if (context.request.body !== undefined) {
-              const data = JSON.parse(context.request.body);
-              const transformed = evaluateJsonata(expression, data, context);
-              requestBody = JSON.stringify(transformed);
-            }
+            const data = processingContext.get(input);
+            const transformed = evaluateJsonata(expression, data, context);
+            processingContext.set(output, transformed);
           }
           break;
+        // Store a modification to the data in the dataset
         case "store":
           {
-            const { operation } = processingDefinition;
+            const { operation, input, match, output } = processingDefinition;
             if (operation === undefined) {
               throw new Error(
-                "Only insertRequestBody is supported as output processing",
+                "Only replaceWithRequestBody, mergeWithRequestBody, insertRequestBody, deleteMatching is supported as output processing",
               );
             }
-            try {
-              if (requestBody !== undefined) {
-                currentData = JSON.parse(requestBody);
-              }
-            } catch (error) {
-              // ignore error, currentData will be undefined
+            if (match === undefined) {
+              throw new Error("match should be defined for store processing");
             }
+            const inputData = processingContext.get(input);
+            const matchData = processingContext.get(match);
             const [newProcessedData, newCurrentData] =
               replaceMatchingObjectInArray(
                 processedData,
-                match,
-                currentData,
+                matchData,
+                inputData,
                 operation,
               );
             processedData = newProcessedData;
-            currentData = newCurrentData;
+            if (output !== undefined) {
+              processingContext.set(output, newCurrentData);
+            }
           }
           break;
         case "response":
@@ -158,15 +165,16 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
                 "Output should be defined for response processing",
               );
             }
-            switch (output) {
-              case "originalRequestBody":
-                body = originalRequestBody;
-                break;
-              case "currentData":
-                body = JSON.stringify(currentData);
-                break;
-              default:
-                throw new Error(`Unknown output ${output}`);
+            if (output === "originalRequestBody") {
+              body = originalRequestBody;
+            } else {
+              const outputValue = processingContext.get(output);
+
+              if (typeof outputValue === "string") {
+                body = outputValue;
+              } else {
+                body = JSON.stringify(outputValue);
+              }
             }
           }
           break;

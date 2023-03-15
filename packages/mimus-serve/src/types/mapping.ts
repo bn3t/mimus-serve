@@ -90,15 +90,20 @@ export interface InputProcessing {
 export interface MatchProcessing {
   type: "match";
   expression: string;
+  output: string;
 }
 
 export interface TransformProcessing {
   type: "transform";
-  input: string;
   expression: string;
+  input: string;
+  output: string;
 }
 export interface StoreProcessing {
   type: "store";
+  input: string;
+  match: string;
+  output?: string;
   operation:
     | "replaceWithRequestBody"
     | "mergeWithRequestBody"
@@ -108,7 +113,7 @@ export interface StoreProcessing {
 
 export interface ResponseProcessing {
   type: "response";
-  output: "currentData" | "originalRequestBody";
+  output: string | "originalRequestBody";
 }
 
 export type OutputProcessingOperation = StoreProcessing["operation"];

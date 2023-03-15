@@ -27,8 +27,12 @@ processing:
     expression: $
   - type: match
     expression: $[ticketId=$request.pathSegments[2]]
+    output: matchingData
   - type: store
+    input: requestBody
+    match: matchingData
     operation: replaceWithRequestBody
+    output: currentData
   - type: response
     output: currentData
 response:
@@ -45,7 +49,9 @@ processing:
     expression: $
   - type: match
     expression: $[ticketId=$request.pathSegments[2]]
+    output: matchingData
   - type: store
+    match: matchingData
     operation: deleteMatching
 response:
   status: 200
@@ -61,8 +67,12 @@ processing:
     expression: $
   - type: match
     expression: $[ticketId=$request.pathSegments[2]]
+    output: matchingData
   - type: store
+    input: requestBody
+    match: matchingData
     operation: mergeWithRequestBody
+    output: currentData
   - type: response
     output: currentData
 response:
@@ -78,9 +88,42 @@ processing:
     expression: $
   - type: transform
     input: requestBody
+    output: currentData
     expression: '$merge([$, {"ticketId": $uuid()}])'
   - type: store
+    input: currentData
+    match: matchingData
     operation: insertRequestBody
+    output: currentData
+  - type: response
+    output: currentData
+response:
+  status: 200
+---
+name: Dataset POST to add a ticket
+request:
+  url: /datasets/tickets-with-transform-response
+  method: POST
+processing:
+  - type: input
+    dataset: tickets
+    expression: $
+  - type: transform
+    input: requestBody
+    output: currentData
+    expression: '$merge([$, {"ticketId": $uuid()}])'
+  - type: store
+    input: currentData
+    match: matchingData
+    operation: insertRequestBody
+    output: currentData
+  - type: transform
+    input: currentData
+    output: currentData
+    expression: >
+      {
+        "id": $.ticketId
+      }
   - type: response
     output: currentData
 response:

@@ -96,6 +96,33 @@ describe("Datasets Tests", () => {
     expect(actual2.data.message).toBe("Inserted ticket");
   });
 
+  test("insert one ticket with datasets (POST) - response transformed", async () => {
+    const actual = await myaxios.post(
+      "/datasets/tickets-with-transform-response",
+      {
+        status: "CLOSED",
+        message: "Inserted ticket",
+        type: "PREDICATE_ISSUE",
+      },
+    );
+
+    expect(actual.status).toBe(200);
+    expect(actual.data).toBeDefined();
+    expect(actual.data.id).toBeDefined();
+    expect(actual.data.id).not.toBe("");
+    expect(actual.data.message).toBeUndefined();
+
+    const newTicketId = actual.data.id;
+
+    // optain the ticket again to verify the insert
+    const actual2 = await myaxios.get(`/datasets/tickets/${newTicketId}`);
+    expect(actual2.status).toBe(200);
+    expect(actual2.data).toBeDefined();
+
+    expect(actual2.data.ticketId).toBe(newTicketId);
+    expect(actual2.data.message).toBe("Inserted ticket");
+  });
+
   test("delete one ticket with datasets (DELETE)", async () => {
     const actual = await myaxios.delete(
       "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",

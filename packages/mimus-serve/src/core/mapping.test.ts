@@ -262,10 +262,13 @@ const TEST_JSON_MAPPING_PARSE_ONE = {
     {
       type: "match",
       expression: "$",
+      output: "output",
     },
     {
       type: "store",
       operation: "replaceWithBody",
+      input: "input",
+      output: "output",
     },
   ],
 };
@@ -325,10 +328,14 @@ describe("Parse mapping", () => {
     expect(actual.processing[1]).toStrictEqual({
       type: "match",
       expression: "$",
+      output: "output",
     });
     expect(actual.processing[2]).toStrictEqual({
       type: "store",
       operation: "replaceWithBody",
+      input: "input",
+      match: undefined,
+      output: "output",
     });
   });
 
