@@ -2,13 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.4.0](https://gitlab.com/bn3t/mimus-serve/compare/1.3.1...1.4.0) (2023-01-15)
+## [1.5.0](https://gitlab.com/bn3t/mimus-serve/compare/1.4.0...1.5.0) (2023-03-20)
 
 
 ### Features
 
-* Add scenario management to the UI ([2cfb2e4](https://gitlab.com/bn3t/mimus-serve/commit/2cfb2e482a652cedd1919c89182a97fc10942356))
-* Support forwarding headers when proxying ([a7f13b6](https://gitlab.com/bn3t/mimus-serve/commit/a7f13b6f3779b44237fbc33796112e827f42f1f3))
+* Improve processing logic by allowing more options ([d2c626f](https://gitlab.com/bn3t/mimus-serve/commit/d2c626fdb7dd13f7f33cf53c842352262b617bfd))
+* support groq expression in addtion to jsonata ([ff982f9](https://gitlab.com/bn3t/mimus-serve/commit/ff982f90e67a103389f189fa2b6d172929e874c3))
 
 ## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
 
