@@ -142,17 +142,20 @@ const parseProcessing = (
           type: "input",
           dataset: processing.dataset,
           expression: processing.expression,
+          groqExpression: processing.groqExpression,
         };
       case "match":
         return {
           type: "match",
           expression: processing.expression,
+          groqExpression: processing.groqExpression,
           output: processing.output,
         };
       case "transform":
         return {
           type: "transform",
           expression: processing.expression,
+          groqExpression: processing.groqExpression,
           input: processing.input,
           output: processing.output,
         };
@@ -208,6 +211,7 @@ export const parseOne = (json: any): Mapping =>
       fixedDelayMilliseconds: json.response.fixedDelayMilliseconds ?? 0,
       transform: json.response.transformers !== undefined,
       jsonataExpression: json.response.jsonataExpression,
+      groqExpression: json.response.groqExpression,
       dataset: json.response.dataset,
       proxyBaseUrl: json.response.proxyBaseUrl,
       proxyUrlPrefixToRemove: json.response.proxyUrlPrefixToRemove,

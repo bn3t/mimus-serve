@@ -274,7 +274,7 @@ const TEST_JSON_MAPPING_PARSE_ONE = {
 };
 
 describe("Parse mapping", () => {
-  test("should parse oone", () => {
+  test("should parse one", () => {
     const actual = parseOne(TEST_JSON_MAPPING_PARSE_ONE);
 
     expect(actual).toBeDefined();
@@ -324,10 +324,12 @@ describe("Parse mapping", () => {
       type: "input",
       dataset: "tickets",
       expression: "$",
+      groqExpression: undefined,
     });
     expect(actual.processing[1]).toStrictEqual({
       type: "match",
       expression: "$",
+      groqExpression: undefined,
       output: "output",
     });
     expect(actual.processing[2]).toStrictEqual({

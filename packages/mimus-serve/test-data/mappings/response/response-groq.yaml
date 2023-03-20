@@ -1,0 +1,30 @@
+---
+name: Filter response with GROQ expression (ticket list)
+request:
+  urlPath: /tickets-groq
+  method: GET
+response:
+  status: 200
+  bodyFileName: tickets/tickets-full.response.json
+  groqExpression: "*{ticketId, status, message, type, creationTimestamp}"
+---
+name: Filter response with JSONata expression (by status)
+request:
+  urlPath: /tickets-groq
+  method: GET
+  queryParameters:
+    status:
+      present: true
+response:
+  status: 200
+  bodyFileName: tickets/tickets-full.response.json
+  groqExpression: "*[status==$request.query.status]{ticketId, status, message, type, creationTimestamp}"
+---
+name: Filter response with GROQ expression (one ticket by id)
+request:
+  urlPathPattern: /tickets-groq/.+
+  method: GET
+response:
+  status: 200
+  bodyFileName: tickets/tickets-full.response.json
+  groqExpression: "*[ticketId==$request.pathSegments[1]][0]"

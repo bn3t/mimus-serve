@@ -9,6 +9,7 @@ import { QueryParametersMatcher } from "../matchers/query-params";
 import { UrlMatcher } from "../matchers/url";
 import { BaseResponseRenderer } from "../renderers/BaseResponseRenderer";
 import { DatasetResponseRenderer } from "../renderers/DatasetResponseRenderer";
+import { GroqResponseRenderer } from "../renderers/GroqResponseRenderer";
 import { JsonataResponseRenderer } from "../renderers/JsonataResponseRenderer";
 import { ProcessingResponseRenderer } from "../renderers/ProcessingResponseRenderer";
 import { ProxyResponseRenderer } from "../renderers/ProxyResponseRenderer";
@@ -43,6 +44,7 @@ const DEFAULT_RESPONSE_RENDERERS: ResponseRenderer[] = [
   new DatasetResponseRenderer(),
   new ProxyResponseRenderer(),
   new JsonataResponseRenderer(),
+  new GroqResponseRenderer(),
 ];
 
 export const processRequest = async (

@@ -10,6 +10,7 @@ import {
   OutputProcessingOperation,
   Mapping,
 } from "../types";
+import { evaluateGroq } from "../utils/groq";
 import { evaluateJsonata } from "../utils/jsonata";
 
 // process an aray of objects and replace one object with the matching one
@@ -101,33 +102,64 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
         // Creates a match from the processedData that can be used in the store processing step
         case "match":
           {
-            const { expression, output } = processingDefinition;
-            if (expression === undefined || output === undefined) {
+            const { expression, output, groqExpression } = processingDefinition;
+            if (
+              (expression === undefined && groqExpression === undefined) ||
+              output === undefined
+            ) {
               throw new Error(
-                "Expression and output should be defined for match processing",
+                "An expression or a groqExpression and output should be defined for match processing",
               );
             }
-            const result = evaluateJsonata(expression, processedData, context);
-            processingContext.set(output, result);
+            if (expression !== undefined) {
+              const result = evaluateJsonata(
+                expression,
+                processedData,
+                context,
+              );
+              processingContext.set(output, result);
+            } else if (groqExpression !== undefined) {
+              const result = await evaluateGroq(
+                groqExpression,
+                processedData,
+                context,
+              );
+              processingContext.set(output, result);
+            } else {
+              throw new Error("No expression/groqExpression specified");
+            }
           }
           break;
         // Transforms data in input to data in output using the expression
         case "transform":
           {
-            const { expression, input, output } = processingDefinition;
+            const { expression, groqExpression, input, output } =
+              processingDefinition;
 
             if (
-              expression === undefined ||
+              (expression === undefined && groqExpression === undefined) ||
               input === undefined ||
               output === undefined
             ) {
               throw new Error(
-                "Expression, input and output should be defined for transform processing",
+                "Expression or groqExpression, input and output should be defined for transform processing",
               );
             }
             const data = processingContext.get(input);
-            const transformed = evaluateJsonata(expression, data, context);
-            processingContext.set(output, transformed);
+            if (expression !== undefined) {
+              const transformed = evaluateJsonata(expression, data, context);
+              processingContext.set(output, transformed);
+            } else if (groqExpression !== undefined) {
+              const transformed = await evaluateGroq(
+                groqExpression,
+                data,
+                context,
+              );
+              console.log({ transformed });
+              processingContext.set(output, transformed);
+            } else {
+              throw new Error("No expression/groqExpression specified");
+            }
           }
           break;
         // Store a modification to the data in the dataset

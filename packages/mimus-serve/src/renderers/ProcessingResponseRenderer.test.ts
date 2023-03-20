@@ -181,11 +181,13 @@ describe("ProcessingResponseRenderer", () => {
         type: "input",
         dataset: "test",
         expression: "$",
+        groqExpression: undefined,
       },
       {
         type: "match",
         expression: "a",
         output: "match",
+        groqExpression: undefined,
       },
       {
         type: "store",

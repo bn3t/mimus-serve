@@ -49,6 +49,7 @@ export interface ResponseDefinition {
   fixedDelayMilliseconds: number;
   transform: boolean;
   jsonataExpression?: string;
+  groqExpression?: string;
   dataset?: string;
   proxyBaseUrl?: string;
   proxyUrlPrefixToRemove?: string;

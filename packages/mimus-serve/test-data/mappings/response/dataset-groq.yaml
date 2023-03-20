@@ -1,32 +1,32 @@
 ---
 name: Dataset ticket list response subset of properties
 request:
-  url: /datasets/tickets
+  url: /datasets-groq/tickets
   method: GET
 response:
   status: 200
   dataset: tickets
-  jsonataExpression: $ ~> | $ | {}, ['context', 'resolution', 'resolutionTimestamp'] |
+  groqExpression: "*{ticketId, status, message, type, creationTimestamp}"
 ---
 name: Dataset one ticket by id
 request:
-  urlPathPattern: /datasets/tickets/.+
+  urlPathPattern: /datasets-groq/tickets/.+
   method: GET
 response:
   status: 200
   dataset: tickets
-  jsonataExpression: $[ticketId=$request.pathSegments[2]]
+  groqExpression: "*[ticketId==$request.pathSegments[2]][0]"
 ---
 name: Dataset PUT to modifiy existing ticket
 request:
-  urlPathPattern: /datasets/tickets/.+
+  urlPathPattern: /datasets-groq/tickets/.+
   method: PUT
 processing:
   - type: input
     dataset: tickets
-    expression: $
+    groqExpression: "*"
   - type: match
-    expression: $[ticketId=$request.pathSegments[2]]
+    groqExpression: "*[ticketId==$request.pathSegments[2]][0]"
     output: matchingData
   - type: store
     input: requestBody
@@ -40,14 +40,14 @@ response:
 ---
 name: Dataset DELETE to delete existing ticket
 request:
-  urlPathPattern: /datasets/tickets/.+
+  urlPathPattern: /datasets-groq/tickets/.+
   method: DELETE
 processing:
   - type: input
     dataset: tickets
-    expression: $
+    groqExpression: "*"
   - type: match
-    expression: $[ticketId=$request.pathSegments[2]]
+    groqExpression: "*[ticketId=$request.pathSegments[2]][0]"
     output: matchingData
   - type: store
     match: matchingData
@@ -58,14 +58,14 @@ response:
 ---
 name: Dataset PATCH to modify existing ticket
 request:
-  urlPathPattern: /datasets/tickets/.+
+  urlPathPattern: /datasets-groq/tickets/.+
   method: PATCH
 processing:
   - type: input
     dataset: tickets
-    expression: $
+    groqExpression: "*"
   - type: match
-    expression: $[ticketId=$request.pathSegments[2]]
+    groqExpression: "*[ticketId=$request.pathSegments[2]][0]"
     output: matchingData
   - type: store
     input: requestBody
@@ -79,12 +79,12 @@ response:
 ---
 name: Dataset POST to add a ticket
 request:
-  url: /datasets/tickets
+  url: /datasets-groq/tickets
   method: POST
 processing:
   - type: input
     dataset: tickets
-    expression: $
+    groqExpression: "*"
   - type: transform
     input: requestBody
     output: currentData
@@ -101,12 +101,12 @@ response:
 ---
 name: Dataset POST to add a ticket
 request:
-  url: /datasets/tickets-with-transform-response
+  url: /datasets-groq/tickets-with-transform-response
   method: POST
 processing:
   - type: input
     dataset: tickets
-    expression: $
+    groqExpression: "*"
   - type: transform
     input: requestBody
     output: currentData
@@ -119,10 +119,8 @@ processing:
   - type: transform
     input: currentData
     output: currentData
-    expression: >
-      {
-        "id": $.ticketId
-      }
+    groqExpression: >
+      [*]{"id": ticketId}[0]
   - type: response
     output: currentData
 response:

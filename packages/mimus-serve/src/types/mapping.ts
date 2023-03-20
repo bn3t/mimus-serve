@@ -76,6 +76,7 @@ export interface ResponseDefinition {
   fixedDelayMilliseconds: number;
   transform: boolean;
   jsonataExpression?: string;
+  groqExpression?: string;
   dataset?: string;
   proxyBaseUrl?: string;
   proxyUrlPrefixToRemove?: string;
@@ -85,17 +86,20 @@ export interface ResponseDefinition {
 export interface InputProcessing {
   type: "input";
   dataset: string;
-  expression: string;
+  expression?: string;
+  groqExpression?: string;
 }
 export interface MatchProcessing {
   type: "match";
-  expression: string;
+  expression?: string;
+  groqExpression?: string;
   output: string;
 }
 
 export interface TransformProcessing {
   type: "transform";
-  expression: string;
+  expression?: string;
+  groqExpression?: string;
   input: string;
   output: string;
 }

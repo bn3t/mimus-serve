@@ -1,12 +1,12 @@
 import { myaxios, resetDatasets } from "./test-utils";
 
-describe("Datasets Tests", () => {
+describe("Datasets Tests - groq", () => {
   beforeEach(async () => {
     await resetDatasets();
   });
 
-  test("get with dataset", async () => {
-    const actual = await myaxios.get("/datasets/tickets");
+  test("get with dataset - groq", async () => {
+    const actual = await myaxios.get("/datasets-groq/tickets");
     expect(actual.status).toBe(200);
     expect(actual.data).toBeDefined();
     expect(actual.data.length).toBe(27);
@@ -15,18 +15,18 @@ describe("Datasets Tests", () => {
     );
   });
 
-  test("get one ticket with datasets", async () => {
+  test("get one ticket with datasets - groq", async () => {
     const actual = await myaxios.get(
-      "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+      "/datasets-groq/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
     );
     expect(actual.status).toBe(200);
     expect(actual.data).toBeDefined();
     expect(actual.data.ticketId).toBe("FB1B426A-3100-4949-A4CC-7F80A863FC3F");
   });
 
-  test("update one ticket with datasets (PUT)", async () => {
+  test.only("update one ticket with datasets (PUT)", async () => {
     const actual = await myaxios.put(
-      "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+      "/datasets-groq/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
       {
         ticketId: "FB1B426A-3100-4949-A4CC-7F80A863FC3F",
         message: "Updated message",
@@ -39,7 +39,7 @@ describe("Datasets Tests", () => {
     expect(actual.data.status).toBeUndefined();
     // optain the ticket again to verify the update
     const actual2 = await myaxios.get(
-      "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+      "/datasets-groq/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
     );
     expect(actual2.status).toBe(200);
     expect(actual2.data).toBeDefined();
@@ -50,7 +50,7 @@ describe("Datasets Tests", () => {
 
   test("update one ticket with datasets (PATCH)", async () => {
     const actual = await myaxios.patch(
-      "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+      "/datasets-groq/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
       {
         ticketId: "FB1B426A-3100-4949-A4CC-7F80A863FC3F",
         message: "Updated message",
@@ -65,7 +65,7 @@ describe("Datasets Tests", () => {
 
     // optain the ticket again to verify the update
     const actual2 = await myaxios.get(
-      "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+      "/datasets-groq/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
     );
     expect(actual2.status).toBe(200);
     expect(actual2.data).toBeDefined();
@@ -76,7 +76,7 @@ describe("Datasets Tests", () => {
   });
 
   test("insert one ticket with datasets (POST)", async () => {
-    const actual = await myaxios.post("/datasets/tickets", {
+    const actual = await myaxios.post("/datasets-groq/tickets", {
       status: "CLOSED",
       message: "Inserted ticket",
       type: "PREDICATE_ISSUE",
@@ -88,7 +88,7 @@ describe("Datasets Tests", () => {
     const newTicketId = actual.data.ticketId;
 
     // optain the ticket again to verify the insert
-    const actual2 = await myaxios.get(`/datasets/tickets/${newTicketId}`);
+    const actual2 = await myaxios.get(`/datasets-groq/tickets/${newTicketId}`);
     expect(actual2.status).toBe(200);
     expect(actual2.data).toBeDefined();
 
@@ -125,7 +125,7 @@ describe("Datasets Tests", () => {
 
   test("delete one ticket with datasets (DELETE)", async () => {
     const actual = await myaxios.delete(
-      "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+      "/datasets-groq/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
     );
     expect(actual.status).toBe(200);
     expect(actual.data).toBeDefined();

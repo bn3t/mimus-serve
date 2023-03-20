@@ -12,6 +12,8 @@ describe("JSONata filtering", () => {
     expect(filteredData).toBeDefined();
     expect(filteredData.length).toBe(1);
     expect(filteredData[0].name).toBe("Mary");
+    expect(filteredData[0].id).toBe(2);
+    expect(filteredData[0].age).toBe(28);
   });
 
   test("should filter by JSONata expression with bindings", () => {
