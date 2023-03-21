@@ -171,7 +171,7 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
                 "Only replaceWithRequestBody, mergeWithRequestBody, insertRequestBody, deleteMatching is supported as output processing",
               );
             }
-            if (match === undefined) {
+            if (operation !== "insertRequestBody" && match === undefined) {
               throw new Error("match should be defined for store processing");
             }
             const inputData = processingContext.get(input);

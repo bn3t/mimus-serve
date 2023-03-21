@@ -91,7 +91,6 @@ processing:
     expression: '$merge([$, {"ticketId": $uuid()}])'
   - type: store
     input: currentData
-    match: matchingData
     operation: insertRequestBody
     output: currentData
   - type: response
@@ -113,7 +112,6 @@ processing:
     expression: '$merge([$, {"ticketId": $uuid()}])'
   - type: store
     input: currentData
-    match: matchingData
     operation: insertRequestBody
     output: currentData
   - type: transform
