@@ -48,6 +48,29 @@ describe("Datasets Tests - jsonata", () => {
     expect(actual2.data.status).toBeUndefined();
   });
 
+  test("update one ticket with datasets - id not in body (PUT)", async () => {
+    const actual = await myaxios.put(
+      "/datasets-no-id-in-body/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+      {
+        message: "Updated message",
+      },
+    );
+    expect(actual.status).toBe(200);
+    expect(actual.data).toBeDefined();
+    expect(actual.data.ticketId).toBe("FB1B426A-3100-4949-A4CC-7F80A863FC3F");
+    expect(actual.data.message).toBe("Updated message");
+    expect(actual.data.status).toBe("CLOSED");
+    // optain the ticket again to verify the update
+    const actual2 = await myaxios.get(
+      "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",
+    );
+    expect(actual2.status).toBe(200);
+    expect(actual2.data).toBeDefined();
+    expect(actual2.data.ticketId).toBe("FB1B426A-3100-4949-A4CC-7F80A863FC3F");
+    expect(actual2.data.message).toBe("Updated message");
+    expect(actual2.data.status).toBe("CLOSED");
+  });
+
   test("update one ticket with datasets (PATCH)", async () => {
     const actual = await myaxios.patch(
       "/datasets/tickets/FB1B426A-3100-4949-A4CC-7F80A863FC3F",

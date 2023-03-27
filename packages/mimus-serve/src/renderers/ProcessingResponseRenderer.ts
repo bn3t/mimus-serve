@@ -112,18 +112,16 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
               );
             }
             if (expression !== undefined) {
-              const result = evaluateJsonata(
-                expression,
-                processedData,
-                context,
-              );
+              const result = evaluateJsonata(expression, processedData, {
+                ...context,
+                ...Object.fromEntries(processingContext),
+              });
               processingContext.set(output, result);
             } else if (groqExpression !== undefined) {
-              const result = await evaluateGroq(
-                groqExpression,
-                processedData,
-                context,
-              );
+              const result = await evaluateGroq(groqExpression, processedData, {
+                ...context,
+                ...Object.fromEntries(processingContext),
+              });
               processingContext.set(output, result);
             } else {
               throw new Error("No expression/groqExpression specified");
@@ -147,15 +145,16 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
             }
             const data = processingContext.get(input);
             if (expression !== undefined) {
-              const transformed = evaluateJsonata(expression, data, context);
+              const transformed = evaluateJsonata(expression, data, {
+                ...context,
+                ...Object.fromEntries(processingContext),
+              });
               processingContext.set(output, transformed);
             } else if (groqExpression !== undefined) {
-              const transformed = await evaluateGroq(
-                groqExpression,
-                data,
-                context,
-              );
-              console.log({ transformed });
+              const transformed = await evaluateGroq(groqExpression, data, {
+                ...context,
+                ...Object.fromEntries(processingContext),
+              });
               processingContext.set(output, transformed);
             } else {
               throw new Error("No expression/groqExpression specified");

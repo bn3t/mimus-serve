@@ -38,6 +38,31 @@ processing:
 response:
   status: 200
 ---
+name: Dataset PUT to modifiy existing ticket - no id in the body
+request:
+  urlPathPattern: /datasets-no-id-in-body/tickets/.+
+  method: PUT
+processing:
+  - type: input
+    dataset: tickets
+    expression: $
+  - type: match
+    expression: $[ticketId=$request.pathSegments[2]]
+    output: matchingData
+  - type: transform
+    input: requestBody
+    expression: '$merge([$, {"ticketId": $request.pathSegments[2], "status": $matchingData.status}])'
+    output: currentData
+  - type: store
+    input: currentData
+    match: matchingData
+    operation: replaceWithRequestBody
+    output: currentData
+  - type: response
+    output: currentData
+response:
+  status: 200
+---
 name: Dataset DELETE to delete existing ticket
 request:
   urlPathPattern: /datasets/tickets/.+
