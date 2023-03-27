@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.5.1](https://gitlab.com/bn3t/mimus-serve/compare/1.5.0...1.5.1) (2023-03-21)
+### [1.5.2](https://gitlab.com/bn3t/mimus-serve/compare/1.5.1...1.5.2) (2023-03-27)
 
 
 ### Bug Fixes
 
-* remove the need for match for inserts ([ccbce53](https://gitlab.com/bn3t/mimus-serve/commit/ccbce53221d3f8afa022967d8088c54d6df68809))
+* processing data should be in the expression bindings ([0a8fb7e](https://gitlab.com/bn3t/mimus-serve/commit/0a8fb7e3d8d9226c8080f039d13d39d38ad8a7ac))
 
 ## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
 
