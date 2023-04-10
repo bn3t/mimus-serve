@@ -124,8 +124,8 @@ publish:
   interruptible: false
   retry: 1
   before_script:
-    - cd packages/mimus-serve
-  script:
     - npm config set -- '//registry.npmjs.org/:_authToken' "${NPM_AUTH_TOKEN}"
-    - head package.json
+    - cd packages/mimus-serve
+    - cp ../../README.md .
+  script:
     - npm publish --access public
