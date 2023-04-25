@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.5.3](https://gitlab.com/bn3t/mimus-serve/compare/1.5.2...1.5.3) (2023-04-10)
+### [1.5.4](https://gitlab.com/bn3t/mimus-serve/compare/1.5.3...1.5.4) (2023-04-25)
 
 
 ### Bug Fixes
 
-* fix build and README.md missing in npm ([cb284ea](https://gitlab.com/bn3t/mimus-serve/commit/cb284ea2587c24cf5805f9fe453183db18a5aeff))
+* add support for application/pdf content-type ([8548379](https://gitlab.com/bn3t/mimus-serve/commit/854837996e0c0fd493f626745be03a9f2f9baafe))
 
 ## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
 
