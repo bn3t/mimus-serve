@@ -1,0 +1,8 @@
+---
+name: Upload a pdf
+request:
+  url: /upload
+  method: PUT
+response:
+  status: 200
+  body: OK

@@ -47,6 +47,23 @@ export const MockRoutes = async (
     },
   );
 
+  server.addContentTypeParser(
+    ["application/pdf"],
+    { parseAs: "buffer" },
+    function (req, body, done) {
+      try {
+        done(null, body);
+      } catch (err) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        err.statusCode = 400;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        done(err, undefined);
+      }
+    },
+  );
+
   server.route({
     method: [
       "DELETE",
