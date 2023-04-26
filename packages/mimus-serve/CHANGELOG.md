@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [1.5.4](https://gitlab.com/bn3t/mimus-serve/compare/1.5.3...1.5.4) (2023-04-25)
+## [1.6.0](https://gitlab.com/bn3t/mimus-serve/compare/1.5.4...1.6.0) (2023-04-26)
 
 
-### Bug Fixes
+### Features
 
-* add support for application/pdf content-type ([8548379](https://gitlab.com/bn3t/mimus-serve/commit/854837996e0c0fd493f626745be03a9f2f9baafe))
+* support serving binary files ([6772fbc](https://gitlab.com/bn3t/mimus-serve/commit/6772fbcf50a22e2a0d76daed70bcb720cb4f406d))
 
 ## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
 
