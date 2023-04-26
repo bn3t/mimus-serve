@@ -73,6 +73,7 @@ export interface ResponseDefinition {
   headers: NameValuePair[];
   body?: string;
   bodyFileName?: string;
+  encoding?: BufferEncoding | "buffer";
   fixedDelayMilliseconds: number;
   transform: boolean;
   jsonataExpression?: string;

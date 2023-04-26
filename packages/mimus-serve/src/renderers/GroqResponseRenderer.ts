@@ -31,6 +31,9 @@ export class GroqResponseRenderer implements ResponseRenderer {
     context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse> {
+    if (Buffer.isBuffer(response.body)) {
+      return response;
+    }
     if (responseDefinition.groqExpression === undefined) {
       return response;
     }

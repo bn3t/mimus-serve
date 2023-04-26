@@ -22,6 +22,11 @@ export const readFile = async (
   return await fs.readFile(filePath, { encoding });
 };
 
+export const readFileBinary = async (parentDir: string, path: string) => {
+  const filePath = resolvePath(parentDir, path);
+  return await fs.readFile(filePath, { encoding: null });
+};
+
 /**
  * Read and parse a file in the YAML format. The method supports multi document
  * format, This mean it returns an array of objects.

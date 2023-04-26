@@ -202,6 +202,7 @@ export const parseOne = (json: any): Mapping =>
       statusMessage: json.response.statusMessage,
       body: json.response.body,
       bodyFileName: json.response.bodyFileName,
+      encoding: json.response.encoding,
       headers: json.response.headers
         ? Object.entries(json.response.headers).map(([name, value]) => ({
             name,

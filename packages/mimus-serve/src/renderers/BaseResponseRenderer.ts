@@ -1,3 +1,5 @@
+import fs from "fs/promises";
+
 import { Runtime } from "../core/runtime";
 import {
   Configuration,
@@ -8,7 +10,7 @@ import {
   ResponseDefinition,
   ResponseRenderer,
 } from "../types";
-import { readFile } from "../utils/files";
+import { readFile, readFileBinary } from "../utils/files";
 
 /**
  * A base response renderer for basic rendering of responses.
@@ -42,10 +44,18 @@ export class BaseResponseRenderer implements ResponseRenderer {
     if (responseDefinition.body !== undefined) {
       result.body = responseDefinition.body;
     } else if (responseDefinition.bodyFileName !== undefined) {
-      result.body = await readFile(
-        configuration.general.files,
-        responseDefinition.bodyFileName,
-      );
+      if (responseDefinition.encoding === "buffer") {
+        result.body = await readFileBinary(
+          configuration.general.files,
+          responseDefinition.bodyFileName,
+        );
+      } else {
+        result.body = await readFile(
+          configuration.general.files,
+          responseDefinition.bodyFileName,
+          responseDefinition.encoding ?? "utf-8",
+        );
+      }
     }
     return result;
   }
