@@ -1,36 +1,41 @@
 import path from "path";
+import { head, intersection } from "ramda";
 import {
   v4 as uuid,
   parse as uuidParse,
   stringify as uuidStringify,
 } from "uuid";
-import { intersection, head } from "ramda";
+import { STARTED } from "../constants";
 import {
   HttpRequest,
   Mapping,
   MatchResult,
-  NameValuePair,
-  RequestMatcher,
-  ResponseDefinition,
-  UrlMatchType,
-  Context,
   ProcessingDefinition,
+  RequestMatcher,
+  UrlMatchType,
 } from "../types";
 import {
   listFilesInDir,
   readJsonFile,
   readYamlFileMulti,
 } from "../utils/files";
-import { processTemplate } from "../utils/templating";
 import { Runtime } from "./runtime";
-import { STARTED } from "../constants";
 
+/**
+ * Finds the mapping that matches the given request and request matchers.
+ *
+ * @param requestMatchers - The request matchers to use to match the request.
+ * @param mappings - The list of mappings to search for a match.
+ * @param runtime - The runtime instance to use for scenario state.
+ * @param mappedRequest - The mapped HTTP request to match against.
+ * @returns The matching mapping, or undefined if no mapping was found.
+ */
 export const findMapping = (
   requestMatchers: RequestMatcher[],
   mappings: Mapping[],
   runtime: Runtime,
   mappedRequest: HttpRequest,
-) => {
+): Mapping | undefined => {
   const matchedMappings = mappings
     .filter((mapping) =>
       requestMatchers.every((requestMatcher) => {
@@ -59,13 +64,23 @@ export const findMapping = (
   }
 };
 
-export const parseUrl = (jsonRequest: any) => {
+/**
+ * Parses the URL from the given JSON request object and returns an object containing the URL type and URL value.
+ *
+ * @param jsonRequest - The JSON request object to parse the URL from.
+ * @returns An object containing the URL type and URL value.
+ */
+export const parseUrl = (
+  jsonRequest: any,
+): { urlType: UrlMatchType; url: string } | undefined => {
   if (jsonRequest.url !== undefined) {
     return { urlType: UrlMatchType.Url, url: jsonRequest.url };
   } else if (jsonRequest.urlPattern !== undefined) {
     return { urlType: UrlMatchType.UrlPattern, url: jsonRequest.urlPattern };
   } else if (jsonRequest.urlPath !== undefined) {
     return { urlType: UrlMatchType.Path, url: jsonRequest.urlPath };
+  } else if (jsonRequest.urlPathParams !== undefined) {
+    return { urlType: UrlMatchType.PathParams, url: jsonRequest.urlPathParams };
   } else if (jsonRequest.urlPathPattern !== undefined) {
     return {
       urlType: UrlMatchType.PathPattern,
@@ -74,7 +89,15 @@ export const parseUrl = (jsonRequest: any) => {
   }
 };
 
-const mapOperator = (spec: Record<string, any>) => {
+/**
+ * Maps an attribute specification object to an operator and value object.
+ *
+ * @param spec - The attribute specification object to map.
+ * @returns An object containing the operator and value of the attribute specification.
+ */
+const mapOperator = (
+  spec: Record<string, any>,
+): { operator: string; value: string } => {
   const operator = head(
     intersection(Object.keys(spec), [
       "equalTo",
@@ -97,11 +120,24 @@ const mapOperator = (spec: Record<string, any>) => {
   };
 };
 
+/**
+ * Parses the attribute specifications of a mapping and returns an array of objects containing the name, operator, value, and case sensitivity of each attribute.
+ *
+ * @param specs - The attribute specifications to parse.
+ * @param lowerCaseName - A boolean indicating whether the attribute names should be converted to lowercase.
+ * @param forceName - An optional string to use as the attribute name instead of the key in the `specs` object.
+ * @returns An array of objects containing the name, operator, value, and case sensitivity of each attribute.
+ */
 const parseAttributeSpecs = (
   specs: Record<string, any> | undefined,
   lowerCaseName: boolean,
   forceName: string | undefined = undefined,
-) =>
+): {
+  name: string;
+  operator: string;
+  value: string;
+  caseInsensitive: boolean;
+}[] =>
   specs !== undefined
     ? Object.entries(specs as Record<string, any>).map(
         ([name, spec]: [string, Record<string, any>]) => {
@@ -115,6 +151,12 @@ const parseAttributeSpecs = (
       )
     : [];
 
+/**
+ * Parses the loaded mappings as raw json and returns an array of `Mapping` objects.
+ *
+ * @param loadedMappings - The loaded mappings to parse.
+ * @returns An array of `Mapping` objects.
+ */
 const parseLoadedMappings = (loadedMappings: any): Mapping[] => {
   if (Array.isArray(loadedMappings)) {
     // Check if multi document
@@ -129,6 +171,12 @@ const parseLoadedMappings = (loadedMappings: any): Mapping[] => {
   }
 };
 
+/**
+ * Parses the processing definitions of a mapping and returns an array of `ProcessingDefinition` objects.
+ *
+ * @param processing - The processing definitions to parse.
+ * @returns An array of `ProcessingDefinition` objects.
+ */
 const parseProcessing = (
   processing: any,
 ): ProcessingDefinition[] | undefined => {
@@ -176,6 +224,12 @@ const parseProcessing = (
   });
 };
 
+/**
+ * Parses a single mapping JSON object and returns a `Mapping` object.
+ *
+ * @param json - The JSON object to parse.
+ * @returns A `Mapping` object.
+ */
 export const parseOne = (json: any): Mapping =>
   ({
     id: json.id ? uuidStringify(uuidParse(json.id)) : uuid(),
@@ -210,7 +264,8 @@ export const parseOne = (json: any): Mapping =>
           }))
         : [],
       fixedDelayMilliseconds: json.response.fixedDelayMilliseconds ?? 0,
-      transform: json.response.transformers !== undefined,
+      transform:
+        json.response.transformers !== undefined || json.response.transform,
       jsonataExpression: json.response.jsonataExpression,
       groqExpression: json.response.groqExpression,
       dataset: json.response.dataset,
@@ -220,6 +275,13 @@ export const parseOne = (json: any): Mapping =>
     },
   } as Mapping);
 
+/**
+ * Loads all mappings from the given directory.
+ *
+ * @param mappingDir - The directory to load mappings from.
+ * @returns A promise that resolves to an array of `Mapping` objects.
+ * @throws An error if an unknown file extension is encountered.
+ */
 export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
   const files = await listFilesInDir(mappingDir, [".json", ".yaml", ".yml"]);
   const mappings: Mapping[] = (
@@ -240,41 +302,6 @@ export const loadMappings = async (mappingDir: string): Promise<Mapping[]> => {
     )
   ).flat();
   return mappings;
-};
-
-// process response definition heders through templating
-export const transformHeaders = (
-  headers: NameValuePair[],
-  context: Context,
-) => {
-  return headers
-    .map((header) => {
-      const { name, value } = header;
-      let newValue: string | string[] | undefined;
-
-      if (Array.isArray(value)) {
-        newValue = value.map((v) => processTemplate(v, context) as string);
-      } else {
-        newValue = processTemplate(value, context);
-      }
-
-      return { name, value: newValue };
-    })
-    .filter((header) => header.value !== undefined);
-};
-
-// trnasform a mapping repsonse definition with processTemplate
-export const transformResponseDefinition = (
-  responseDefinition: ResponseDefinition,
-  context: Context,
-): ResponseDefinition => {
-  return {
-    ...responseDefinition,
-    statusMessage: processTemplate(responseDefinition.statusMessage, context),
-    body: processTemplate(responseDefinition.body, context),
-    headers: transformHeaders(responseDefinition.headers, context),
-    bodyFileName: processTemplate(responseDefinition.bodyFileName, context),
-  };
 };
 
 export const transformScenarioWithState = (

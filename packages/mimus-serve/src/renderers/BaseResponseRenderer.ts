@@ -1,5 +1,3 @@
-import fs from "fs/promises";
-
 import { Runtime } from "../core/runtime";
 import {
   Configuration,
@@ -24,10 +22,9 @@ export class BaseResponseRenderer implements ResponseRenderer {
    */
   async render(
     configuration: Configuration,
-    _mappings: Mapping[],
+    _mapping: Mapping,
     _runtime: Runtime,
     responseDefinition: ResponseDefinition,
-    _processing: ProcessingDefinition[],
     _context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse> {

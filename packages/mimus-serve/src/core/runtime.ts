@@ -1,6 +1,11 @@
 import { STARTED } from "../constants";
 import { Scenario } from "../types";
 
+/**
+ * The `Runtime` class represents the runtime environment for Mimus Serve.
+ * It manages the state of scenarios and datasets, and provides methods for
+ * accessing and modifying them.
+ */
 export class Runtime {
   // Map of scenario names to states
   private scenariosPossibleStates = new Map<string, string[]>();
@@ -20,31 +25,54 @@ export class Runtime {
     this._datasets = new Map(this.loadedDatasets);
   }
 
+  /**
+   * Resets all datasets to their original loaded state.
+   */
   public resetDatasets() {
     this._datasets = new Map(this.loadedDatasets);
   }
 
-  // get one dataset by name
+  /**
+   * Returns the dataset with the given name.
+   * @param datasetName The name of the dataset to retrieve.
+   * @returns The dataset with the given name.
+   */
   public getDataset(datasetName: string): any {
     return this._datasets.get(datasetName);
   }
 
-  // set one dataset by name
+  /**
+   * Sets the dataset with the given name to the provided data.
+   * @param datasetName The name of the dataset to set.
+   * @param data The data to set for the dataset.
+   */
   public setDataset(datasetName: string, data: any) {
     this._datasets.set(datasetName, data);
   }
 
-  // has dataset by name
+  /**
+   * Returns a boolean indicating whether a dataset with the given name exists.
+   * @param datasetName The name of the dataset to check for existence.
+   * @returns A boolean indicating whether a dataset with the given name exists.
+   */
   public hasDataset(datasetName: string): boolean {
     return this._datasets.has(datasetName);
   }
 
-  // Start scenario (it has the state STARTED at start)
+  /**
+   * Sets the state of the specified scenario to STARTED.
+   * @param scenarioName The name of the scenario to start.
+   */
   public startScenario(scenarioName: string) {
     this.scenariosCurrentState.set(scenarioName, STARTED);
   }
 
-  // change scenario state to a new state
+  /**
+   * Changes the state of the specified scenario to the provided new state.
+   * @param scenarioName The name of the scenario to change the state of.
+   * @param newState The new state to set for the scenario.
+   * @throws An error if the specified scenario does not exist.
+   */
   public changeScenarioState(scenarioName: string, newState: string) {
     // verify that the scenario exists
     if (!this.scenariosCurrentState.has(scenarioName)) {
@@ -53,12 +81,21 @@ export class Runtime {
     this.scenariosCurrentState.set(scenarioName, newState);
   }
 
-  // Verify that a scenarion exists
+  /**
+   * Returns a boolean indicating whether a scenario with the given name exists.
+   * @param scenarioName The name of the scenario to check for existence.
+   * @returns A boolean indicating whether a scenario with the given name exists.
+   */
   public hasScenario(scenarioName: string): boolean {
     return this.scenariosCurrentState.has(scenarioName);
   }
 
-  // Return the state of a scenario
+  /**
+   * Returns the current state of the specified scenario.
+   * @param scenarioName The name of the scenario to retrieve the state of.
+   * @returns The current state of the specified scenario.
+   * @throws An error if the specified scenario does not exist.
+   */
   public getScenarioState(scenarioName: string): string {
     // verify that the scenario exists
     if (!this.scenariosCurrentState.has(scenarioName)) {
@@ -67,14 +104,20 @@ export class Runtime {
     return this.scenariosCurrentState.get(scenarioName) as string;
   }
 
-  // Reset the state of all scenarios to STARTED
+  /**
+   * Resets the state of all scenarios to STARTED.
+   */
   public resetScenariosStates() {
     this.scenariosCurrentState.forEach((_, scenarioName) =>
       this.changeScenarioState(scenarioName, STARTED),
     );
   }
 
-  // get all scenarios as an array of strings and states
+  /**
+   * Returns an array of objects representing all scenarios and their current state.
+   * Each object contains the name of the scenario, its current state, and the possible states it can be in.
+   * @returns An array of objects representing all scenarios and their current state.
+   */
   public getScenarios(): Scenario[] {
     return Array.from(this.scenariosCurrentState.entries()).map(
       ([name, state]) => ({

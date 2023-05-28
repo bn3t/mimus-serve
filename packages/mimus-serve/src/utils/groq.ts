@@ -1,9 +1,4 @@
-import { parse, evaluate } from "groq-js";
-
-import { v4 as uuid } from "uuid";
-
-const randomInt = (min: number, max: number) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
+import { evaluate, parse } from "groq-js";
 
 export const evaluateGroq = async (
   groqExpression: string,

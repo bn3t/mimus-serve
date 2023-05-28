@@ -2,15 +2,44 @@
 import { Runtime } from "../core/runtime";
 import {
   Configuration,
+  Mapping,
   OutputProcessingOperation,
   ProcessingDefinition,
   RequestModel,
+  UrlMatchType,
 } from "../types";
+import { evaluateJsonata } from "../utils/jsonata";
 import {
   ProcessingResponseRenderer,
   replaceMatchingObjectInArray,
 } from "./ProcessingResponseRenderer";
-import { evaluateJsonata } from "../utils/jsonata";
+
+const MAPPING: Mapping = {
+  id: "test",
+  name: "test",
+  priority: 0,
+  scenarioName: "test",
+  requiredScenarioState: "test",
+  newScenarioState: "test",
+  requestMatch: {
+    method: "ANY",
+    url: "/",
+    urlType: UrlMatchType.Path,
+    queryParameters: [],
+    headers: [],
+    cookies: [],
+    bodyPatterns: [],
+  },
+  responseDefinition: {
+    status: 200,
+    statusMessage: "OK",
+    headers: [],
+    body: "",
+    fixedDelayMilliseconds: 0,
+    transform: false,
+  },
+  processing: [],
+};
 
 jest.mock("../utils/jsonata", () => ({
   evaluateJsonata: jest
@@ -65,14 +94,17 @@ describe("ProcessingResponseRenderer", () => {
         operation: "replaceWithRequestBody",
       },
     ] as ProcessingDefinition[];
+    const mapping = {
+      ...MAPPING,
+      processing,
+    };
 
     expect(
       renderer.render(
         { general: { files: "./a-folder" } } as Configuration,
-        [],
+        mapping,
         new Runtime(new Map(), datasets),
         responseDefinition,
-        processing,
         {
           request: {
             url: "http://localhost:8080/",
@@ -128,14 +160,17 @@ describe("ProcessingResponseRenderer", () => {
         operation: "replaceWithRequestBody",
       },
     ] as ProcessingDefinition[];
+    const mapping = {
+      ...MAPPING,
+      processing,
+    };
 
     expect(
       renderer.render(
         { general: { files: "./a-folder" } } as Configuration,
-        [],
+        mapping,
         new Runtime(new Map(), datasets),
         responseDefinition,
-        processing,
         {
           request: {
             url: "http://localhost:8080/",
@@ -197,13 +232,16 @@ describe("ProcessingResponseRenderer", () => {
         match: "match",
       },
     ];
+    const mapping = {
+      ...MAPPING,
+      processing,
+    };
 
     const result = await renderer.render(
       { general: { files: "./a-folder" } } as Configuration,
-      [],
+      mapping,
       new Runtime(new Map(), datasets),
       responseDefinition,
-      processing,
       {
         request: {
           url: "http://localhost:8080/",

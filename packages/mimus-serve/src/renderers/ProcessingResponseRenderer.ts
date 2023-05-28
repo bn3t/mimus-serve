@@ -60,14 +60,13 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
    */
   async render(
     _configuration: Configuration,
-    _mappings: Mapping[],
+    mapping: Mapping,
     runtime: Runtime,
     responseDefinition: ResponseDefinition,
-    processing: ProcessingDefinition[],
     context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse> {
-    if (processing.length === 0) {
+    if (mapping.processing.length === 0) {
       return response;
     }
 
@@ -86,7 +85,7 @@ export class ProcessingResponseRenderer implements ResponseRenderer {
     );
     const originalRequestBody = context.request.body;
     let body;
-    for (const processingDefinition of processing) {
+    for (const processingDefinition of mapping.processing) {
       switch (processingDefinition.type) {
         // Selects the dataset to use for the processing
         case "input":

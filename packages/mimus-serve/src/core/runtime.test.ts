@@ -1,4 +1,3 @@
-import { map } from "ramda";
 import { Runtime } from "./runtime";
 
 describe("Scenario", () => {

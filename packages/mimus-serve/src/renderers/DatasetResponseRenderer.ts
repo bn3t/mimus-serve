@@ -21,10 +21,9 @@ export class DatasetResponseRenderer implements ResponseRenderer {
    */
   async render(
     _configuration: Configuration,
-    _mappings: Mapping[],
+    _mapping: Mapping,
     runtime: Runtime,
     responseDefinition: ResponseDefinition,
-    _processing: ProcessingDefinition[],
     _context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse> {

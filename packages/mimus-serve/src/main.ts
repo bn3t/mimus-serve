@@ -155,11 +155,9 @@ if (options !== undefined && !options.help) {
       "runtime",
       new Runtime(transformScenarioWithState(mappings), datasets),
     );
-    console.log(path.join(__dirname, "../dist", "public"));
-    // @ts-ignore
     await server.register(fastifyStatic, {
       root: path.join(__dirname, "public"),
-      prefix: "/ui", // optional: default '/'
+      prefix: "/ui",
       list: true,
     });
     await server.register(AdminRoutes, { prefix: "/__admin" });

@@ -9,6 +9,7 @@ export enum UrlMatchType {
   UrlPattern = "UrlPattern", // Regex on the url (full)
   Path = "Path", // Equality on the path only
   PathPattern = "PathPattern", // Reqex on the path only
+  PathParams = "PathParams", // Match a path on path parameters
 }
 
 export enum MatchResult {
@@ -24,10 +25,9 @@ export interface RequestMatcher {
 export interface ResponseRenderer {
   render(
     configuration: Configuration,
-    mappings: Mapping[],
+    mapping: Mapping,
     runtime: Runtime,
     responseDefinition: ResponseDefinition,
-    processing: ProcessingDefinition[],
     context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse>;

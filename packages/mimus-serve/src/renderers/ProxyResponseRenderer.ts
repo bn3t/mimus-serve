@@ -22,10 +22,9 @@ export class ProxyResponseRenderer implements ResponseRenderer {
    */
   async render(
     _configuration: Configuration,
-    _mappings: Mapping[],
+    _mapping: Mapping,
     _runtime: Runtime,
     responseDefinition: ResponseDefinition,
-    _processing: ProcessingDefinition[],
     context: Context,
     response: HttpResponse,
   ): Promise<HttpResponse> {

@@ -1,0 +1,9 @@
+---
+name: Path parameters matching
+request:
+  urlPathParams: /path-params/:id/name/:name
+  method: GET
+response:
+  status: 200
+  body: "Get from url path params id={{request.route.id}}, name={{request.route.name}}"
+  transform: true

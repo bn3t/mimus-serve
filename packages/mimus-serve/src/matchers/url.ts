@@ -1,4 +1,5 @@
 import url from "url";
+import Route from "route-parser";
 
 import { HttpRequest, MatchResult, RequestMatch, UrlMatchType } from "../types";
 import { RequestMatcher } from "../types";
@@ -41,6 +42,13 @@ export class UrlMatcher implements RequestMatcher {
               ? MatchResult.Match
               : MatchResult.NoMatch;
           }
+        }
+        break;
+      case UrlMatchType.PathParams:
+        {
+          const route = new Route(requestMatch.url);
+          const match = route.match(httpRequest.url);
+          return match ? MatchResult.Match : MatchResult.NoMatch;
         }
         break;
     }

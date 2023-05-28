@@ -17,7 +17,6 @@ const Root = ({}: RootProps) => {
   const { token } = useToken();
   const navigate = useNavigate();
   const selectedKey = useLocation().pathname;
-  console.log(selectedKey);
   return (
     <div
       style={{

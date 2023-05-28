@@ -2,11 +2,40 @@ import { Runtime } from "../core/runtime";
 import {
   Configuration,
   HttpResponse,
+  Mapping,
   RequestModel,
   ResponseDefinition,
+  UrlMatchType,
 } from "../types";
 import { evaluateJsonata } from "../utils/jsonata";
 import { JsonataResponseRenderer } from "./JsonataResponseRenderer";
+
+const MAPPING: Mapping = {
+  id: "test",
+  name: "test",
+  priority: 0,
+  scenarioName: "test",
+  requiredScenarioState: "test",
+  newScenarioState: "test",
+  requestMatch: {
+    method: "ANY",
+    url: "/",
+    urlType: UrlMatchType.Path,
+    queryParameters: [],
+    headers: [],
+    cookies: [],
+    bodyPatterns: [],
+  },
+  responseDefinition: {
+    status: 200,
+    statusMessage: "OK",
+    headers: [],
+    body: "",
+    fixedDelayMilliseconds: 0,
+    transform: false,
+  },
+  processing: [],
+};
 
 // mock evaluateJsonata with jest
 jest.mock("../utils/jsonata", () => ({
@@ -49,10 +78,9 @@ describe("JsonataResponseRenderer", () => {
     };
     const result = await renderer.render(
       { general: { files: "./a-folder" } } as Configuration,
-      [],
+      MAPPING,
       new Runtime(new Map(), new Map<string, any>()),
       responseDefinition,
-      [],
       {
         request: {
           url: "http://localhost:8080/",
@@ -92,10 +120,9 @@ describe("JsonataResponseRenderer", () => {
     };
     const result = await renderer.render(
       { general: { files: "./a-folder" } } as Configuration,
-      [],
+      MAPPING,
       new Runtime(new Map(), new Map<string, any>()),
       responseDefinition,
-      [],
       {
         request: {
           url: "http://localhost:8080/",

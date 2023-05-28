@@ -93,6 +93,6 @@ describe("Engine - case find mapping undefined", () => {
     expect(reply.send).toHaveBeenCalledWith(
       "No mapping found for this request",
     );
-    expect(buildRequestModel).toHaveBeenCalledTimes(1);
+    expect(buildRequestModel).toHaveBeenCalledTimes(0);
   });
 });

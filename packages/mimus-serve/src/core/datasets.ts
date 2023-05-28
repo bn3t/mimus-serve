@@ -5,6 +5,11 @@ import {
   readYamlFileMulti,
 } from "../utils/files";
 
+/**
+ * Loads datasets from the given directory and returns a map of dataset names to their contents.
+ * @param datasetsDir The directory containing the datasets.
+ * @returns A Promise that resolves to a Map of dataset names to their contents.
+ */
 export const loadDatasets = async (
   datasetsDir: string,
 ): Promise<Map<string, any>> => {
