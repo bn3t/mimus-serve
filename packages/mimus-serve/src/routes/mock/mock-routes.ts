@@ -2,10 +2,17 @@ import { FastifyInstance } from "fastify";
 import cookie from "@fastify/cookie";
 import cors from "@fastify/cors";
 
-import { Configuration } from "../types";
-import { processRequest } from "./engine";
-import { Runtime } from "./runtime";
+import { Configuration } from "../../types";
+import { processRequest } from "../../core/engine";
+import { Runtime } from "../../core/runtime";
 
+/**
+ * Registers mock routes on the provided Fastify server instance.
+ * These routes have to use a specific content type parser to be able to
+ * process the request body correctly (that means without processing it).
+ * @param fastifyServer - The Fastify server instance to register the mock routes on.
+ * @param _options - Any additional options to pass to the function.
+ */
 export const MockRoutes = async (
   fastifyServer: FastifyInstance,
   _options: any,

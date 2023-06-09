@@ -1,6 +1,11 @@
 import { FastifyInstance } from "fastify";
-import { Runtime } from "../core/runtime";
+import { Runtime } from "../../core/runtime";
 
+/**
+ * Defines the routes for managing datasets in the admin routes.
+ * @param fastifyServer - The Fastify server instance.
+ * @param _options - Any options passed to the function.
+ */
 export const AdminDatasetsRoutes = async (
   fastifyServer: FastifyInstance,
   _options: any,

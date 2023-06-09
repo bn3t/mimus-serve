@@ -3,7 +3,14 @@ import { Configuration, Options } from "../types";
 import { readYamlFile, resolvePath } from "../utils/files";
 import { DeepPartial } from "../utils/types";
 
-// return a configuraiton object based on options and on the content of the configuration file
+/**
+ * Returns a configuration object based on options and on the content of the configuration file.
+ * The configuration file is optional. If it is not provided, the default configuration is used.
+ * If it is provided, it is merged with the default configuration. The configuration file is
+ * expected to be in YAML format.
+ * @param options - The options to use for the configuration (CLI).
+ * @returns A Promise that resolves to a Configuration object.
+ */
 export const makeConfiguration = async (
   options: Options,
 ): Promise<Configuration> => {

@@ -4,6 +4,11 @@ import Route from "route-parser";
 import { NameValuePair } from "../types";
 import { RequestModel } from "../types/request-model";
 
+/**
+ * Builds a query object from a URL object.
+ * @param url - The URL object containing the query parameters.
+ * @returns A record representing the query parameters.
+ */
 const buildQuery = (url: URL): Record<string, string | string[]> =>
   Array.from<[string, string]>(url.searchParams.entries()).reduce(
     (
@@ -24,6 +29,11 @@ const buildQuery = (url: URL): Record<string, string | string[]> =>
     {},
   );
 
+/**
+ * Builds a headers object from an array of `NameValuePair` objects.
+ * @param headers - An array of `NameValuePair` objects representing the headers.
+ * @returns A record representing the headers.
+ */
 const buildHeaders = (
   headers: NameValuePair[],
 ): Record<string, string | string[]> =>
@@ -35,6 +45,16 @@ const buildHeaders = (
     {},
   );
 
+/**
+ * Builds a `RequestModel` object from an `IncomingMessage` object and other request data.
+ * @param req - The `IncomingMessage` object containing the request data.
+ * @param headers - An array of `NameValuePair` objects representing the request headers.
+ * @param body - The request body as a string.
+ * @param incomingCookies - An object containing the incoming cookies.
+ * @param isHttps - A boolean indicating whether the request is using HTTPS.
+ * @param mappingUrl - An optional string representing the URL mapping.
+ * @returns A `RequestModel` object representing the request data.
+ */
 export const buildRequestModel = (
   req: Pick<IncomingMessage, "url" | "method" | "headers">,
   headers: NameValuePair[],
@@ -48,7 +68,7 @@ export const buildRequestModel = (
   }
   const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
 
-  let routeMatch = undefined;
+  let routeMatch: Record<string, string> | false | undefined = undefined;
   if (mappingUrl) {
     routeMatch = new Route(mappingUrl).match(req.url);
   }

@@ -7,10 +7,21 @@ import { Scenario } from "../types";
  * accessing and modifying them.
  */
 export class Runtime {
-  // Map of scenario names to states
+  /**
+   * Map of scenario names to possible states.
+   */
   private scenariosPossibleStates = new Map<string, string[]>();
+  /**
+   * Map of scenario names to their current state.
+   */
   private scenariosCurrentState = new Map<string, string>();
+  /**
+   * Map of dataset names to their original loaded state.
+   */
   private loadedDatasets: Map<string, any>;
+  /**
+   * Map of dataset names to their current state.
+   */
   private _datasets: Map<string, any>;
 
   // constuct runtime with scenario names initalized to STARTED

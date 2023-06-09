@@ -1,10 +1,18 @@
 import { FastifyInstance } from "fastify";
-import { Runtime } from "../core/runtime";
+import { Runtime } from "../../core/runtime";
 
+/**
+ * The request body for the PUT /:name/state route.
+ */
 type PutRequestBody = {
   state?: string;
 };
 
+/**
+ * Defines the routes for the admin scenarios.
+ * @param fastifyServer - The Fastify server instance.
+ * @param _options - The options object.
+ */
 export const AdminScenariosRoutes = async (
   fastifyServer: FastifyInstance,
   _options: any,

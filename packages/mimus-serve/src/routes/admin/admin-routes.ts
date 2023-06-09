@@ -6,18 +6,15 @@ import { AdminScenariosRoutes } from "./admin-scenarios-routes";
 import { AdminDatasetsRoutes } from "./admin-datasets-routes";
 import { AdminSettingsRoutes } from "./admin-settings-routes";
 
+/**
+ * Registers the admin routes for the Fastify server instance.
+ * @param fastifyServer - The Fastify server instance.
+ * @param _options - Any options to pass to the registration.
+ */
 export const AdminRoutes = async (
   fastifyServer: FastifyInstance,
   _options: any,
 ) => {
-  // fastifyServer.register(swagger, {
-  //   mode: "static",
-  //   routePrefix: "/api-docs",
-  //   exposeRoute: true,
-  //   specification: {
-  //     path: "./src/admin/swagger/mimus-serve-admin-api.yaml",
-  //   } as StaticPathSpec,
-  // });
   await fastifyServer.register(AdminScenariosRoutes, { prefix: "/scenarios" });
   await fastifyServer.register(AdminSettingsRoutes, { prefix: "/settings" });
   await fastifyServer.register(AdminDatasetsRoutes, { prefix: "/datasets" });

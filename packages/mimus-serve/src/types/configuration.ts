@@ -1,3 +1,6 @@
+/**
+ * Represents the configuration options for Mimus Serve.
+ */
 export interface Configuration {
   general: {
     transform: boolean;
@@ -21,6 +24,9 @@ export interface Configuration {
   };
 }
 
+/**
+ * Represents the options for configuring Mimus Serve (command line).
+ */
 export interface Options {
   help: boolean;
   verbose: boolean;

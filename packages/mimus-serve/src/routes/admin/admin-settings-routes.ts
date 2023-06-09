@@ -1,10 +1,18 @@
 import { FastifyInstance } from "fastify";
-import { Configuration } from "../types";
+import { Configuration } from "../../types";
 
+/**
+ * Defines the shape of the request body for the admin settings PATCH route.
+ */
 type PostRequestBody = {
   fixedDelayMilliseconds: number;
 };
 
+/**
+ * Defines the admin settings routes for the Fastify server.
+ * @param fastifyServer - The Fastify server instance.
+ * @param _options - The options object.
+ */
 export const AdminSettingsRoutes = async (
   fastifyServer: FastifyInstance,
   _options: any,

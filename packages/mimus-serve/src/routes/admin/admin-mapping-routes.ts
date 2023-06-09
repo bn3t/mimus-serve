@@ -1,13 +1,20 @@
 import { FastifyInstance } from "fastify";
 
-import { Configuration, Mapping } from "../types";
+import { Configuration, Mapping } from "../../types";
 
+/**
+ * The query parameters for the GET mappings endpoint.
+ */
 interface GetMappingsQuery {
   limit?: number;
   offset?: number;
 }
 
-// convert one mapping
+/**
+ * Converts a mapping object to a simplified format for sending in the API response.
+ * @param mapping - The mapping object to convert.
+ * @returns The simplified mapping object.
+ */
 const convertMapping = (mapping: Mapping): any => ({
   ...mapping,
   requestMatch: undefined,
@@ -19,6 +26,11 @@ const convertMapping = (mapping: Mapping): any => ({
 const convertMappings = (mappings: Mapping[]): any[] =>
   mappings.map((mapping) => convertMapping(mapping));
 
+/**
+ * Registers the admin mapping routes.
+ * @param fastifyServer - The Fastify server instance.
+ * @param _options - The options object.
+ */
 export const AdminMappingRoutes = async (
   fastifyServer: FastifyInstance,
   _options: any,

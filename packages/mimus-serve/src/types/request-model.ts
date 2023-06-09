@@ -1,3 +1,6 @@
+/**
+ * Represents a HTTP request.
+ */
 export interface RequestModel {
   url: string;
   path: string;

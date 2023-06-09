@@ -1,17 +1,14 @@
 #!/usr/bin/env node
-import { fastify, FastifyInstance } from "fastify";
-import fastifyStatic from "@fastify/static";
-import path from "path";
-import commandLineArgs from "command-line-args";
+import commandLineArgs, { OptionDefinition } from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import "dotenv/config";
-import { IncomingMessage, Server, ServerResponse } from "http";
-import { MockRoutes, Runtime, loadDatasets, loadMappings } from "./core";
-import { AdminRoutes } from "./admin/admin-routes";
-import { Options } from "./types";
-import { makeConfiguration } from "./configuration/configuration";
 import { dump } from "js-yaml";
-import { transformScenarioWithState } from "./core/mapping";
+import path from "path";
+
+import { makeConfiguration } from "./configuration/configuration";
+import { loadDatasets, loadMappings } from "./core";
+import { LoggerConfiguration, startServer } from "./server/server";
+import { Options } from "./types";
 
 const environment = process.env.NODE_ENV ?? "production";
 const currentDirectory = process.cwd();
@@ -99,88 +96,64 @@ const optionUsage = [
   },
 ];
 
-let options: Options | undefined;
-try {
-  options = commandLineArgs(optionDefinitions) as Options;
-} catch (error) {
-  // ignore
-  console.error("Unrecognised option");
+const makeOptions = (
+  optionDefinitions: OptionDefinition[],
+): Options | undefined => {
+  let options: Options | undefined;
+  try {
+    options = commandLineArgs(optionDefinitions) as Options;
+  } catch (error) {
+    // ignore
+    console.error("Unrecognised option");
+  }
+  return options;
+};
+
+const options = makeOptions(optionDefinitions);
+
+if (options === undefined || options.help) {
+  console.info(commandLineUsage(optionUsage));
+  process.exit(1);
 }
 
-if (options !== undefined && !options.help) {
-  const start = async () => {
-    if (options === undefined) {
-      throw new Error("options is undefined");
-    }
-    const configuration = await makeConfiguration(options);
-    const logger =
-      configuration.logging.logger !== undefined
-        ? {
-            level: configuration.logging.logger,
-            transport:
-              environment === "development"
-                ? {
-                    target: "pino-pretty",
-                    options: {
-                      translateTime: "HH:MM:ss Z",
-                      ignore: "pid,hostname",
-                    },
-                  }
-                : undefined,
-          }
-        : false;
-    configuration.general.files = path.resolve(
-      path.normalize(currentDirectory),
-      configuration.general.files,
-    );
-    configuration.general.mappings = path.resolve(
-      path.normalize(currentDirectory),
-      configuration.general.mappings,
-    );
-    console.info(banner);
-    if (options.verbose) {
-      console.info("configuration:\n\n", dump(configuration));
-    }
-    const server: FastifyInstance<Server, IncomingMessage, ServerResponse> =
-      fastify({
-        logger,
-      });
-    const mappings = await loadMappings(configuration.general.mappings);
-    const datasets = await loadDatasets(configuration.general.datasets);
+const start = async () => {
+  if (options === undefined) {
+    throw new Error("options is undefined");
+  }
+  const configuration = await makeConfiguration(options);
+  const logger: LoggerConfiguration | false =
+    configuration.logging.logger !== undefined
+      ? {
+          level: configuration.logging.logger,
+          transport:
+            environment === "development"
+              ? {
+                  target: "pino-pretty",
+                  options: {
+                    translateTime: "HH:MM:ss Z",
+                    ignore: "pid,hostname",
+                  },
+                }
+              : undefined,
+        }
+      : false;
+  configuration.general.files = path.resolve(
+    path.normalize(currentDirectory),
+    configuration.general.files,
+  );
+  configuration.general.mappings = path.resolve(
+    path.normalize(currentDirectory),
+    configuration.general.mappings,
+  );
+  console.info(banner);
+  if (options.verbose) {
+    console.info("configuration:\n\n", dump(configuration));
+  }
+  const mappings = await loadMappings(configuration.general.mappings);
+  const datasets = await loadDatasets(configuration.general.datasets);
 
-    server.decorate("mappings", mappings);
-    server.decorate("configuration", configuration);
-
-    server.decorate(
-      "runtime",
-      new Runtime(transformScenarioWithState(mappings), datasets),
-    );
-    await server.register(fastifyStatic, {
-      root: path.join(__dirname, "public"),
-      prefix: "/ui",
-      list: true,
-    });
-    await server.register(AdminRoutes, { prefix: "/__admin" });
-    await server.register(MockRoutes);
-    try {
-      await server
-        .listen({
-          port: configuration.general.port,
-          host: configuration.general.host,
-        })
-        .then(
-          (address) =>
-            !logger && console.info(`server listening on ${address}`),
-        );
-    } catch (err) {
-      server.log.error(err);
-      process.exit(1);
-    }
-  };
-  start().catch((e) => {
-    console.error(e.message);
-  });
-} else {
-  const usage = commandLineUsage(optionUsage);
-  console.error(usage);
-}
+  await startServer(configuration, mappings, datasets, logger);
+};
+start().catch((e) => {
+  console.error(e.message);
+});
