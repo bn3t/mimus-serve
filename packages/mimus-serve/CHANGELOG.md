@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-## [1.6.0](https://gitlab.com/bn3t/mimus-serve/compare/1.5.4...1.6.0) (2023-04-26)
+## [1.7.0](https://gitlab.com/bn3t/mimus-serve/compare/1.6.0...1.7.0) (2023-06-14)
 
 
 ### Features
 
-* support serving binary files ([6772fbc](https://gitlab.com/bn3t/mimus-serve/commit/6772fbcf50a22e2a0d76daed70bcb720cb4f406d))
+* add support for specifying path paramters ([41ff5a5](https://gitlab.com/bn3t/mimus-serve/commit/41ff5a533db5026d6502064f8ec42b4d929b1fd7))
 
 ## [1.2.0](https://gitlab.com/bn3t/mimus-serve/compare/1.1.0...1.2.0) (2022-09-18)
 
